@@ -3,7 +3,7 @@
 # Clean up DEST_ROOT
 
 for f in ${DEST_ROOT}/*; do
-    echo rm -rfv $f
+    rm -rfv $f
 done
 
 # Set the icon
