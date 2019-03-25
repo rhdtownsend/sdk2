@@ -3,10 +3,20 @@
 # Script to relocate an OSX Mach-O binary so that all internal paths
 # are relative to a given base directory
 
-# Arguments
-
 FILE=$1
 BASE=$2
+
+# Check arguments
+
+if [[ -z $FILE ]]; then
+    echo "No FILE specified"
+    exit 1
+fi
+
+if [[ -z $BASE ]]; then
+    echo "No BASE specified"
+    exit 1
+fi
 
 # Check if FILE is a file (this weeds out symlinks etc)
 
