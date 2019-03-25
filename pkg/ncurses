@@ -1,0 +1,45 @@
+# SDK2 package definition for ncurses
+
+# Set package-specific variables
+
+PKG_NAME=ncurses
+SRC_FILE=ncurses-6.0.tar.gz
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--bindir=${DEST_ROOT}/bin/ncurses \
+	--with-shared
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PKG_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}

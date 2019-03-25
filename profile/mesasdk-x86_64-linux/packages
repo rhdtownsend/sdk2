@@ -1,0 +1,26 @@
+# Packages list for MESA SDK
+ 
+gmp
+mpfr
+mpc
+gcc
+ncurses
+gdb
+valgrind
+makedepf90
+xz
+tar
+time
+blas
+xblas
+lapack
+lapack95
+png_pgplot
+pgplot
+hdf5
+se
+x264
+ffmpeg
+ndiff
+fpx3
+init_scripts

@@ -1,0 +1,72 @@
+#!/bin/bash
+#
+# Create a shared library from a static one
+
+# Process arguments
+
+compiler="gcc"
+compopts=""
+
+while getopts "c:L:l:s:" opt; do
+
+    case $opt in
+	c)
+	    compiler=${OPTARG}
+	    ;;
+	L)
+	    compopts="${compopts} -L ${OPTARG}"
+	    ;;
+	l)
+	    compopts="${compopts} -l${OPTARG}"
+	    ;;
+	s)
+	    compopts="${compopts} ${OPTARG}"
+	    ;;
+	*)
+	    echo "Syntax: create_shared_lib [-c <compiler>] [-L <path>] [-l<libname>] [-s <libname>] libfoo.a"
+    esac
+
+done
+
+shift $((OPTIND -1))
+
+inpath=$1
+infile=${inpath##*/}
+
+# Platform-specific processing
+
+if `uname -a | grep -q Darwin`; then
+    outpath=${inpath%.a}.dylib
+    outfile=${infile%.a}.dylib
+    compopts="${compopts} -dynamiclib -install_name ${outpath}"
+else
+    outpath=${inpath%.a}.so
+    outfile=${infile%.a}.so
+    compopts="${compopts} -shared -Wl,-soname,${outfile}"
+fi
+
+# Unpack the archive
+
+tmpdir=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+
+cp $inpath $tmpdir/
+
+pushd $tmpdir > /dev/null
+
+ar x $infile
+${compiler} ${compopts} -o ${outfile} *.o
+
+if [ $? -ne 0 ]; then
+    echo "Building dynamic library ${outfile} failed"
+else
+    echo "Created dynamic library ${outfile}"
+    cp $outfile $outpath
+fi
+
+popd > /dev/null
+
+# Tidy up
+
+rm -rf $tmpdir
+
+# Finish

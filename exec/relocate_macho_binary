@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Script to relocate an OSX Mach-O binary so that all internal paths
+# are relative to a given base directory
+
+# Arguments
+
+FILE=$1
+BASE=$2
+
+# Check if FILE is a file (this weeds out symlinks etc)
+
+if [ -f $FILE ]; then
+
+    # Check if the file is Mach-O format
+
+    if `file $FILE | grep -q '/Mach-O/'`; then
+
+	# Check that the file is not a stub
+
+	if `file $FILE | grep -q '/shared library stub/'`; then
+
+	    file_name=`basename $FILE`
+	    file_dir=`dirname $FILE`
+
+	    # Get a list of library dependencies
+
+	    deps=`otool -L $FILE | awk -v pattern="^$BASE/?" 'NR > 1 && $1 ~ pattern { print $1 }'`
+
+	    # Fix rpaths for the dependencies
+	    
+	    for dep in $deps; do
+		dep_name=`basename $dep`
+		dep_dir=`dirname $dep`
+		install_name_tool -change $dep @rpath/`relpath $dep_dir $BASE`/$dep_name $FILE
+	    done
+
+	    # If the file is an executable, add rpath
+
+	    if `file $FILE | grep -q 'executable'`; then
+		install_name_tool -add_rpath @loader_path/`relpath $BASE $FILE_dir` $FILE
+	    fi
+	    
+	    # If the file is a library, set id
+	
+	    if `file $FILE | grep -q 'shared library'`; then
+		install_name_tool -id @rpath/`relpath $FILE_dir $BASE`/$FILE_name $FILE
+	    fi
+
+	fi
+
+    fi
+    
+fi

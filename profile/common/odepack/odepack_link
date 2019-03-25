@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for odepack
+
+echo @SDK_ROOT@/lib/libodepack.a `blas_link`

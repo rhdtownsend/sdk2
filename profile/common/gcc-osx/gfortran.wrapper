@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Wrapper for gfortran (osx)
+
+# Examine arguments to decide whether we're actually compiling
+
+COMPILING="n"
+
+while getopts ":cSEo:" opt; do
+    case $opt in
+	c|S|E|o)
+	    COMPILING="y"
+	    ;;
+    esac
+done
+
+if [ "$OPTIND" -le "$#" ]; then
+   COMPILING="y"
+fi
+
+# Set up compilation flags
+
+FLAGS=""
+
+if [[ $COMPILING == "y" ]]; then
+
+    # Set flags to suppress FPE summary notices
+
+    FLAGS="${FLAGS} -ffpe-summary=none"
+
+    # Set up system paths
+
+    FLAGS="${FLAGS} -isysroot / -isystem @SDK_ROOT@/include"
+
+    # Add linker flags to set rpath
+
+    FLAGS="${FLAGS} -Xlinker -rpath -Xlinker @SDK_ROOT@"
+
+fi
+
+# Prepend /usr/bin to PATH, to ensure that the system as/ld are found
+# (this is to work around the macports ones being used)
+
+export PATH=/usr/bin:${PATH}
+
+# Launch gfortran
+
+eval $0.exec ${FLAGS} $(printf '%q ' "$@")
+exit $?

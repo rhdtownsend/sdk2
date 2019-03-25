@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Return the SDK version
+
+echo "VERSION_STRING"

@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for xblas
+
+echo -L@SDK_ROOT@/lib -lxblas

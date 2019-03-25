@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for lapack95
+
+echo -L@SDK_ROOT@/lib -llapack95 `lapack_link`

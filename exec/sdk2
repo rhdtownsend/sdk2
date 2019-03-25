@@ -1,0 +1,377 @@
+#!/bin/bash
+#
+# Front-end script for SDK2
+
+### COMMAND-LINE ARGUMENTS ###
+
+# Store and validate arguments
+
+ACTION=$1
+PACKAGES=${@:2}
+
+if [[ -z $ACTION ]]; then
+    echo "No ACTION specified"
+    exit 1
+fi
+
+### VALIDATION ###
+
+# Check SDK2_ROOT is set and valid
+
+if [[ -z $SDK2_ROOT ]]; then
+    echo "Environment variable SDK2_ROOT is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_ROOT ]]; then
+    echo "Root directory '$SDK2_ROOT' is missing"
+    exit 1
+fi
+
+# Check SDK2_PROFILE is set
+
+if [[ -z $SDK2_PROFILE ]]; then
+    echo "Environment variable SDK2_PROFILE is not set"
+    exit 1
+fi
+
+### VARIABLES ###
+
+# Define standard directories
+
+export SDK2_PKG_ROOT=${SDK2_ROOT}/pkg
+export SDK2_PROFILE_ROOT=${SDK2_ROOT}/profile
+export SDK2_SRC_ROOT=${SDK2_ROOT}/src
+export SDK2_BUILD_ROOT=${SDK2_ROOT}/build
+export SDK2_EXEC_ROOT=${SDK2_ROOT}/exec
+
+# Define platform variables
+
+export SDK2_PLATFORM_NAME=`uname -s`
+export SDK2_PLATFORM_ISA=`uname -m`
+
+if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
+    if `uname -a | grep -q Ubuntu`; then
+	export SDK2_PLATFORM_DISTRO='Ubuntu'
+    else
+	export SDK2_PLATFORM_DISTRO='Generic'
+    fi
+fi
+
+# Include profile settings
+
+profile_dir=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
+
+if [[ ! -d $profile_dir ]]; then
+    echo "Directory '$profile_dir' is missing"
+    exit 1
+fi
+
+. ${profile_dir}/settings
+
+if [ $? -ne 0 ]; then
+    echo "FAILED when including settings for profile $PROFILE"
+    exit 1
+fi
+
+# Read packages list
+
+if [[ ! -f ${profile_dir}/packages ]]; then
+    echo "Packages list '${profile_dir}/packages' is missing"
+    exit 1
+fi
+
+WORLD_PACKAGES=(`awk '!/^ *#/ && NF' ${profile_dir}/packages`)
+
+# Check profile variables are set
+
+if [[ -n $SDK2_DEST_ROOT ]]; then
+    DEST_ROOT=$SDK2_DEST_ROOT
+fi
+
+if [[ -z $DEST_ROOT ]]; then
+    echo "Profile variable DEST_ROOT is not set"
+    exit 1
+fi
+
+if [[ -z $PROFILE_NAME ]]; then
+    echo "Profile variable PROFILE_NAME is not set"
+    exit 1
+fi
+
+if [[ -z $PROFILE_ARCH ]]; then
+    echo "Profile variable PROFILE_ARCH is not set"
+    exit 1
+fi
+
+if [[ -z $LIB_EXT ]]; then
+    echo "Profile variable LIB_EXT is not set"
+    exit 1
+fi
+
+# Further checks
+
+if [[ ! -d $DEST_ROOT ]]; then
+    echo "Destination directory '$SDK2_ROOT' is missing"
+    exit 1
+fi
+
+if [[ ! -w $DEST_ROOT ]]; then
+    echo "Destination directory '$SDK2_ROOT' is not writable"
+    exit 1
+fi
+
+### ENVIRONMENT ###
+
+# Add the exec directory and DEST_ROOT/bin to the path
+
+export PATH=${SDK2_EXEC_ROOT}:${DEST_ROOT}/bin:${PATH}
+
+# On Linux systems, add DEST_ROOT/bin to LD_RUN_PATH. This 
+# ensures libraries are found by executables run during 
+# the build process
+
+if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
+    export LD_RUN_PATH=${DEST_ROOT}/lib:${DEST_ROOT}/lib64
+fi
+
+# Set the SDK environment variable
+
+export ${PROFILE_ENV}=${DEST_ROOT}
+
+### FUNCTIONS ###
+
+# Main action functions
+
+pre_install() {
+
+    # Launch a subshell, to prevent environment leakage
+
+    (
+
+	# Set full path variables
+
+	PD=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
+
+	# Import the pre-install commands
+
+	. ${PD}/pre_install
+	    
+	if [ $? -ne 0 ]; then
+	    echo "FAILED when including pre-install commands"
+	    exit 1
+	fi
+
+    )
+
+}
+
+post_install () {
+
+    # Launch a subshell, to prevent environment leakage
+
+    (
+
+	# Set full path variables
+
+	PD=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
+
+	# Import the post-install definition
+
+	. ${PD}/post_install
+	    
+	if [ $? -ne 0 ]; then
+	    echo "FAILED when including post-install commands"
+	    exit 1
+	fi
+
+    )
+
+}
+
+packages_install () {
+
+    # Set up the expanded package list
+
+    PACKAGES_EXP=()
+
+    for PACKAGE in $PACKAGES; do
+	if [[ $PACKAGE = 'world' ]]; then
+	    for WORLD_PACKAGE in ${WORLD_PACKAGES[*]}; do
+		PACKAGES_EXP+=($WORLD_PACKAGE)
+	    done
+	else
+	    PACKAGES_EXP+=($PACKAGE)
+	fi
+    done
+
+    # Loop over the expanded packages
+
+    for PACKAGE in ${PACKAGES_EXP[*]}; do
+
+	# Launch a subshell, to prevent environment leakage
+
+	(
+
+	    # Import the package definition. This should define the following
+	    # variables:
+	    #
+	    # SRC_FILE    -- file name of tarball (optional)
+	    # PATCH_FILES -- file names of patches (optional)
+	    # SRC_DIR     -- directory name to unpack into
+	    # BUILD_DIR   -- directory name to build in (optional, defaults to SRC_DIR)
+	    #
+	    # ...and the following functions
+	    #
+	    # unpack()  -- unpack source code, apply patches (optional)
+	    # build()   -- build
+	    # install() -- install (optional)
+
+	    . ${SDK2_PKG_ROOT}/${PACKAGE}
+	    
+	    if [ $? -ne 0 ]; then
+		echo "FAILED when including definition for package $PACKAGE"
+		exit 1
+	    fi
+
+	    # Check package variables are set
+
+	    if [[ -z $SRC_DIR ]]; then
+		echo "Package variable SRC_DIR is not set"
+		exit 1
+	    fi
+
+	    if [[ -z $BUILD_DIR ]]; then
+		BUILD_DIR=$SRC_DIR
+	    fi
+
+	    # Set full path variables
+
+	    if [[ -n $SRC_FILE ]]; then
+		SF=${SDK2_SRC_ROOT}/${SRC_FILE}
+	    fi
+
+	    if [[ -n $PATCH_FILES ]]; then
+		PF=${PATCH_FILES[@]/#/$SDK2_SRC_ROOT/}
+	    fi
+
+	    SD=${SDK2_BUILD_ROOT}/${SRC_DIR}
+	    BD=${SDK2_BUILD_ROOT}/${BUILD_DIR}
+
+	    PD=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
+
+	    # Take action
+
+	    case $ACTION in
+		unpack)
+		    unpack
+		    ;;
+		unpack_only)
+		    unpack
+		    ;;
+		build)
+		    unpack
+		    build
+		    ;;
+		build_only)
+		    build
+		    ;;
+		install)
+		    unpack
+		    build
+		    install
+		    ;;
+		install_only)
+		    install
+		    ;;
+		*)
+		    echo "Invalid ACTION specified"
+		    exit 1
+		    ;;
+	    esac
+
+	    # Finish
+
+	)
+
+    done
+
+}
+
+# Default package functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    tar xf $SF -C $SD --strip-components 1
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in tar for $PACKAGE (file $SF)"
+	exit 1
+    fi
+
+    # Apply patches
+
+    for patch_file in $PF; do
+
+	patch -d $SD -p1 < $patch_file
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in patch for $PACKAGE (file $patch_file)"
+	    exit 1
+	fi
+
+    done
+
+}
+
+build () {
+
+    echo "Attempt to call default build function for $PACKAGE"
+
+    exit 1
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in install for $PACKAGE"
+	exit 1
+    fi
+
+}
+
+### ACTION ###
+
+# Take action
+
+case $ACTION in
+    pre_install)
+	pre_install
+	;;
+    post_install)
+	post_install
+	;;
+    unpack|unpack_only|build|build_only|install|install_only)
+	packages_install
+	;;
+    *)
+	echo "Syntax: sdk2 pre_install|post_install|install <package_list>"
+	exit 1
+esac
+

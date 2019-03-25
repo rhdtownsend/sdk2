@@ -1,0 +1,43 @@
+# SDK2 package definition for argtable
+
+# Set package-specific variables
+
+PKG_NAME=argtable
+SRC_FILE=argtable2-13.tar.gz
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PKG_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES all
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}

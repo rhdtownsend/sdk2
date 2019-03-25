@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Wrapper for gcc (linux)
+
+# Examine arguments to decide whether we're actually compiling
+
+COMPILING="n"
+
+while getopts ":cSEo:" opt; do
+    case $opt in
+	c|S|E|o)
+	    COMPILING="y"
+	    ;;
+    esac
+done
+
+if [ "$OPTIND" -le "$#" ]; then
+   COMPILING="y"
+fi
+
+# Set up compilation flags
+
+FLAGS=""
+
+if [[ $COMPILING == "y" ]]; then
+
+    # Add SDK directories to the libary run path
+
+    FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/lib -Wl,-rpath -Wl,@SDK_ROOT@/lib64"
+
+    # Deal with multiarch
+
+    if [ -d /usr/lib/x86_64-linux-gnu ]; then
+        export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LIBRARY_PATH}"
+    fi
+
+    if [ -d /usr/include/x86_64-linux-gnu ]; then
+        FLAGS="${FLAGS} -I/usr/include/x86_64-linux-gnu"
+    fi
+
+fi
+
+# Launch gcc
+
+eval $0.exec ${FLAGS} $(printf '%q ' "$@")
+exit $?

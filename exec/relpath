@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+#
+# Convert absolute paths to relative
+
+use File::Spec;
+
+@abspaths = split(':', $ARGV[0]);
+$base = $ARGV[1];
+
+@relpaths = ();
+
+foreach $abspath (@abspaths) {
+        push @relpaths, File::Spec->abs2rel($abspath, $base);
+}
+
+print join(':', @relpaths)."\n";

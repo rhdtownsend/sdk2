@@ -1,0 +1,42 @@
+# SDK2 package definition for time
+
+# Set package-specific variables
+
+PKG_NAME=time
+SRC_FILE=time-1.9.tar.gz
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--prefix=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PKG_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}

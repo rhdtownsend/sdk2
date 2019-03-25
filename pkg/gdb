@@ -1,0 +1,52 @@
+# SDK2 package definition for gdb
+
+# Set package-specific variables
+
+PKG_NAME=gdb
+SRC_FILE=gdb-weekly-8.3.50.20190312.tar.gz
+PATCH_FILES=gdb-darwin-nohang.diff
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Set up CFLAGS for Linux, to ensure that the 
+    # SDK ncurses is found
+
+    if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
+	export CFLAGS=-L${DEST_ROOT}/lib
+    fi
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--disable-werror
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PKG_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}

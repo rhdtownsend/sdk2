@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for se
+
+echo -L@SDK_ROOT@/lib -lse `hdf5_link`

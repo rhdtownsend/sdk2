@@ -1,0 +1,74 @@
+# SDK2 package definition for xblas
+
+# Set package-specific variables
+
+PKG_NAME=xblas
+SRC_FILE=xblas.tar.gz
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PKG_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    tar xf $SF -C $SD --strip-components 1
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in tar for $PKG_NAME (file $SF)"
+	exit 1
+    fi
+
+    # Move other files into place
+
+    cp ${PD}/xblas/make.inc ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Build
+
+    cd $BD
+
+    make clean
+    make -j$NCORES lib
+    make
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PKG_NAME from $BD"
+
+    # Copy the static library
+
+    cd $BD
+
+    cp -av libxblas.a ${DEST_ROOT}/lib/
+
+    # Create the shared library
+
+    create_shared_lib -c gfortran ${DEST_ROOT}/lib/libxblas.a
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${SDK2_PROFILE_ROOT}/common/xblas/xblas_link > \
+	${DEST_ROOT}/bin/xblas_link
+    chmod a+x ${DEST_ROOT}/bin/xblas_link
+
+}

@@ -1,0 +1,32 @@
+AC_INIT(SDK2 Dependency Checker, 1)
+
+missing=()
+
+AC_CHECK_PROG(MAKE, make, make, '')
+if [[ -z ${MAKE} ]]; then
+    missing+=("make")
+fi
+
+AC_CHECK_PROG(PERL, perl, perl, '')
+if [[ -z ${PERL} ]]; then
+    missing+=("Perl")
+fi
+
+AC_CHECK_PROG(TCSH, tcsh, tcsh, '')
+if [[ -z ${TCSH} ]]; then
+    missing+=("C shell")
+fi
+
+AC_CHECK_LIB(z, 
+             deflate,
+	     [],
+             missing+=("Z library"))
+
+AC_CHECK_LIB(X11, 
+             XOpenDisplay,
+	     [],
+             missing+=("X11 library"))
+
+if (( ${#missing[@]} > 0 )); then
+    printf '%s\n' "${missing[[@]]}"
+fi

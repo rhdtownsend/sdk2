@@ -1,0 +1,87 @@
+# SDK2 package definition for ffmpeg
+
+# Set package-specific variables
+
+PKG_NAME=ffmpeg
+SRC_FILE=ffmpeg-4.1.tar.bz2
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Set extra configuration options
+
+    EXTRA_CONFIG_OPTS=
+
+    if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
+	
+	# This is to work around the fact that various OSX components
+	# cause GCC to barf...
+
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-audiotoolbox --disable-videotoolbox"
+
+	# This is to deal with the fact that the Apple texi2html doesn't work properly
+	# with the ffmpeg doc system
+
+	if [[ -x /usr/bin/texi2html ]]; then
+            EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-htmlpages"
+	fi
+
+    fi
+    
+    # Configure
+
+    ./configure \
+	--host-os=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--extra-cflags="-I$DEST_ROOT/include" \
+	--enable-shared \
+	--enable-gpl \
+	--enable-libx264 \
+	--disable-x86asm \
+	$EXTRA_CONF_OPTS
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PKG_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PKG_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Create the images_to_move script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${SDK2_PROFILE_ROOT}/common/ffmpeg/images_to_movie > \
+	${DEST_ROOT}/bin/images_to_movie
+    chmod a+x ${DEST_ROOT}/bin/images_to_movie
+ 
+}

@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for lapack
+
+echo -L@SDK_ROOT@/lib -llapack `xblas_link` `blas_link`

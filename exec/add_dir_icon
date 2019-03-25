@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+# Add an icon to a directory on OSX
+
+ICON=$1
+DIR=$2
+
+# Check arguments
+
+if [[ -z "$ICON" ]]; then
+    echo "No ICON specified"
+    exit 1
+fi
+
+if [[ -z "$DIR" ]]; then
+    echo "No DIR specified"
+    exit 1
+fi
+
+if [[ ! -f "$ICON" ]]; then
+    echo "File '$ICON' is missing"
+    exit 1
+fi
+
+if `file $ICON | grep -q '/Mac OS X icon/'`; then
+    file $ICON
+    echo "File '$ICON' is not a Mac OS X icon file"
+    exit 1
+fi
+
+if [[ ! -d "$DIR" ]]; then
+    echo "Directory '$DIR' is missing"
+    exit 1
+fi
+
+# Create a temporary resource file pointing to the icon
+
+RESDIR=`mktemp -d add_dir_icon.XXXXXX` || exit 1
+
+pushd $RESDIR > /dev/null
+
+echo "read 'icns' (-16455) \"$ICON\";" > Icon.rsrc
+
+# Add the icon to the directory
+
+Rez -a Icon.rsrc -o ${DIR}/Icon$'\r'
+
+# Ensure the icon is shown
+
+SetFile -a C $DIR
+
+# Hide the icon file
+
+SetFile -a V ${DIR}/Icon$'\r'
+
+# Clean up
+
+popd > /dev/null
+
+rm -r $RESDIR

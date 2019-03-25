@@ -1,0 +1,66 @@
+# SDK2 package definition for mpich
+
+# Set package-specific variables
+
+PKG_NAME=mpich
+SRC_FILE=mpich-3.3.tar.gz
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    F77=gfortran FC=gfortran ./configure \
+         --build=$BUILD_SPEC \
+         --prefix=$DEST_ROOT \
+	 --with-pm=gforker \
+	 --disable-multi-aliases
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PKG_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PKG_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Fix the wrapper scripts
+
+    for f in mpicc mpicxx mpif77 mpifort; do
+	file=${DEST_ROOT}/bin/$f
+	if [[ -e $file ]]; then
+	    sed -e "s|$DEST_ROOT|\${${PROFILE_ENV}}|" -i '' $file
+	fi
+    done    
+
+}
