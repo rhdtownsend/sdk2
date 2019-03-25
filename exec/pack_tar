@@ -24,6 +24,7 @@ fi
 
 if [[ -f $TAR_FILE ]]; then
     echo "File '$TAR_FILE' already exists"
+    exit 1
 fi
 
 # Pack all
