@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Script to create a tar archive from an SDK installation
+
+DEST_ROOT=$1
+TAR_FILE=$2
+
+# Check arguments
+
+if [[ -z $DEST_ROOT ]]; then
+    echo "No DEST_ROOT specified"
+    exit 1
+fi
+
+if [[ -z $TAR_FILE ]]; then
+    echo "No TAR_FILE specified"
+    exit 1
+fi
+
+if [[ ! -d $DEST_ROOT ]]; then
+    echo "Directory '$DEST_ROOT' is missing"
+    exit 1
+fi
+
+if [[ -f $TAR_FILE ]]; then
+    echo "File '$TAR_FILE' already exists"
+fi
+
+# Pack all
+
+tar cf $TAR_FILE -C `dirname $DEST_ROOT` --exclude='etc/*.done' `basename $DEST_ROOT`

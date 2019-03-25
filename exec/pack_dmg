@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# Script to create an OSX disk image (dmg) from an SDK installation
+
+DEST_ROOT=$1
+DMG_TEMPLATE=$2
+DMG_FILE=$3
+
+# Check arguments
+
+if [[ -z $DEST_ROOT ]]; then
+    echo "No DEST_ROOT specified"
+    exit 1
+fi
+
+if [[ -z $DMG_TEMPLATE ]]; then
+    echo "No DMG_TEMPLATE specified"
+    exit 1
+fi
+
+if [[ -z $DMG_FILE ]]; then
+    echo "No DMG_FILE specified"
+    exit 1
+fi
+
+if [[ ! -d $DEST_ROOT ]]; then
+    echo "Directory '$DEST_ROOT' is missing"
+    exit 1
+fi
+
+if [[ ! -f $DMG_TEMPLATE ]]; then
+    echo "Template disk image '$DMG_TEMPLATE' is missing"
+fi
+
+if [[ -f $DMG_FILE ]]; then
+    echo "File '$DMG_FILE' already exists"
+fi
+
+# Create a temporary directory to work in
+
+WD=`mktemp -d ${DMG_FILE}.XXXXXX`
+
+# Convert the template image to a working disk image
+
+DI=${WD}/work.dmg
+
+hdiutil convert $DMG_TEMPLATE -format UDRW -o $DI
+if [ $? -ne 0 ]; then
+    echo "Failed to create working disk image"
+    exit 1
+fi
+
+# Mount the working image
+
+MP=${WD}/mount
+
+mkdir -pv $MP
+
+hdiutil attach $DI -mountpoint $MP -nobrowse
+if [ $? -ne  0 ]; then
+    echo "Failed to mount working disk image"
+    exit 1
+fi
+
+# Figure out the target directory
+
+TD=${MP}/`basename $DEST_ROOT`
+
+if [[ ! -d $TD ]]; then
+    echo "Could not find target directory '$TD' in template image"
+    exit 1
+fi
+
+# Populate the target directory
+
+rm -rf $TD/*
+cp -a ${DEST_ROOT}/* ${TD}/
+
+rm -f ${TD}/etc/*.done
+
+# Unmount the working image
+
+hdiutil detach $MP
+if [ $? -ne  0 ]; then
+    echo "Failed to unmount working disk image"
+    exit 1
+fi
+
+# Convert the working dmg to the output dmg
+
+hdiutil convert $DI -format UDZO -o $DMG_FILE
+if [ $? -ne 0 ]; then
+    echo "Failed to create output disk image"
+    exit 1
+fi
+
+# Clean up
+
+rm -rf $WD
