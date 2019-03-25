@@ -375,6 +375,12 @@ case $ACTION in
     unpack|unpack_only|build|build_only|install|install_only)
 	packages_install
 	;;
+    all)
+	PACKAGES=world
+	pre_install
+	packages_install
+	post_install
+	;;
     *)
 	echo "Syntax: sdk2 pre_install|post_install|install <package_list>"
 	exit 1
