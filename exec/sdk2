@@ -299,6 +299,11 @@ packages_install () {
 
 	)
 
+	if [ $? -ne 0 ]; then
+	    echo "Action '$ACTION' failed for package '$PACKAGE'"
+	    exit 1
+	fi
+
     done
 
 }
@@ -377,6 +382,7 @@ case $ACTION in
 	;;
     all)
 	PACKAGES=world
+	ACTION=install
 	pre_install
 	packages_install
 	post_install
