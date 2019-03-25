@@ -104,6 +104,11 @@ if [[ -z $PROFILE_ARCH ]]; then
     exit 1
 fi
 
+if [[ -z $PROFILE_ENV ]]; then
+   echo "Profile variable PROFILE_ENV is not set"
+   exit 1
+fi
+
 if [[ -z $LIB_EXT ]]; then
     echo "Profile variable LIB_EXT is not set"
     exit 1
@@ -112,12 +117,12 @@ fi
 # Further checks
 
 if [[ ! -d $DEST_ROOT ]]; then
-    echo "Destination directory '$SDK2_ROOT' is missing"
+    echo "Destination directory '$DEST_ROOT' is missing"
     exit 1
 fi
 
 if [[ ! -w $DEST_ROOT ]]; then
-    echo "Destination directory '$SDK2_ROOT' is not writable"
+    echo "Destination directory '$DEST_ROOT' is not writable"
     exit 1
 fi
 
