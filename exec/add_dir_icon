@@ -7,17 +7,17 @@ DIR=$2
 
 # Check arguments
 
-if [[ -z "$ICON" ]]; then
+if [[ -z $ICON ]]; then
     echo "No ICON specified"
     exit 1
 fi
 
-if [[ -z "$DIR" ]]; then
+if [[ -z $DIR ]]; then
     echo "No DIR specified"
     exit 1
 fi
 
-if [[ ! -f "$ICON" ]]; then
+if [[ ! -f $ICON ]]; then
     echo "File '$ICON' is missing"
     exit 1
 fi
@@ -28,7 +28,7 @@ if `file $ICON | grep -q '/Mac OS X icon/'`; then
     exit 1
 fi
 
-if [[ ! -d "$DIR" ]]; then
+if [[ ! -d $DIR ]]; then
     echo "Directory '$DIR' is missing"
     exit 1
 fi
