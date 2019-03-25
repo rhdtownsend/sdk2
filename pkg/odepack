@@ -1,47 +1,22 @@
-#!/bin/bash
-#
-# Package script for odepack
-
-# Check SDK2_ROOT is set and valid
-
-if [[ -z "$SDK2_ROOT" ]]; then
-    echo "Environment variable SDK2_ROOT is not set"
-    exit 1
-fi
-
-if [[ ! -d "$SDK2_ROOT" ]]; then
-    echo "Directory '$SDK2_ROOT' is missing"
-    exit 1
-fi
-
-# Include sdk2_defs
-
-. ${SDK2_ROOT}/sdk2_defs
-
-if [ $? -ne 0 ]; then
-    echo "FAILED to include sdk2_defs"
-    exit 1
-fi
+# SDK2 package definition for odepack
 
 # Set package-specific variables
 
 PKG_NAME=odepack
 SRC_FILE=odepack-omp.tar.gz
 
-SRC_DIR=${SDK2_BUILD_ROOT}/${PKG_NAME}
+SRC_DIR=$PKG_NAME
 BUILD_DIR=$SRC_DIR
 
 # Functions
 
-. ${SDK2_PKG_ROOT}/pkg_common_funcs
-
 build () {
 
-    echo "Building $PKG_NAME in $BUILD_DIR"
+    echo "Building $PKG_NAME in $BD"
 
     # Clean up
 
-    cd $BUILD_DIR
+    cd $BD
 
     make clean
 
@@ -58,11 +33,11 @@ build () {
 
 install () {
 
-    echo "Installing $PKG_NAME from $BUILD_DIR"
+    echo "Installing $PKG_NAME from $BD"
 
     # Copy the static library and module file
 
-    cd $BUILD_DIR
+    cd $BD
 
     cp -av libodepack.a ${DEST_ROOT}/lib/
     cp -av odepack.mod ${DEST_ROOT}/include
@@ -74,7 +49,3 @@ install () {
     chmod a+x ${DEST_ROOT}/bin/odepack_link
 
 }
-
-# Actions
-
-. ${SDK2_PKG_ROOT}/pkg_common_actions
