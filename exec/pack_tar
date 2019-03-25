@@ -28,4 +28,4 @@ fi
 
 # Pack all
 
-tar cf $TAR_FILE -C `dirname $DEST_ROOT` --exclude='etc/*.done' `basename $DEST_ROOT`
+tar cfz $TAR_FILE -C `dirname $DEST_ROOT` --exclude='etc/*.done' `basename $DEST_ROOT`
