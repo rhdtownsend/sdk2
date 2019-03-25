@@ -6,6 +6,11 @@
 export PROFILE_NAME=madsdk
 export PROFILE_ARCH=x86_64-osx-10.12-10.14
 
+# Set the profile environment variable (this is used
+# to set the path to the resulting SDK)
+
+export PROFILE_ENV=MESASDK_ROOT
+
 # Set the default destination
 
 export DEST_ROOT=/Applications/${PROFILE_NAME}
