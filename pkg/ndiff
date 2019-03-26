@@ -33,7 +33,9 @@ build () {
 
     # Fix the man path
 
-    sed -e 's|man/man|share/man/man|g' -e 's|man/cat|share/man/cat|g' -i .old Makefile
+    sed -i.bak \
+    	-e 's|man/man|share/man/man|g' \
+	-e 's|man/cat|share/man/cat|g' Makefile && rm Makefile.bak
 
     # Build
 

@@ -59,7 +59,7 @@ install () {
     for f in mpicc mpicxx mpif77 mpifort; do
 	file=${DEST_ROOT}/bin/$f
 	if [[ -e $file ]]; then
-	    sed -e "s|$DEST_ROOT|\${${PROFILE_ENV}}|g" -i '' $file
+	    sed -i.bak -e "s|$DEST_ROOT|\${${PROFILE_ENV}}|g" $file && rm ${file}.bak
 	fi
     done    
 
