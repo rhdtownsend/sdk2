@@ -24,11 +24,11 @@ if [ -f $FILE ]; then
 
     # Check if the file is ELF format
 
-    if `file $FILE | grep -q '/ELF/'`; then
+    if `file $FILE | grep -q 'ELF'`; then
 
 	# Check that the file has a dynamic section
 
-	if `readelf -d $FILE | grep -q '/Dynamic/'`; then
+	if `readelf -d $FILE | grep -q 'Dynamic'`; then
 
 	    file_name=`basename $FILE`
 	    file_dir=`dirname $FILE`

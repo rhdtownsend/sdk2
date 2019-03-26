@@ -22,8 +22,7 @@ if [[ ! -f $ICON ]]; then
     exit 1
 fi
 
-if `file $ICON | grep -q '/Mac OS X icon/'`; then
-    file $ICON
+if `file $ICON | grep -q -v 'Mac OS X icon'`; then
     echo "File '$ICON' is not a Mac OS X icon file"
     exit 1
 fi

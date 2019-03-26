@@ -24,11 +24,11 @@ if [ -f $FILE ]; then
 
     # Check if the file is Mach-O format
 
-    if `file $FILE | grep -q '/Mach-O/'`; then
+    if `file $FILE | grep -q 'Mach-O'`; then
 
 	# Check that the file is not a stub
 
-	if `file $FILE | grep -q '/shared library stub/'`; then
+	if `file $FILE | grep -q -v 'shared library stub'`; then
 
 	    file_name=`basename $FILE`
 	    file_dir=`dirname $FILE`
