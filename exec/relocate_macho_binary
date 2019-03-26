@@ -30,8 +30,8 @@ if [ -f $FILE ]; then
 
 	if `file $FILE | grep -q -v 'shared library stub'`; then
 
-	    file_name=`basename $FILE`
-	    file_dir=`dirname $FILE`
+	    FN=`basename $FILE`
+	    FD=`dirname $FILE`
 
 	    # Get a list of library dependencies
 
@@ -40,21 +40,21 @@ if [ -f $FILE ]; then
 	    # Fix rpaths for the dependencies
 	    
 	    for dep in $deps; do
-		dep_name=`basename $dep`
-		dep_dir=`dirname $dep`
-		install_name_tool -change $dep @rpath/`relpath $dep_dir $BASE`/$dep_name $FILE
+		DN=`basename $dep`
+		DD=`dirname $dep`
+		install_name_tool -change $dep @rpath/`relpath $DD $BASE`/$DN $FILE
 	    done
 
 	    # If the file is an executable, add rpath
 
 	    if `file $FILE | grep -q 'executable'`; then
-		install_name_tool -add_rpath @loader_path/`relpath $BASE $FILE_dir` $FILE
+		install_name_tool -add_rpath @loader_path/`relpath $BASE $FD` $FILE
 	    fi
 	    
 	    # If the file is a library, set id
 	
 	    if `file $FILE | grep -q 'shared library'`; then
-		install_name_tool -id @rpath/`relpath $FILE_dir $BASE`/$FILE_name $FILE
+		install_name_tool -id @rpath/`relpath $FD $BASE`/$FN $FILE
 	    fi
 
 	fi
