@@ -63,7 +63,7 @@ install () {
     for f in h5cc h5fc; do
 	file=${DEST_ROOT}/bin/$f
 	if [[ -e $file ]]; then
-	    sed -i.bak -e "s|$DEST_ROOT|\${${PROFILE_ENV}}|g" -i '' $file && rm ${file}.bak
+	    sed -i.bak -e "s|$DEST_ROOT|\${${PROFILE_ENV}}|g" -i '' $file && rm -f ${file}.bak
 	fi
     done    
 

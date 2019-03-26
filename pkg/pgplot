@@ -79,12 +79,12 @@ build () {
     	-e 's|\./png\.h||g' \
 	-e 's|\./pngconf\.h||g' \
 	-e 's|\./zlib\.h||g' \
-	-e 's|\./zconf\.h||g' ${BD}/makefile && rm ${BD}/makefile.bak
+	-e 's|\./zconf\.h||g' ${BD}/makefile && rm -f ${BD}/makefile.bak
 
     # Remove libpng from the link list (should now be built into
     # libpgplot)
     
-    sed -i.bak -e 's|-lpng||g' ${BD}/makefile && rm ${BD}/makefile.bak
+    sed -i.bak -e 's|-lpng||g' ${BD}/makefile && rm -f ${BD}/makefile.bak
 
     # Build (doesn't play well with multi-core)
 
