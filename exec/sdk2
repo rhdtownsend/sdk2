@@ -314,16 +314,22 @@ unpack () {
 
     echo "Unpacking $PACKAGE into $SD"
 
-    # Unpack the tarball
+    # Create the source directory
 
     rm -rf $SD
     mkdir $SD
 
-    tar xf $SF -C $SD --strip-components 1
+    # Unpack the tarball
 
-    if [ $? -ne 0 ]; then
-	echo "FAILED in tar for $PACKAGE (file $SF)"
-	exit 1
+    if [[ -n $SF ]]; then
+
+	tar xf $SF -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $SF)"
+	    exit 1
+	fi
+
     fi
 
     # Apply patches
