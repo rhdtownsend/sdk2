@@ -30,15 +30,14 @@ if [ -f $FILE ]; then
 
 	if `readelf -d $FILE | grep -q 'Dynamic'`; then
 
-	    file_name=`basename $FILE`
-	    file_dir=`dirname $FILE`
+	    FD=`dirname $FILE`
 
 	    # Fix the rpath
 	    
-	    rpath_old=`patchelf --print-rpath $FILE | sed -e "s|\\$ORIGIN|$file_dir|g"`
-            rpath_new=`relpath $rpath_old $file_dir | sed -e "s|^|\\$ORIGIN/|" -e "s|:|:\\$ORIGIN/|g"`
+	    rpath_old=`patchelf --print-rpath $FILE | sed -e "s|\\$ORIGIN|$FD|g"`
+            rpath_new=`relpath $rpath_old $FD | sed -e "s|^|\\$ORIGIN/|" -e "s|:|:\\$ORIGIN/|g"`
 
-            patchelf --set-rpath $rpath_new $file --shrink-rpath
+            patchelf --set-rpath $rpath_new $FILE --shrink-rpath
 
 	fi
 
