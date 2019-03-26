@@ -2,4 +2,4 @@
 #
 # Return the SDK version
 
-echo "VERSION_STRING"
+echo "@VERSION_STRING@"
