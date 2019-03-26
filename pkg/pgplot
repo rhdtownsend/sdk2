@@ -53,9 +53,9 @@ unpack () {
 
     # Copy over a customized driver list
 
-    sed -e "s/^! PNDRIV/ PNDRIV/" \
-	-e "s/^! PSDRIV/ PSDRIV/" \
-	-e "s/^! XWDRIV/ XWDRIV/" ${SD}/drivers.list > ${BD}/drivers.list    
+    sed -e "s/^! PNDRIV/ PNDRIV/g" \
+	-e "s/^! PSDRIV/ PSDRIV/g" \
+	-e "s/^! XWDRIV/ XWDRIV/g" ${SD}/drivers.list > ${BD}/drivers.list    
 
 }
 
@@ -75,15 +75,15 @@ build () {
 
     # Fix a bogus dependency on PNG headers
 
-    sed -e 's|\./png\.h||' \
-	-e 's|\./pngconf\.h||' \
-	-e 's|\./zlib\.h||' \
-	-e 's|\./zconf\.h||' -i .old ${BD}/makefile
+    sed -e 's|\./png\.h||g' \
+	-e 's|\./pngconf\.h||g' \
+	-e 's|\./zlib\.h||g' \
+	-e 's|\./zconf\.h||g' -i .old ${BD}/makefile
 
     # Remove libpng from the link list (should now be built into
     # libpgplot)
     
-    sed -e 's|-lpng||' -i .old ${BD}/makefile
+    sed -e 's|-lpng||g' -i .old ${BD}/makefile
 
     # Build (doesn't play well with multi-core)
 
@@ -148,7 +148,7 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${SDK2_PROFILE_ROOT}/common/pgplot/pgplot_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/pgplot/pgplot_link > \
 	${DEST_ROOT}/bin/pgplot_link
     chmod a+x ${DEST_ROOT}/bin/pgplot_link
 

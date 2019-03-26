@@ -75,7 +75,7 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${SDK2_PROFILE_ROOT}/common/lapack95/lapack95_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/lapack95/lapack95_link > \
 	${DEST_ROOT}/bin/lapack95_link
     chmod a+x ${DEST_ROOT}/bin/lapack95_link
 

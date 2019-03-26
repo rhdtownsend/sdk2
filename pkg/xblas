@@ -67,7 +67,7 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${SDK2_PROFILE_ROOT}/common/xblas/xblas_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/xblas/xblas_link > \
 	${DEST_ROOT}/bin/xblas_link
     chmod a+x ${DEST_ROOT}/bin/xblas_link
 

@@ -60,7 +60,7 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${SDK2_PROFILE_ROOT}/common/se/se_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/se/se_link > \
 	${DEST_ROOT}/bin/se_link
     chmod a+x ${DEST_ROOT}/bin/se_link
 

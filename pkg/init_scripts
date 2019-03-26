@@ -64,7 +64,7 @@ install () {
     version_arch=$PROFILE_ARCH
     version_string="${version_arch}-${version_date}"
 
-    sed -e "s|VERSION_STRING|$version_string|" \
+    sed -e s/@VERSION_STRING@/${version_string}/g \
 	${SDK2_PROFILE_ROOT}/common/init_scripts/version > ${DEST_ROOT}/bin/${PROFILE_NAME}_version
     chmod a+x ${DEST_ROOT}/bin/${PROFILE_NAME}_version
 

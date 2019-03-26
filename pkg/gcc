@@ -176,11 +176,11 @@ install () {
 	    exit 1
     esac
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${script_dir}/gcc.wrapper > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${script_dir}/gcc.wrapper > \
 	${DEST_ROOT}/bin/gcc.wrapper
     chmod a+x ${DEST_ROOT}/bin/gcc.wrapper
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/ ${script_dir}/gfortran.wrapper > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${script_dir}/gfortran.wrapper > \
 	${DEST_ROOT}/bin/gfortran.wrapper
     chmod a+x ${DEST_ROOT}/bin/gfortran.wrapper
 
