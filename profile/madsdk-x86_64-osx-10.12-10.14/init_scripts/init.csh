@@ -57,4 +57,5 @@ endif
 
 # Set other environment variables
 
-setenv MADSDK_VERSION `${MADSDK_ROOT}/bin/madsdk_version`
+setenv MESASDK_ROOT $MADSDK_ROOT
+setenv MESASDK_VERSION `${MADSDK_ROOT}/bin/madsdk_version`

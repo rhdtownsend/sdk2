@@ -53,4 +53,5 @@ fi
 
 # Set other environment variables
 
-export MADSDK_VERSION=`${MADSDK_ROOT}/bin/madsdk_version`
+export MESASDK_ROOT=$MADSDK_ROOT
+export MESASDK_VERSION=`${MADSDK_ROOT}/bin/madsdk_version`
