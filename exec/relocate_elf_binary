@@ -1,7 +1,8 @@
 #!/bin/bash
 #
 # Script to relocate an ELF binary so that all internal paths are
-# relative to a given base directory
+# relative to a given base directory. Requires the patchelf utility
+# to be somewhere in the PATH
 
 FILE=$1
 BASE=$2
