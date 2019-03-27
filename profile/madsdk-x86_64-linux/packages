@@ -26,4 +26,5 @@ argtable
 ffmpeg
 ndiff
 fpx3
+patchelf
 init_scripts
