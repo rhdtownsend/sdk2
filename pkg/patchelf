@@ -24,7 +24,7 @@ build () {
 
     ./bootstrap.sh
 
-    ./configure \
+    CXXFLAGS='-static' ./configure \
 	--build=$BUILD_SPEC \
 	--prefix=$BD
 
