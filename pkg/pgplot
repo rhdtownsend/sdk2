@@ -101,14 +101,24 @@ install () {
 
     echo "Installing $PKG_NAME from $BD"
 
-    # Copy the static libraries
+    # Merge the pgplot libs with the png libs, to create the static
+    # libraries
 
     cd $BD
 
     pgplot_lib_dir=${DEST_ROOT}/lib/pgplot
 
     mkdir -pv $pgplot_lib_dir
-    cp -av libpgplot.a libcpgplot.a ${pgplot_lib_dir}/
+
+    for lib in libpgplot.a libcpgplot.a; do
+	ar -M <<-EOF
+	create ${pgplot_lib_dir}/$lib
+	addlib $lib
+	addlib ${SDK2_BUILD_ROOT}/png_pgplot/lib/libpng15.a
+	save
+	end
+	EOF
+    done
 
     # Copy the include files
 
@@ -130,12 +140,10 @@ install () {
     create_shared_lib \
         -c gfortran \
 	-L/opt/X11/lib -lX11 -lz \
-	-s ${SDK2_BUILD_ROOT}/png_pgplot/lib/libpng15.a \
 	${DEST_ROOT}/lib/libpgplot.a
     create_shared_lib \
         -c gfortran  \
 	-L/opt/X11/lib -lX11 -lz \
-	-s ${SDK2_BUILD_ROOT}/png_pgplot/lib/libpng15.a \
 	-L${DEST_ROOT}/lib -lpgplot \
         ${DEST_ROOT}/lib/libcpgplot.a
 
