@@ -22,7 +22,7 @@ build () {
 
     # Configure
 
-    ./configure \
+    CFLAGS='-fPIC' ./configure \
 	--build=$BUILD_SPEC \
 	--prefix=$BD
 
