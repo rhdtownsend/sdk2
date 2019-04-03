@@ -4,6 +4,7 @@
 
 PKG_NAME=ffmpeg
 SRC_FILE=ffmpeg-4.1.tar.bz2
+PATCH_FILES=ffmpeg-sed-flag.diff
 
 SRC_DIR=$PKG_NAME
 BUILD_DIR=$SRC_DIR
@@ -49,7 +50,7 @@ build () {
 	--enable-shared \
 	--enable-gpl \
 	--enable-libx264 \
-	--disable-x86asm \
+	--x86asmexe=${SDK2_BUILD_ROOT}/nasm/bin/nasm \
 	$EXTRA_CONF_OPTS
 
     if [ $? -ne 0 ]; then
