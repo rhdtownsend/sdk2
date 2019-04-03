@@ -21,8 +21,9 @@ pgplot
 hdf5
 se
 x264
-argtable
+nasm_ffmpeg
 ffmpeg
+argtable
 ndiff
 fpx3
 init_scripts
