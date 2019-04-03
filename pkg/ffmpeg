@@ -50,7 +50,7 @@ build () {
 	--enable-shared \
 	--enable-gpl \
 	--enable-libx264 \
-	--x86asmexe=${SDK2_BUILD_ROOT}/nasm/bin/nasm \
+	--x86asmexe=${SDK2_BUILD_ROOT}/nasm_ffmpeg/bin/nasm \
 	$EXTRA_CONF_OPTS
 
     if [ $? -ne 0 ]; then

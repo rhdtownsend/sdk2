@@ -2,7 +2,7 @@
 
 # Set package-specific variables
 
-PKG_NAME=nasm
+PKG_NAME=nasm_ffmpeg
 SRC_FILE=nasm-2.14.02.tar.bz2
 
 SRC_DIR=$PKG_NAME
