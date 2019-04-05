@@ -8,65 +8,18 @@ SRC_FILE=gcc-8.3.0.tar.gz
 SRC_DIR=$PKG_NAME
 BUILD_DIR=${PKG_NAME}-build
 
-XD=${SDK2_BUILD_ROOT}/gcc-xcode-sdk
-
 # Functions
 
-unpack () {
+build () {
 
-    echo "Unpacking $PKG_NAME into $SD"
-
-    # Unpack the tarball
-
-    rm -rf $SD
-    mkdir $SD
-
-    tar xf $SF -C $SD --strip-components 1
-
-    if [ $? -ne 0 ]; then
-	echo "FAILED in tar for $PKG_NAME (file $SF)"
-	exit 1
-    fi
+    echo "Building $PKG_NAME in $BD"
 
     # Create the build dir
 
     rm -rf $BD
     mkdir $BD
 
-    # On OSX, unpack the XCode SDK
-
-    if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
-
-	if [[ -z $XCODE_SDK_VERSION ]]; then
-	    echo "Profile variable XCODE_SDK_VERSION is not set"
-	    exit 1
-	fi
-
-	xcode_sdk_file=${SDK2_SRC_ROOT}/MacOSX${XCODE_SDK_VERSION}.sdk.tar.xz
-
-	rm -rf $XD
-	mkdir $XD
-
-	tar xf $xcode_sdk_file -C $XD --strip-components 1
-
-	if [ $? -ne 0 ]; then
-	    echo "FAILED in tar for $PKG_NAME (file $xcode_sdk_file)"
-	    exit 1
-	fi
-
-    fi
-
-}
-
-build () {
-
-    echo "Building $PKG_NAME in $BD"
-
-    # Clean up
-
     cd $BD
-
-    make distclean
 
     # Remove existing executables & wrappers from DEST_ROOT
 
@@ -100,7 +53,7 @@ build () {
     EXTRA_CONFIG_OPTS=
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
-	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${XD}"
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${SDK2_BUILD_DIR}/xcode"
     elif [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --enable-clocale=generic"
     fi	

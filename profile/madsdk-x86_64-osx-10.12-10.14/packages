@@ -3,6 +3,7 @@
 gmp
 mpfr
 mpc
+xcode
 gcc
 gdb
 mpich
