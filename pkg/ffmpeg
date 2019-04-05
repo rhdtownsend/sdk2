@@ -4,7 +4,9 @@
 
 PKG_NAME=ffmpeg
 SRC_FILE=ffmpeg-4.1.tar.bz2
-PATCH_FILES=ffmpeg-sed-flag.diff
+if [[ $SDK_PLATFORM_NAME = 'Linux' ]]; then
+   PATCH_FILES=ffmpeg-sed-flag.diff
+fi
 
 SRC_DIR=$PKG_NAME
 BUILD_DIR=$SRC_DIR
