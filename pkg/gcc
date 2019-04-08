@@ -4,6 +4,7 @@
 
 PKG_NAME=gcc
 SRC_FILE=gcc-8.3.0.tar.gz
+PATCH_FILES=gcc-fixheaders-mojave.diff
 
 SRC_DIR=$PKG_NAME
 BUILD_DIR=${PKG_NAME}-build
@@ -53,7 +54,7 @@ build () {
     EXTRA_CONFIG_OPTS=
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
-	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${SDK2_BUILD_DIR}/xcode"
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=/ --with-build-sysroot=${SDK2_BUILD_ROOT}/xcode"
     elif [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --enable-clocale=generic"
     fi	
