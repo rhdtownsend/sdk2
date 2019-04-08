@@ -20,7 +20,7 @@ fi
 
 # Set up compilation flags
 
-FLAGS=""
+FLAGS=$SDK2_GCC_FLAGS
 
 if [[ $COMPILING == "y" ]]; then
 
@@ -30,7 +30,7 @@ if [[ $COMPILING == "y" ]]; then
 
     # Set up system paths
 
-    FLAGS="${FLAGS} -isysroot / -isystem @SDK_ROOT@/include"
+    FLAGS="${FLAGS} -isystem @SDK_ROOT@/include"
 
     # Add linker flags to set rpath
 
