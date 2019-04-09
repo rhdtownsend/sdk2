@@ -1,0 +1,96 @@
+#!/bin/bash
+#
+# Merge multiple static libraries
+
+OUTPUT_LIB=$1
+INPUT_LIBS=${@:2}
+
+# Check arguments
+
+if [[ -z $OUTPUT_LIB ]]; then
+    echo "No OUTPUT_LIB specified"
+    exit 1
+fi
+
+if [[ -z $INPUT_LIBS ]]; then
+    echo "No INPUT_LIBS specified"
+    exit 1
+fi
+
+# Check that the output library doesn't already exist
+
+if [[ -f $OUTPUT_LIB ]]; then
+    echo "File '$OUTPUT_LIB' already exists"
+    exit 1
+fi
+
+# Create a temporary directory to work in
+
+WD=`mktemp -d ${OUTPUT_LIB}.XXXXXX`
+
+# Process each input library in turn
+
+for input_lib in ${INPUT_LIBS[@]}; do
+
+    # Copy the library into the work directory
+
+    LF=${WD}/`basename $input_lib`
+
+    cp $input_lib $LF
+
+    # Get a list of object files within the library
+
+    obj_files=(`ar -t $LF | awk '!/^__\.SYMDEF/'`)
+
+    # Add objects to the output library while removing them from the input library copy
+    
+    for obj_file in ${obj_files[@]}; do
+
+	# Extract the item from the input library copy
+
+	OF=${WD}/${obj_file}
+
+	ar -xS $LF $OF
+
+	if [ $? -ne 0 ]; then
+	    echo "Error when extracting $item from input library copy $input_lib"
+	    exit 1
+	fi
+
+	# Add it to the output library
+
+	ar -qcS $OUTPUT_LIB $OF
+
+	if [ $? -ne 0 ]; then
+	    echo "Error when adding $item to output library $OUTPUT_LIB"
+	    exit 1
+	fi
+
+	# Delete it from the input library copy
+
+	ar -dS $LF $obj_file
+
+	if [ $? -ne 0 ]; then
+	    echo "Error when deleting $item from input library copy $input_lib"
+	    exit 1
+	fi
+
+	# Clean up
+
+	rm $OF
+
+    done
+
+    # Delete the (now-empty) input library copy
+
+    rm $LF
+
+done
+
+# Clean up the temporary dir
+
+rm -rf $WD
+
+# Run ranlib on the output lib
+
+ranlib $OUTPUT_LIB
