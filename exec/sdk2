@@ -74,15 +74,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Read packages list
-
-if [[ ! -f ${profile_dir}/packages ]]; then
-    echo "Packages list '${profile_dir}/packages' is missing"
-    exit 1
-fi
-
-WORLD_PACKAGES=(`awk '!/^ *#/ && NF' ${profile_dir}/packages`)
-
 # Check profile variables are set
 
 if [[ -n $SDK2_DEST_ROOT ]]; then
@@ -124,6 +115,21 @@ fi
 if [[ ! -w $DEST_ROOT ]]; then
     echo "Destination directory '$DEST_ROOT' is not writable"
     exit 1
+fi
+
+### PACKAGES ###
+
+# If PACKAGES is empty, read packages from the profile packages list
+
+if [[ -z $PACKAGES ]]; then
+
+    if [[ ! -f ${profile_dir}/packages ]]; then
+	echo "Packages list '${profile_dir}/packages' is missing"
+	exit 1
+    fi
+
+    PACKAGES=(`awk '!/^ *#/ && NF' ${profile_dir}/packages`)
+
 fi
 
 ### ENVIRONMENT ###
@@ -196,23 +202,9 @@ post_install () {
 
 packages_install () {
 
-    # Set up the expanded package list
+    # Loop over the packages
 
-    PACKAGES_EXP=()
-
-    for PACKAGE in $PACKAGES; do
-	if [[ $PACKAGE = 'world' ]]; then
-	    for WORLD_PACKAGE in ${WORLD_PACKAGES[*]}; do
-		PACKAGES_EXP+=($WORLD_PACKAGE)
-	    done
-	else
-	    PACKAGES_EXP+=($PACKAGE)
-	fi
-    done
-
-    # Loop over the expanded packages
-
-    for PACKAGE in ${PACKAGES_EXP[*]}; do
+    for PACKAGE in ${PACKAGES[*]}; do
 
 	# Launch a subshell, to prevent environment leakage
 
@@ -387,7 +379,6 @@ case $ACTION in
 	packages_install
 	;;
     all)
-	PACKAGES=world
 	ACTION=install
 	pre_install
 	packages_install
