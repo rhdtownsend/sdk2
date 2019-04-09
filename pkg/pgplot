@@ -110,14 +110,9 @@ install () {
 
     mkdir -pv $pgplot_lib_dir
 
-    for lib in libpgplot.a libcpgplot.a; do
-	ar -M <<-EOF
-	create ${pgplot_lib_dir}/$lib
-	addlib $lib
-	addlib ${SDK2_BUILD_ROOT}/png_pgplot/lib/libpng15.a
-	save
-	end
-	EOF
+    for lib_file in libpgplot.a libcpgplot.a; do
+	rm ${pgplot_lib_dir}/${lib_file}
+	merge_static_libs ${pgplot_lib_dir}/${lib_file} ${lib_file} ${SDK2_BUILD_ROOT}/png_pgplot/lib/libpng15.a
     done
 
     # Copy the include files
@@ -141,11 +136,20 @@ install () {
         -c gfortran \
 	-L/opt/X11/lib -lX11 -lz \
 	${DEST_ROOT}/lib/libpgplot.a
+
+    if [ $? -ne 0 ]; then
+	exit 1
+    fi
+
     create_shared_lib \
         -c gfortran  \
 	-L/opt/X11/lib -lX11 -lz \
 	-L${DEST_ROOT}/lib -lpgplot \
         ${DEST_ROOT}/lib/libcpgplot.a
+
+    if [ $? -ne 0 ]; then
+	exit 1
+    fi
 
     # Copy docs
     
