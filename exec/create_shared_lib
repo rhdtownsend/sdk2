@@ -58,9 +58,11 @@ ${compiler} ${compopts} -o ${outfile} *.o
 
 if [ $? -ne 0 ]; then
     echo "Building dynamic library ${outfile} failed"
+    retval=1
 else
     echo "Created dynamic library ${outfile}"
     cp $outfile $outpath
+    retval=0
 fi
 
 popd > /dev/null
@@ -70,3 +72,5 @@ popd > /dev/null
 rm -rf $tmpdir
 
 # Finish
+
+exit $retval
