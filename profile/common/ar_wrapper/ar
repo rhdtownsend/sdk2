@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+# Wrapper for ar
+
+# Run ar, stripping out any warnings about empty symbols
+
+/usr/bin/ar "$@" 2>&1 | grep -v 'has no symbols$'
+
+exit ${PIPESTATUS[0]}

@@ -1,0 +1,27 @@
+# SDK2 package definition for ar-wrapper
+
+# Set package-specific variables
+
+PKG_NAME=ar-wrapper
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+}
+
+install () {
+
+    echo "Installing $PKG_NAME from $BD"
+
+    # Install the wrapper script
+
+    cp ${SDK2_PROFILE_ROOT}/common/ar-wrapper/ar ${DEST_ROOT}/bin/ar
+    chmod a+x ${DEST_ROOT}/bin/ar
+
+}
