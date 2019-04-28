@@ -27,4 +27,5 @@ ffmpeg
 argtable
 ndiff
 fpx3
+ar_wrapper
 init_scripts

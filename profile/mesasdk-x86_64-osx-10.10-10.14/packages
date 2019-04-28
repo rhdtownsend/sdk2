@@ -24,4 +24,5 @@ nasm_ffmpeg
 ffmpeg
 ndiff
 fpx3
+ar_wrapper
 init_scripts
