@@ -43,26 +43,26 @@ for input_lib in ${INPUT_LIBS[@]}; do
     obj_files=(`ar -t $LF | awk '!/^__\.SYMDEF/'`)
 
     # Add objects to the output library while removing them from the input library copy
+
+    pushd $WD > /dev/null
     
     for obj_file in ${obj_files[@]}; do
 
 	# Extract the item from the input library copy
 
-	OF=${WD}/${obj_file}
-
-	ar -xS $LF $OF
+	ar -xS $LF $obj_file
 
 	if [ $? -ne 0 ]; then
-	    echo "Error when extracting $item from input library copy $input_lib"
+	    echo "Error when extracting $obj_file from input library copy $input_lib"
 	    exit 1
 	fi
 
 	# Add it to the output library
 
-	ar -qcS $OUTPUT_LIB $OF
+	ar -qcS $OUTPUT_LIB $obj_file
 
 	if [ $? -ne 0 ]; then
-	    echo "Error when adding $item to output library $OUTPUT_LIB"
+	    echo "Error when adding $obj_file to output library $OUTPUT_LIB"
 	    exit 1
 	fi
 
@@ -71,15 +71,17 @@ for input_lib in ${INPUT_LIBS[@]}; do
 	ar -dS $LF $obj_file
 
 	if [ $? -ne 0 ]; then
-	    echo "Error when deleting $item from input library copy $input_lib"
+	    echo "Error when deleting $obj_file from input library copy $input_lib"
 	    exit 1
 	fi
 
 	# Clean up
 
-	rm $OF
+	rm $obj_file
 
     done
+
+    popd > /dev/null
 
     # Delete the (now-empty) input library copy
 
