@@ -111,13 +111,13 @@ install () {
     mkdir -pv $pgplot_lib_dir
 
     for lib_file in libpgplot.a libcpgplot.a; do
-	rm ${pgplot_lib_dir}/${lib_file}
+	rm -f ${pgplot_lib_dir}/${lib_file}
 	merge_static_libs ${pgplot_lib_dir}/${lib_file} ${lib_file} ${SDK2_BUILD_ROOT}/png_pgplot/lib/libpng15.a
     done
 
     # Copy the include files
 
-    cp -av cpgplot.h ${DEST_ROOT}/include/
+    cp -av cpgplot.h ${pgplot_lib_dir}/
 
     # Copy the support files
 
