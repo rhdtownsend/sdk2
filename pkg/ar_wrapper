@@ -21,7 +21,7 @@ install () {
 
     # Install the wrapper script
 
-    cp ${SDK2_PROFILE_ROOT}/common/ar-wrapper/ar ${DEST_ROOT}/bin/ar
+    cp ${SDK2_PROFILE_ROOT}/common/ar_wrapper/ar ${DEST_ROOT}/bin/ar
     chmod a+x ${DEST_ROOT}/bin/ar
 
 }
