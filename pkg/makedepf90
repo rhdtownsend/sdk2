@@ -4,7 +4,7 @@
 
 PKG_NAME=makedepf90
 SRC_FILE=makedepf90-2.8.8.tar.gz
-PATCH_FILES=makedepf90-sdk2.diff
+PATCH_FILES=makedepf90-sdk2-p1.diff
 
 SRC_DIR=$PKG_NAME
 BUILD_DIR=$SRC_DIR
