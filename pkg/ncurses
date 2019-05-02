@@ -26,7 +26,8 @@ build () {
 	--build=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
 	--bindir=${DEST_ROOT}/bin/ncurses \
-	--with-shared
+	--with-shared \
+	--enable-widec
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in configure for $PKG_NAME"
