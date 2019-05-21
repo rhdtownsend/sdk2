@@ -1,0 +1,13 @@
+# SDK2 post-install commands
+
+# Relocate Mach-O binaries
+
+for file in `find $DEST_ROOT/bin $DEST_ROOT/lib $DEST_ROOT/libexec`; do
+    relocate_macho_binary $file $DEST_ROOT
+done
+
+# Create symlinks to the link scripts
+
+for p in blas hdf5 lapack lapack95 pgplot se xblas; do
+    ln -sf ${p}_link ${DEST_ROOT}/bin/mesasdk_${p}_link
+done
