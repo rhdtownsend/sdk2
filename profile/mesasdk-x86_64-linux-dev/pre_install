@@ -1,0 +1,7 @@
+# SDK2 pre-install commands
+
+# Clean up DEST_ROOT
+
+for f in ${DEST_ROOT}/*; do
+    rm -rfv $f
+done
