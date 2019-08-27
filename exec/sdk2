@@ -307,7 +307,7 @@ packages_install () {
 	)
 
 	if [ $? -ne 0 ]; then
-	    echo "Action '$ACTION' failed for package '$PACKAGE'"
+	    echo "Action $ACTION failed for package $PACKAGE"
 	    exit 1
 	fi
 
@@ -332,7 +332,7 @@ fetch () {
 	    curl $url -s -o $fetch_file
 	    
 	    if [ $? -ne 0 ]; then
-		echo "Fetch failed for file $fetch_file (url $url)"
+		echo "FAILED in fetch for package $PACKAGE (file $fetch_file, url $url)"
 		exit 1
 	    fi
 
@@ -344,7 +344,7 @@ fetch () {
 
 unpack () {
 
-    echo "Unpacking $PACKAGE into $SD"
+    echo "Unpacking package $PACKAGE into $SD"
 
     # Create the source directory
 
@@ -358,7 +358,7 @@ unpack () {
 	tar xf $SF -C $SD --strip-components 1
 
 	if [ $? -ne 0 ]; then
-	    echo "FAILED in tar for $PACKAGE (file $SF)"
+	    echo "FAILED in tar for package $PACKAGE (file $SF)"
 	    exit 1
 	fi
 
@@ -371,7 +371,7 @@ unpack () {
 	patch -d $SD -p1 < $patch_file
 
 	if [ $? -ne 0 ]; then
-	    echo "FAILED in patch for $PACKAGE (file $patch_file)"
+	    echo "FAILED in patch for package $PACKAGE (file $patch_file)"
 	    exit 1
 	fi
 
@@ -381,7 +381,7 @@ unpack () {
 
 build () {
 
-    echo "Attempt to call default build function for $PACKAGE"
+    echo "Attempt to call default build function for package $PACKAGE"
 
     exit 1
 
@@ -389,7 +389,7 @@ build () {
 
 install () {
 
-    echo "Installing $PACKAGE from $BD"
+    echo "Installing package $PACKAGE from $BD"
 
     # Install
 
@@ -398,7 +398,7 @@ install () {
     make install
 
     if [ $? -ne 0 ]; then
-	echo "FAILED in install for $PACKAGE"
+	echo "FAILED in install for package $PACKAGE"
 	exit 1
     fi
 
