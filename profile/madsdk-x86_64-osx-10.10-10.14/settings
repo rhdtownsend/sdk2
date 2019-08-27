@@ -11,6 +11,10 @@ export PROFILE_ARCH=x86_64-osx-10.10-10.14
 
 export PROFILE_ENV=MADSDK_ROOT
 
+# Set the profile source URL
+
+export PROFILE_URL=http://www.astro.wisc.edu/~townsend/resource/download/sdk2/src
+
 # Set the default destination
 
 export DEST_ROOT=/Applications/${PROFILE_NAME}
