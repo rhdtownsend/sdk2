@@ -3,7 +3,7 @@
 # Set package-specific variables
 
 PKG_NAME=gcc
-SRC_FILE=gcc-9.2.0.tar.xz
+SRC_FILE=gcc-9.2.0.tar.gz
 PATCH_FILES=gcc-fix-sysroot.diff
 
 SRC_DIR=$PKG_NAME
