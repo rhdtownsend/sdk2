@@ -1,0 +1,63 @@
+# SDK2 package definition for crlibm
+
+# Set package-specific variables
+
+PKG_NAME=crlibm
+SRC_FILE=crlibm-1.0beta4.tar.gz
+
+SRC_DIR=$PKG_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PKG_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--enable-shared=yes \
+	--enable-static=yes
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PKG_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PKG_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PKG_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Install docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/${PKG_NAME}
+    cp -av AUTHORS COPYING* INSTALL* NEWS README docs/latex \
+       ${DEST_ROOT}/share/doc/${PKG_NAME}
+
+}
