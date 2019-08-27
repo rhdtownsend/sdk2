@@ -100,6 +100,11 @@ if [[ -z $PROFILE_ENV ]]; then
    exit 1
 fi
 
+if [[ -z $PROFILE_URL ]]; then
+    echo "Profile variable PROFILE_URL is not set"
+    exit 1
+fi
+
 if [[ -z $LIB_EXT ]]; then
     echo "Profile variable LIB_EXT is not set"
     exit 1
@@ -220,6 +225,7 @@ packages_install () {
 	    #
 	    # ...and the following functions
 	    #
+	    # fetch()   -- fetch source code from server (optional)
 	    # unpack()  -- unpack source code, apply patches (optional)
 	    # build()   -- build
 	    # install() -- install (optional)
@@ -260,13 +266,21 @@ packages_install () {
 	    # Take action
 
 	    case $ACTION in
+		fetch)
+		    fetch
+		    ;;
+		fetch_only)
+		    fetch
+		    ;;
 		unpack)
+		    fetch
 		    unpack
 		    ;;
 		unpack_only)
 		    unpack
 		    ;;
 		build)
+		    fetch
 		    unpack
 		    build
 		    ;;
@@ -274,6 +288,7 @@ packages_install () {
 		    build
 		    ;;
 		install)
+		    fetch
 		    unpack
 		    build
 		    install
@@ -301,6 +316,31 @@ packages_install () {
 }
 
 # Default package functions
+
+fetch () {
+
+    echo "Fetching sources into ${SDK2_SRC_ROOT}"
+
+    for fetch_file in $SF $PF; do
+
+	if [[ ! -f $fetch_file ]]; then
+
+	    url=$PROFILE_URL/`basename $fetch_file`
+
+	    echo "  `basename $fetch_file`"
+
+	    curl $url -s -o $fetch_file
+	    
+	    if [ $? -ne 0 ]; then
+		echo "Fetch failed for file $fetch_file (url $url)"
+		exit 1
+	    fi
+
+	fi
+
+    done
+
+}
 
 unpack () {
 
@@ -375,7 +415,7 @@ case $ACTION in
     post_install)
 	post_install
 	;;
-    unpack|unpack_only|build|build_only|install|install_only)
+    fetch|fetch_only|unpack|unpack_only|build|build_only|install|install_only)
 	packages_install
 	;;
     all)
