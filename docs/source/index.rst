@@ -1,6 +1,6 @@
-****
-SDK2
-****
+*********************
+SDK\ :superscript:`2`
+*********************
 
 .. toctree::
    :maxdepth: 2
@@ -9,7 +9,7 @@ SDK2
 Overview
 ========
 
-The SDK2 (*SDK-squared*) is a software development kit (SDK) for
+The SDK\ :superscript:`2` (*SDK-squared*, or *SDK-SDK*) is a software development kit (SDK) for
 building software development kits. Amongst other things, it is used to
 build the `MESA SDK <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`__ and
 `MadSDK <http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk>`__. It
@@ -35,22 +35,24 @@ files:
 Next, choose an appropriate *profile*. The profile determines which SDK
 will be built, and for what platform. Current choices include:
 
-``mesasdk-x86_64-osx-10.12-10.14``
-  MESA SDK running on 64-bit OSX 10.12 (Sierra) through 10.14 (Mojave)
+``mesasdk-x86_64-osx-10.10-10.14``
+  MESA SDK running on 64-bit OSX 10.10 (Yosemite) through 10.14 (Mojave)
 
 ``mesasdk-x86_64-linux``
   MESA SDK running on 64-bit Linux
 
-``madsdk-x86_64-osx-10.12-10.14``
-  Mad SDK running on 64-bit OSX 10.12 (Sierra) through 10.14 (Mojave)
+``madsdk-x86_64-osx-10.10-10.14``
+  Mad SDK running on 64-bit OSX 10.10 (Yosemite) through 10.14 (Mojave)
 
 ``madsdk-x86_64-linux``
   Mad SDK running on 64-bit Linux
 
-See the directory ``$SDK2_ROOT/profiles`` for the full list of profiles
-(each profile is stored in its own directory; ``common`` is a special
-directory used to store info common to all profiles). Once you’ve chosen
-a profile, set the ``SDK2_PROFILE`` environment variable accordingly, e.g.
+See the :repo:`profile <profile>` directory for the complete set of
+profiles (each profile is stored in its own subdirectory; ``common``
+is a special directory used to store info common to all profiles).
+
+Once you’ve chosen a profile, set the ``SDK2_PROFILE`` environment
+variable accordingly, e.g.
 
 .. code-block:: console
 
