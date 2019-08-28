@@ -3,7 +3,7 @@
 gmp/gmp-6.1.2
 mpfr/mpfr-4.0.2
 mpc/mpc-1.1.0
-gcc/gcc-8.3.0
+gcc/gcc-9.2.0
 ncurses/ncurses-6.0
 gdb/gdb-8.3.50.20190312
 valgrind/valgrind-3.13.0
@@ -15,13 +15,14 @@ blas/blas
 xblas/xblas
 lapack/lapack-3.8.0
 lapack95/lapack95
+crlibm/crlibm-1.0beta4
 png_pgplot/png_pgplot-1.5.13
 pgplot/pgplot-5.2
 hdf5/hdf5-1.10.5
 se/se-1.2.1
 x264/x264-20190310-2245
 nasm_ffmpeg/nasm_ffmpeg-2.14.02
-ffmpeg/ffmpeg-4.1
+ffmpeg/ffmpeg-4.2
 ndiff/ndiff-2.00
 fpx3/fpx3
 ar_wrapper/ar_wrapper
