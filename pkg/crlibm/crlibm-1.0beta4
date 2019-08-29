@@ -60,4 +60,10 @@ install () {
     cp -av AUTHORS COPYING* INSTALL* NEWS README docs/latex \
        ${DEST_ROOT}/share/doc/${PKG_NAME}
 
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/crlibm/crlibm_link > \
+	${DEST_ROOT}/bin/crlibm_link
+    chmod a+x ${DEST_ROOT}/bin/crlibm_link
+
 }
