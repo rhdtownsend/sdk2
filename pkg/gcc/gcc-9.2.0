@@ -4,7 +4,7 @@
 
 PKG_NAME=gcc
 SRC_FILE=gcc-9.2.0.tar.gz
-PATCH_FILES=gcc-fix-sysroot.diff
+PATCH_FILES=(gcc-fix-sysroot.diff gcc-9-fix-warray.diff)
 
 SRC_DIR=$PKG_NAME
 BUILD_DIR=${PKG_NAME}-build
