@@ -22,11 +22,11 @@ Adding Packages
 
 To add a package (for subsequent listing in
 ``$SDK2_ROOT/profile/<profile_name>/packages``), you need to create a
-package description (PD) file in the directory ``$SDK2_ROOT/pkg`` (or
+package description (PD) file in the directory ``$SDK2_ROOT/package`` (or
 a subdirectory thereof). The PD file is written in the Bash scripting
 language. Perhaps the best way to learn about PD files is to look at
 the existing files within the subdirectories of
-``$SDK2_ROOT/pkg``. Briefly, at minimum a PD file must define the
+``$SDK2_ROOT/package``. Briefly, at minimum a PD file must define the
 following variables:
 
 ``SRC_FILE``
