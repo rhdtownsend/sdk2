@@ -43,11 +43,6 @@ install () {
 
     echo "Installing $PKG_NAME from $BD"
 
-    # Make the etc directory
-
-    rm -rf ${DEST_ROOT}/etc
-    mkdir -pv ${DEST_ROOT}/etc
-
     # Copy init scripts
 
     cd $BD
