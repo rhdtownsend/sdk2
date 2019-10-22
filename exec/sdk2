@@ -39,7 +39,7 @@ fi
 
 # Define standard directories
 
-export SDK2_PKG_ROOT=${SDK2_ROOT}/pkg
+export SDK2_PACKAGE_ROOT=${SDK2_ROOT}/package
 export SDK2_PROFILE_ROOT=${SDK2_ROOT}/profile
 export SDK2_SRC_ROOT=${SDK2_ROOT}/src
 export SDK2_BUILD_ROOT=${SDK2_ROOT}/build
@@ -230,7 +230,7 @@ packages_install () {
 	    # build()   -- build
 	    # install() -- install (optional)
 
-	    . ${SDK2_PKG_ROOT}/${PACKAGE}
+	    . ${SDK2_PACKAGE_ROOT}/${PACKAGE}
 	    
 	    if [ $? -ne 0 ]; then
 		echo "FAILED when including definition for package $PACKAGE"
