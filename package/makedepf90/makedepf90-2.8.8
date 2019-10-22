@@ -1,0 +1,45 @@
+# SDK2 package definition for makedepf90
+
+# Set package-specific variables
+
+PACKAGE_NAME=makedepf90
+SRC_FILE=makedepf90-2.8.8.tar.gz
+PATCH_FILES=makedepf90-sdk2.diff
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--mandir=${DEST_ROOT}/share/man
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}

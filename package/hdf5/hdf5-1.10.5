@@ -1,0 +1,76 @@
+# SDK2 package definition for hdf5
+
+# Set package-specific variables
+
+PACKAGE_NAME=hdf5
+SRC_FILE=hdf5-1.10.5.tar.bz2
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    CC=gcc FC=gfortran CFLAGS=-std=gnu99 ./configure \
+      --build=$BUILD_SPEC \
+      --prefix=$DEST_ROOT --enable-fortran --enable-fortran2003 \
+      --enable-using-memchecker    
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Copy docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/hdf5
+    cp -av ACKNOWLEDGMENTS COPYING MANIFEST README.txt ${DEST_ROOT}/share/doc/hdf5
+
+    # Fix the wrapper scripts
+
+    for f in h5cc h5fc; do
+	file=${DEST_ROOT}/bin/$f
+	if [[ -e $file ]]; then
+	    sed -i.bak -e "s|$DEST_ROOT|\${${PROFILE_ENV}}|g" -i '' $file && rm -f ${file}.bak
+	fi
+    done    
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/hdf5/hdf5_link > \
+	${DEST_ROOT}/bin/hdf5_link
+    chmod a+x ${DEST_ROOT}/bin/hdf5_link
+
+}

@@ -1,0 +1,19 @@
+# SDK2 package definition for xcode (local install)
+
+# Set package-specific variables
+
+PACKAGE_NAME=xcode
+SRC_FILE=MacOSX${XCODE_SDK_VERSION}.sdk.tar.xz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    # Nothing to do
+
+    exit 0
+
+}

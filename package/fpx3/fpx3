@@ -1,0 +1,32 @@
+# SDK2 package definition for fpx3
+
+# Set package-specific variables
+
+PACKAGE_NAME=fpx3
+SRC_FILE=fpx3.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    # Empty function, as there is no build action
+
+    true
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the scripts
+
+    cd $BD
+
+    cp -av fpx3 ${DEST_ROOT}/bin/
+    cp -av fpx3_deps ${DEST_ROOT}/bin/
+
+}

@@ -1,0 +1,51 @@
+# SDK2 package definition for tar
+
+# Set package-specific variables
+
+PACKAGE_NAME=tar
+SRC_FILE=tar-1.32.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    FORCE_UNSAFE_CONFIGURE=1 CFLAGS='-gdwarf-2 -gstrict-dwarf' ./configure \
+	--prefix=$DEST_ROOT \
+	--without-selinux
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # On OSX, kludge config.h to set HAVE_FUTIMENS=0 and HAVE_UTIMENSAT=0,
+    # because the corresponding symbols are absent prior to OSX 10.13
+
+    if [[ $SDK_PLATFORM_NAME = 'Darwin' ]]; then
+	echo "#define HAVE_FUTIMENS 0" >> config.h
+	echo "#define HAVE_UTIMENSAT 0" >> config.h
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}

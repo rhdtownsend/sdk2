@@ -1,0 +1,45 @@
+# SDK2 package definition for patchelf
+
+# Set package-specific variables
+
+PACKAGE_NAME=patchelf
+SRC_FILE=patchelf-0.9.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./bootstrap.sh
+
+    CXXFLAGS='-static' ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$BD
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}

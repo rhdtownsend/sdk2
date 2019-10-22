@@ -1,0 +1,45 @@
+# SDK2 package definition for x264
+
+# Set package-specific variables
+
+PACKAGE_NAME=x264
+SRC_FILE=x264-snapshot-20190310-2245-stable.tar.bz2
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--host=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--enable-shared \
+	--disable-asm
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}

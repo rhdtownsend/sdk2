@@ -1,0 +1,64 @@
+# SDK2 package definition for md5sha1sum
+
+# Set package-specific variables
+
+PACKAGE_NAME=md5sha1sum
+SRC_FILE=md5sha1sum-0.9.5.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Set SSL paths for OSX. El Capitain and since do not include header files,
+    # so pick them up from /opt/local (e.g., MacPorts)
+
+    if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
+	   export SSLINCPATH=/opt/local/include
+           export SSLLIBPATH=/opt/local/lib
+    fi
+
+    # Configure
+
+    ./configure \
+	--prefix=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    cp -av md5sum $DEST_ROOT/bin/
+    ln -sfv md5sum $DEST_ROOT/bin/sha1sum
+    ln -sfv md5sum $DEST_ROOT/bin/ripemd160sum
+
+}
