@@ -26,7 +26,7 @@ if [[ $COMPILING == "y" ]]; then
 
     # Set up system paths
 
-    FLAGS="${FLAGS} --sysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -isystem @SDK_ROOT@/include"
+    FLAGS="${FLAGS} -isystem @SDK_ROOT@/include"
 
     # Add linker flags to set rpath
 
