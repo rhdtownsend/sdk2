@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# A simple wrapper for Apple's md5 utility, to make it behave more
+# like GNU md5sum. If md5sum exists on the system, then run that
+# instead.
+#
+# Rich Townsend <rhtownsend@me.com>
+
+# Look for the 'real' md5sum by iterating through which -a output
+# and picking the entry after the current script
+
+THIS_MD5SUM=
+REAL_MD5SUM=
+
+for file in `which -a md5sum`; do
+
+    if [[ "$(stat -L -f '%d:%i' $file)" == "$(stat -L -f '%d:%i' $0)" ]]; then
+	THIS_MD5SUM=$0
+    elif [[ -n $THIS_MD5SUM ]]; then
+	REAL_MD5SUM=$file
+    fi
+
+done
+
+# Check results
+
+if [[ -z $THIS_MD5SUM ]]; then
+    echo "Unable to determine which md5sum to call"
+    exit 1
+fi
+
+# Take action
+
+# Pass to real md5sum
+
+if [[ -n $REAL_MD5SUM ]]; then
+    exec $REAL_MD5SUM $*
+fi
+
+# Do it ourselves
+
+while getopts ":" opt; do
+    cat <<EOF
+Usage: md5sum <file> [<file> [...] ]
+
+Note:  This is a wrapper around MacOS's md5 utility. As
+       such, it doesn't support any of the standard flags;
+       just outputting the checksum.
+EOF
+    exit 1
+done
+
+shift $((OPTIND -1))
+
+md5 -r $* | sed -e 's/ /  /g'
