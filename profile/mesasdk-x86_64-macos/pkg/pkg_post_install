@@ -4,16 +4,6 @@
 
 export MESASDK_ROOT=/Applications/mesasdk
 
-# Regenerate headers
-
-mkheaders=$(find "$MESASDK_ROOT/" -name mkheaders | head -n 1)
-$mkheaders "$MESASDK_ROOT"
-
-if [ $? != 0 ]; then
-    echo "Error regenerating headers"
-    exit 1
-fi
-
 # Create sysroot symlink
 
 os_ver=$(sw_vers -productVersion)
@@ -31,7 +21,7 @@ case $minor in
 	sysroot='/'
 	;;
     14|15)
-	sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
+	sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk'
 	;;
     *)
 	echo "Invalid OS minor version number: $minor"
@@ -39,7 +29,17 @@ case $minor in
 	;;
 esac
 
+rm -f ${MESASDK_ROOT}/sysroot
 ln -s $sysroot ${MESASDK_ROOT}/sysroot
 
-exit 0
+# Regenerate headers
 
+mkheaders=$(find "$MESASDK_ROOT/" -name mkheaders | head -n 1)
+$mkheaders "$MESASDK_ROOT"
+
+if [ $? != 0 ]; then
+    echo "Error regenerating headers"
+    exit 1
+fi
+
+exit 0
