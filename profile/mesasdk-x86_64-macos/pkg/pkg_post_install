@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+#
+# Post-installation script for MESA SDK
+
+export MESASDK_ROOT=/Applications/mesasdk
+
+# Create sysroot symlink
+
+os_ver=$(sw_vers -productVersion)
+
+major=$(echo "$os_ver" | awk -F. '{ print $1; }')
+minor=$(echo "$os_ver" | awk -F. '{ print $2; }')
+
+if [[ $major != 10 ]]; then
+   echo "Invalid OS major version number: $major"
+   exit 1
+fi
+
+case $minor in
+    10|11|12|13)
+	sysroot='/'
+	;;
+    14|15)
+	sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk'
+	;;
+    *)
+	echo "Invalid OS minor version number: $minor"
+	exit 1
+	;;
+esac
+
+rm -f ${MESASDK_ROOT}/sysroot
+ln -s $sysroot ${MESASDK_ROOT}/sysroot
+
+# Regenerate headers
+
+mkheaders=$(find "$MESASDK_ROOT/" -name mkheaders | head -n 1)
+$mkheaders "$MESASDK_ROOT"
+
+if [ $? != 0 ]; then
+    echo "Error regenerating headers"
+    exit 1
+fi
+
+exit 0
