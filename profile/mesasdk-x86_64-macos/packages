@@ -4,7 +4,7 @@ gmp/gmp-6.1.2
 mpfr/mpfr-4.0.2
 mpc/mpc-1.1.0
 xcode/xcode
-gcc/gcc-9.2.0-r1
+gcc/gcc-9.2.0-r2
 gdb/gdb-8.3.50.20190312
 makedepf90/makedepf90-2.8.8
 xz/xz-5.2.4
