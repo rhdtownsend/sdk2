@@ -9,7 +9,15 @@ done
 # Sign Mach-O binaries
 
 for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
-    sign_macho_binary $file
+
+    entitle_file=${PD}/entitlements/$(basename $file)
+
+    if [[ -e $entitle_file ]]; then
+	sign_macho_binary $file $entitle_file
+    else
+	sign_macho_binary $file
+    fi
+
 done
 
 # Create symlinks to the link scripts

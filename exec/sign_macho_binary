@@ -3,6 +3,7 @@
 # Script to sign a file
 
 FILE=$1
+ENTITLE_FILE=$2
 
 # Check SDK2_CERT is set
 
@@ -24,9 +25,16 @@ if [ -f $FILE ]; then
         if `file $FILE | egrep -q 'executable|library|bundle'`; then
 
 	    # Go ahead and sign
-	
-	    codesign --force --options runtime --timestamp \
-		     --deep --sign "$SDK2_CERT" $FILE
+
+	    if [[ -n $ENTITLE_FILE ]]; then
+		codesign --force --options runtime --timestamp \
+			 --entitlements $ENTITLE_FILE --deep --sign "$SDK2_CERT" \
+			 $FILE
+	    else
+		codesign --force --options runtime --timestamp \
+			 --deep --sign "$SDK2_CERT" \
+			 $FILE
+	    fi
 
 	fi
     fi
