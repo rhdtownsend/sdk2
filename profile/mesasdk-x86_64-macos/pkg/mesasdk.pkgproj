@@ -437,7 +437,7 @@
 				<key>PAYLOAD_TYPE</key>
 				<integer>0</integer>
 				<key>PRESERVE_EXTENDED_ATTRIBUTES</key>
-				<false/>
+				<true/>
 				<key>SHOW_INVISIBLE</key>
 				<false/>
 				<key>SPLIT_FORKS</key>
