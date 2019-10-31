@@ -21,7 +21,7 @@ if [ -f $FILE ]; then
 
         # Check that the file is of the appropriate type
 
-        if `file $FILE | grep -q 'executable|library|bundle'`; then
+        if `file $FILE | egrep -q 'executable|library|bundle'`; then
 
 	    # Go ahead and sign
 	
