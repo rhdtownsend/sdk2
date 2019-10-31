@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Script to sign a file
+
+FILE=$1
+
+# Check SDK2_CERT is set
+
+if [[ -z $SDK2_CERT ]]; then
+    echo "Environment variable SDK2_CERT is not set"
+    exit 1
+fi
+
+# Check if FILE is a file (this weeds out symlinks etc)
+
+if [ -f $FILE ]; then
+
+    # Check if the file is Mach-O format
+
+    if `file $FILE | grep -q 'Mach-O'`; then
+
+        # Check that the file is of the appropriate type
+
+        if `file $FILE | grep -q 'executable|library|bundle'`; then
+
+	    # Go ahead and sign
+	
+	    codesign --force --options runtime --timestamp \
+		     --deep --sign "$SDK2_CERT" $FILE
+
+	fi
+    fi
+fi
