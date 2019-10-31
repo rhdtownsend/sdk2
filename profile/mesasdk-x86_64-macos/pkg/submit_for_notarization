@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Check SDK2_NUSER is set
+
+if [[ -z $SDK2_NUSER ]]; then
+    echo "Environment variable SDK2_NUSER is not set"
+    exit 1
+fi
+
+# Submit for notarization
+
+xcrun altool --notarize-app \
+             --primary-bundle-id "edu.wisc.astro.pkg.mesasdk" \
+             --username "$SDK2_NUSER" \
+             --password "@keychain:AC_PASSWORD" \
+             --file build/mesasdk-x86_64-macos-19.11.1.pkg

@@ -26,9 +26,9 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>/Applications/mesasdk</string>
+									<string>../../../build/mesasdk</string>
 									<key>PATH_TYPE</key>
-									<integer>0</integer>
+									<integer>1</integer>
 									<key>PERMISSIONS</key>
 									<integer>493</integer>
 									<key>TYPE</key>
@@ -458,8 +458,10 @@
 				</dict>
 				<key>PREINSTALL_PATH</key>
 				<dict>
+					<key>PATH</key>
+					<string>pkg_pre_install</string>
 					<key>PATH_TYPE</key>
-					<integer>0</integer>
+					<integer>1</integer>
 				</dict>
 				<key>RESOURCES</key>
 				<array/>
@@ -489,7 +491,7 @@
 				<key>USE_HFS+_COMPRESSION</key>
 				<false/>
 				<key>VERSION</key>
-				<string>1.0</string>
+				<string>19.11.1</string>
 			</dict>
 			<key>TYPE</key>
 			<integer>0</integer>
@@ -632,7 +634,7 @@
 						<key>IC_REQUIREMENT_OS_DISTRIBUTION_TYPE</key>
 						<integer>0</integer>
 						<key>IC_REQUIREMENT_OS_MAXIMUM_VERSION</key>
-						<integer>101500</integer>
+						<integer>101599</integer>
 						<key>IC_REQUIREMENT_OS_MINIMUM_VERSION</key>
 						<integer>101000</integer>
 					</dict>
@@ -774,6 +776,13 @@
 				<string>build</string>
 				<key>PATH_TYPE</key>
 				<integer>1</integer>
+			</dict>
+			<key>CERTIFICATE</key>
+			<dict>
+				<key>NAME</key>
+				<string>Developer ID Installer: Richard Townsend (678AURSYSX)</string>
+				<key>PATH</key>
+				<string>/Users/townsend/Library/Keychains/login.keychain</string>
 			</dict>
 			<key>EXCLUDED_FILES</key>
 			<array>
@@ -944,7 +953,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>mesasdk-x86_64-macos</string>
+			<string>mesasdk-x86_64-macos-19.11.1</string>
 			<key>PAYLOAD_ONLY</key>
 			<false/>
 			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>

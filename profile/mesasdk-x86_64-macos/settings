@@ -17,7 +17,7 @@ export PROFILE_URL=http://www.astro.wisc.edu/~townsend/resource/download/sdk2/sr
 
 # Set the default destination
 
-export DEST_ROOT=/Applications/${PROFILE_NAME}
+export DEST_ROOT=${SDK2_BUILD_ROOT}/${PROFILE_NAME}
 
 # Count the number of cores
 
