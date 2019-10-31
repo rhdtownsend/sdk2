@@ -6,6 +6,12 @@ for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
     relocate_macho_binary $file ${DEST_ROOT}
 done
 
+# Sign Mach-O binaries
+
+for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
+    sign_macho_binary $file
+done
+
 # Create symlinks to the link scripts
 
 for p in blas hdf5 lapack lapack95 crlibm pgplot se xblas; do

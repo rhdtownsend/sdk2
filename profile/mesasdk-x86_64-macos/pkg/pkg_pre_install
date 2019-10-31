@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Pre-installation script for MESA SDK
+
+export MESASDK_ROOT=/Applications/mesasdk
+
+# Clean up any existing installation
+
+rm -rf $MESASDK_ROOT

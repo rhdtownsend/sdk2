@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+xcrun altool --notarize-app \
+             --primary-bundle-id "edu.wisc.astro.pkg.mesasdk" \
+             --username "rhtownsend@icloud.com" \
+             --password "@keychain:AC_PASSWORD" \
+             --file build/mesasdk-x86_64-macos-19.11.1.pkg
