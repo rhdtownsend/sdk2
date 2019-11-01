@@ -10,7 +10,7 @@ done
 
 for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
 
-    entitle_file=${PD}/entitlements/$(basename $file)
+    entitle_file=${PD}/entitlements/$(basename $file).xml
 
     if [[ -e $entitle_file ]]; then
 	sign_macho_binary $file $entitle_file
