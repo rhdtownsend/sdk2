@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Check SDK2_RELEASE is set
+
+if [[ -z $SDK2_RELEASE ]]; then
+    echo "Environment variable SDK2_RELEASE is not set"
+    exit 1
+fi
+
 # Check SDK2_NUSER is set
 
 if [[ -z $SDK2_NUSER ]]; then
@@ -13,4 +20,4 @@ xcrun altool --notarize-app \
              --primary-bundle-id "edu.wisc.astro.pkg.mesasdk" \
              --username "$SDK2_NUSER" \
 	     --password "@keychain:AC_PASSWORD" \
-             --file build/mesasdk-x86_64-macos-19.11.1.pkg
+             --file build/mesasdk-x86_64-macos-$SDK2_RELEASE.pkg
