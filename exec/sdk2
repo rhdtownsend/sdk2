@@ -35,6 +35,13 @@ if [[ -z $SDK2_PROFILE ]]; then
     exit 1
 fi
 
+# Check SDK2_RELEASE is set
+
+if [[ -z $SDK2_RELEASE ]]; then
+    echo "Environment variable SDK2_RELEASE is not set"
+    exit 1
+fi
+
 ### VARIABLES ###
 
 # Define standard directories

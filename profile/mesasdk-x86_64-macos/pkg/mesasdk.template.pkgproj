@@ -491,7 +491,7 @@
 				<key>USE_HFS+_COMPRESSION</key>
 				<false/>
 				<key>VERSION</key>
-				<string>19.11.1</string>
+				<string>@RELEASE@</string>
 			</dict>
 			<key>TYPE</key>
 			<integer>0</integer>
@@ -953,7 +953,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>mesasdk-x86_64-macos-19.11.1</string>
+			<string>mesasdk-x86_64-macos-@RELEASE@</string>
 			<key>PAYLOAD_ONLY</key>
 			<false/>
 			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>

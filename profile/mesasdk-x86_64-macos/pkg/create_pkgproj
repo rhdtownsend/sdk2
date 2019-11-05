@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Check SDK2_RELEASE is set
+
+if [[ -z $SDK2_RELEASE ]]; then
+    echo "Environment variable SDK2_RELEASE is not set"
+    exit 1
+fi
+
+# Customize the template pkproj file
+
+sed -e "s/@RELEASE@/$SDK2_RELEASE/g" mesasdk.template.pkgproj > mesasdk.$SDK2_RELEASE.pkgproj
