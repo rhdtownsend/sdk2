@@ -11,7 +11,7 @@ fi
 
 pkgproj_file=$(mktemp mesasdk.XXXXXX)
 
-sed -e "s/@RELEASE@/$SDK2_RELEASE/g" mesasdk.template.pkgproj > $pkgproj_file
+sed -e "s/@RELEASE@/$SDK2_RELEASE/g" template.pkgproj > $pkgproj_file
 
 # Build the project
 
@@ -20,4 +20,3 @@ sed -e "s/@RELEASE@/$SDK2_RELEASE/g" mesasdk.template.pkgproj > $pkgproj_file
 # Finish
 
 rm $pkgproj_file
-
