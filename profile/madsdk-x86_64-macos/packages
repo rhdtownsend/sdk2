@@ -15,7 +15,7 @@ xblas/xblas
 lapack/lapack-3.8.0
 lapack95/lapack95
 odepack/odepack
-crlibm/crlibm-1.0beta4
+crlibm/crlibm-1.0beta4-fortran
 png_pgplot/png_pgplot-1.5.13
 pgplot/pgplot-5.2
 hdf5/hdf5-1.10.5

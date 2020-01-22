@@ -1,0 +1,84 @@
+# SDK2 package definition for crlibm
+
+# Set package-specific variables
+
+PACKAGE_NAME=crlibm
+SRC_FILES=(crlibm-1.0beta4.tar.gz crlibm-fortran.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--enable-shared=yes \
+	--enable-static=yes
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build the Fortran API
+
+    cd fortran
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make (Fortran) for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Add the Fortran objects to the library
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    cp fortran/*.mod fortran/*.smod ${DEST_ROOT}/include/
+
+    # Install docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/${PACKAGE_NAME}
+    cp -av AUTHORS COPYING* INSTALL* NEWS README docs/latex \
+       ${DEST_ROOT}/share/doc/${PACKAGE_NAME}
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/crlibm/crlibm_link > \
+	${DEST_ROOT}/bin/crlibm_link
+    chmod a+x ${DEST_ROOT}/bin/crlibm_link
+
+}
