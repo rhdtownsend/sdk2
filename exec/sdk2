@@ -257,7 +257,9 @@ packages_install () {
 
 	    # Set full path variables
 
-	    if [[ -n $SRC_FILE ]]; then
+	    if [[ -n $SRC_FILES ]]; then
+		SF=${SRC_FILES[@]/#/$SDK2_SRC_ROOT/}
+	    elif [[ -n $SRC_FILE ]]; then
 		SF=${SDK2_SRC_ROOT}/${SRC_FILE}
 	    fi
 
@@ -358,18 +360,18 @@ unpack () {
     rm -rf $SD
     mkdir $SD
 
-    # Unpack the tarball
+    # Unpack the tarballs
 
-    if [[ -n $SF ]]; then
+    for src_file in $SF; do
 
-	tar xf $SF -C $SD --strip-components 1
+	tar xf $src_file -C $SD --strip-components 1
 
 	if [ $? -ne 0 ]; then
-	    echo "FAILED in tar for package $PACKAGE (file $SF)"
+	    echo "FAILED in tar for package $PACKAGE (file $src_file)"
 	    exit 1
 	fi
 
-    fi
+    done
 
     # Apply patches
 
