@@ -1,0 +1,93 @@
+# SDK2 package definition for crlapack
+
+# Set package-specific variables
+
+PACKAGE_NAME=crlapack
+SRC_FILES=(lapack-3.8.0.tar.gz crlapack.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarballs
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+	
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources
+
+    cd $SD
+
+    ./create_crlapack_src.sh
+
+    # Move other files into place
+
+    cp ${PD}/crlapack/make.inc ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+    rm -f *.a
+
+    # Build
+
+    make -j$NCORES lib
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static libraries
+
+    cd $BD
+
+    cp -av libcrlapack.a ${DEST_ROOT}/lib/
+    cp -av libcrtmg.a ${DEST_ROOT}/lib/
+
+    # Create the shared libraries
+
+    create_shared_lib \
+        -c gfortran \
+        -L ${DEST_ROOT}/lib -lcrblas -lcrlibm_fortran -lcrlibm \
+	${DEST_ROOT}/lib/libcrlapack.a
+    create_shared_lib \
+        -c gfortran  \
+        -L ${DEST_ROOT}/lib -lcrblas -lcrlibm_fortran -lcrlibm -lcrlapack \
+	${DEST_ROOT}/lib/libcrtmg.a
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/crlapack/crlapack_link > \
+	${DEST_ROOT}/bin/crlapack_link
+    chmod a+x ${DEST_ROOT}/bin/crlapack_link
+
+}
