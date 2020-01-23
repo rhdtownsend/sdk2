@@ -1,0 +1,89 @@
+# SDK2 package definition for crblas
+
+# Set package-specific variables
+
+PACKAGE_NAME=crblas
+SRC_FILES=(blas.tgz crblas.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarballs
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+	
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources
+
+    cd $SD
+
+    ./create_crblas_src.sh
+
+    # Copy other files into place
+
+    cp ${PD}/crblas/make.inc ${SD}/
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static library
+
+    cd $BD
+
+    cp -a libcrblas.a ${DEST_ROOT}/lib/
+
+    # Create the shared library
+
+    create_shared_lib \
+    	-c gfortran \
+	-L ${DEST_ROOT}/lib -lcrlibm_fortran -lcrlibm \
+	${DEST_ROOT}/lib/libcrblas.a
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/crblas/crblas_link > \
+	${DEST_ROOT}/bin/crblas_link
+    chmod a+x ${DEST_ROOT}/bin/crblas_link
+
+}
