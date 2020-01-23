@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Link script for virtual_blas
+
+if [ -n "@SDK_MATH@" ]; then
+    EXEC=@SDK_ROOT@/bin/math/@SDK_MATH@/blas_link
+else
+    EXEC=@SDK_ROOT@/bin/math/default/blas_link
+fi
+
+if [ -x "$EXEC" ]; then
+    exec $EXEC
+else
+    echo "Unable to locate link script for blas"
+    exit 1
+fi

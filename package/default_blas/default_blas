@@ -1,8 +1,8 @@
-# SDK2 package definition for blas
+# SDK2 package definition for default_blas
 
 # Set package-specific variables
 
-PACKAGE_NAME=blas
+PACKAGE_NAME=default_blas
 SRC_FILE=blas.tgz
 
 SRC_DIR=$PACKAGE_NAME
@@ -28,7 +28,7 @@ unpack () {
 
     # Move other files into place
 
-    cp ${PD}/blas/make.inc ${SD}/make.inc
+    cp ${PD}/default_blas/make.inc ${SD}/make.inc
 
 }
 
@@ -63,16 +63,16 @@ install () {
 
     cd $build_dir
 
-    cp -a libblas.a ${DEST_ROOT}/lib/
+    cp -a libblas.a ${DEST_ROOT}/lib/math/default/
 
     # Create the shared library
 
-    create_shared_lib -c gfortran ${DEST_ROOT}/lib/libblas.a
+    create_shared_lib -c gfortran ${DEST_ROOT}/lib/math/default/libblas.a
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/blas/blas_link > \
-	${DEST_ROOT}/bin/blas_link
-    chmod a+x ${DEST_ROOT}/bin/blas_link
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	\${SDK2_PROFILE_ROOT}/common/default_blas/blas_link > ${DEST_ROOT}/bin/math/default/blas_link
+    chmod a+x ${DEST_ROOT}/bin/math/default/blas_link
 
 }

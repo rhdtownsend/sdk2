@@ -1,8 +1,8 @@
-# SDK2 package definition for lapack
+# SDK2 package definition for default_lapack
 
 # Set package-specific variables
 
-PACKAGE_NAME=lapack
+PACKAGE_NAME=default_lapack
 SRC_FILE=lapack-3.8.0.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
@@ -26,7 +26,7 @@ unpack () {
 
     # Move other files into place
 
-    cp ${PD}/lapack/make.inc ${SD}/make.inc
+    cp ${PD}/default_lapack/make.inc ${SD}/make.inc
 
 }
 
@@ -60,19 +60,19 @@ install () {
 
     cd $BD
 
-    cp -av liblapack.a ${DEST_ROOT}/lib/
-    cp -av libtmg.a ${DEST_ROOT}/lib/
+    cp -av liblapack.a ${DEST_ROOT}/lib/math/default/
+    cp -av libtmg.a ${DEST_ROOT}/lib/math/default/
 
     # Create the shared libraries
 
     create_shared_lib \
         -c gfortran \
-        -L ${DEST_ROOT}/lib -lblas -lxblas \
-	${DEST_ROOT}/lib/liblapack.a
+        -L ${DEST_ROOT}/lib/math/default -lblas -lxblas \
+	${DEST_ROOT}/lib/math/default/liblapack.a
     create_shared_lib \
         -c gfortran  \
-        -L ${DEST_ROOT}/lib -lblas -lxblas -llapack \
-	${DEST_ROOT}/lib/libtmg.a
+        -L ${DEST_ROOT}/lib/math/default -lblas -lxblas -llapack \
+	${DEST_ROOT}/lib/math/default/libtmg.a
 
     # Copy docs
 
@@ -81,8 +81,8 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/lapack/lapack_link > \
-	${DEST_ROOT}/bin/lapack_link
-    chmod a+x ${DEST_ROOT}/bin/lapack_link
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/default_lapack/lapack_link > ${DEST_ROOT}/bin/math/default/lapack_link
+    chmod a+x ${DEST_ROOT}/bin/math/default/lapack_link
 
 }

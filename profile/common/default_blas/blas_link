@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for default_blas
+
+echo -L@SDK_ROOT@/lib/math/default -lblas

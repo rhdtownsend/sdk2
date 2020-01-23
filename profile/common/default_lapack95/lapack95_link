@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for default_lapack95
+
+echo -L@SDK_ROOT@/lib/math/default -llapack95 `lapack_link`

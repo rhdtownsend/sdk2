@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for default_lapack
+
+echo -L@SDK_ROOT@/lib/math/default -llapack `xblas_link` `blas_link`
