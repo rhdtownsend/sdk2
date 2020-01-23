@@ -86,7 +86,7 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/crlapack/crlapack_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/crlapack/crlapack_link > \
 	${DEST_ROOT}/bin/crlapack_link
     chmod a+x ${DEST_ROOT}/bin/crlapack_link
 

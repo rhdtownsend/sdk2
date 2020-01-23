@@ -63,13 +63,13 @@ install () {
     for f in h5cc h5fc; do
 	file=${DEST_ROOT}/bin/$f
 	if [[ -e $file ]]; then
-	    sed -i.bak -e "s|$DEST_ROOT|\${${PROFILE_ENV}}|g" -i '' $file && rm -f ${file}.bak
+	    sed -i.bak -e "s|$DEST_ROOT|\${${PROFILE_PREFIX}_ROOT}|g" -i '' $file && rm -f ${file}.bak
 	fi
     done    
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/hdf5/hdf5_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/hdf5/hdf5_link > \
 	${DEST_ROOT}/bin/hdf5_link
     chmod a+x ${DEST_ROOT}/bin/hdf5_link
 

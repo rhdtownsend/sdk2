@@ -80,8 +80,8 @@ install () {
 
     # Create the images_to_move script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/ffmpeg/images_to_movie > \
-	${DEST_ROOT}/bin/images_to_movie
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/ffmpeg/images_to_movie > ${DEST_ROOT}/bin/images_to_movie
     chmod a+x ${DEST_ROOT}/bin/images_to_movie
  
 }

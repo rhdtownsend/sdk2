@@ -160,7 +160,7 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/pgplot/pgplot_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/pgplot/pgplot_link > \
 	${DEST_ROOT}/bin/pgplot_link
     chmod a+x ${DEST_ROOT}/bin/pgplot_link
 

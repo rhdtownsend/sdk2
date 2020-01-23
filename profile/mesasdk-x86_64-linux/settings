@@ -6,10 +6,10 @@
 export PROFILE_NAME=mesasdk
 export PROFILE_ARCH=x86_64-linux
 
-# Set the profile environment variable (this is used
-# to set the path to the resulting SDK)
+# Set the profile prefix (this is used generate the names of
+# environment variables associated with the profile)
 
-export PROFILE_ENV=MESASDK_ROOT
+export PROFILE_PREFIX=MESASDK
 
 # Set the profile source URL
 

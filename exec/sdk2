@@ -102,8 +102,8 @@ if [[ -z $PROFILE_ARCH ]]; then
     exit 1
 fi
 
-if [[ -z $PROFILE_ENV ]]; then
-   echo "Profile variable PROFILE_ENV is not set"
+if [[ -z $PROFILE_PREFIX ]]; then
+   echo "Profile variable PROFILE_PREFIX is not set"
    exit 1
 fi
 
@@ -158,9 +158,9 @@ if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
     export LD_RUN_PATH=${DEST_ROOT}/lib:${DEST_ROOT}/lib64
 fi
 
-# Set the SDK environment variable
+# Set the SDK_ROOT environment variable
 
-export ${PROFILE_ENV}=${DEST_ROOT}
+export ${PROFILE_PREFIX}_ROOT=${DEST_ROOT}
 
 ### FUNCTIONS ###
 

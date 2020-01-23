@@ -71,7 +71,7 @@ install () {
 
     # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g ${SDK2_PROFILE_ROOT}/common/blas/blas_link > \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/blas/blas_link > \
 	${DEST_ROOT}/bin/blas_link
     chmod a+x ${DEST_ROOT}/bin/blas_link
 
