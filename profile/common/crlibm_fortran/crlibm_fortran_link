@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# Link script for crlibm_fortran
+
+echo -L@SDK_ROOT@/lib -lcrlibm_fortran `crlibm_link`
+
