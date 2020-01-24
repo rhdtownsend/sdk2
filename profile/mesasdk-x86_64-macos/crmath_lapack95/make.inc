@@ -1,7 +1,7 @@
 FC	    = gfortran -ffree-form
 FC1         = gfortran -ffixed-form
 OPTS0       = -O2 -fPIC
-MODLIB      = -I./../lapack95_modules -I${DEST_ROOT}/include/math/crlibm
+MODLIB      = -I./../lapack95_modules -I${DEST_ROOT}/include/
 OPTS1       = -c $(OPTS0)
 OPTS3       = $(OPTS1) $(MODLIB)
 OPTL        = -o 
