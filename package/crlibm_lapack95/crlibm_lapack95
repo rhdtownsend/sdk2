@@ -1,0 +1,87 @@
+# SDK2 package definition for crlibm_lapack95
+
+# Set package-specific variables
+
+PACKAGE_NAME=crlibm_lapack95
+SRC_FILES=(lapack95.tgz crlibm_lapack95.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=${SRC_DIR}/SRC
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE_NAME (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources
+
+    cd $SD
+
+    ./fix_crlibm_lapack95.sh
+
+    # Move other files into place
+
+    cp ${PD}/crlibm_lapack95/make.inc ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Build
+
+    cd $BD
+
+    make clean
+    make single_double_complex_dcomplex
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $SD"
+
+    # Copy the static library and module files
+
+    cd $SD
+
+    cp -av lapack95.a ${DEST_ROOT}/lib/math/crlibm/liblapack95.a
+    cp -av lapack95_modules/*.mod ${DEST_ROOT}/include/crlibm/default/
+
+    # Create the shared libraries
+
+    create_shared_lib \
+        -c gfortran \
+        -L ${DEST_ROOT}/lib/crlibm/default -ltmg -llapack -lblas -lcrlibm_fortran -lcrlibm \
+        ${DEST_ROOT}/lib/math/crlibm/liblapack95.a
+
+     # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g \
+	${SDK2_PROFILE_ROOT}/common/crlibm_lapack95/lapack95_link > ${DEST_ROOT}/bin/math/crlibm/lapack95_link
+    chmod a+x ${DEST_ROOT}/bin/math/crlibm/lapack95_link
+
+}
