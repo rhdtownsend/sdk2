@@ -5,3 +5,14 @@
 for f in ${DEST_ROOT}/*; do
     rm -rfv $f
 done
+
+# Create directories that aren't explictly created by install scripts
+
+mkdir -pv ${DEST_ROOT}/bin/math/default
+mkdir -pv ${DEST_ROOT}/bin/math/crlibm
+
+mkdir -pv ${DEST_ROOT}/lib/math/default
+mkdir -pv ${DEST_ROOT}/lib/math/crlibm
+
+mkdir -pv ${DEST_ROOT}/include/math/default
+mkdir -pv ${DEST_ROOT}/include/math/crlibm
