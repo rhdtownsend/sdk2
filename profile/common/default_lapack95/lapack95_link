@@ -1,5 +1,5 @@
 #!/bin/sh
 #
-# Link script for default_lapack95
+# Link script for default-slot lapack95
 
-echo -L@SDK_ROOT@/lib/math/default -llapack95 `lapack_link`
+echo -L@SDK_ROOT@/math-slots/default/lib -llapack95 `lapack_link`

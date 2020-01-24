@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Link script for lapack
+
+if [ -n "@SDK_MATH_SLOT@" ]; then
+    EXEC=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/bin/lapack_link
+else
+    EXEC=@SDK_ROOT@/math-slots/default/bin/lapack_link
+fi
+
+if [ -x "$EXEC" ]; then
+    exec $EXEC
+else
+    echo "Unable to locate slot link script for lapack"
+    exit 1
+fi

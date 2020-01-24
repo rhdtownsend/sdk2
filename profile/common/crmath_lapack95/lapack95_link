@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for crmath-slot lapack95
+
+echo -L@SDK_ROOT@/math-slots/crmath/lib/ -llapack95 `lapack_link`

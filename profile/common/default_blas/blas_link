@@ -1,5 +1,5 @@
 #!/bin/sh
 #
-# Link script for default_blas
+# Link script for default-slot blas
 
-echo -L@SDK_ROOT@/lib/math/default -lblas
+echo -L@SDK_ROOT@/math-slots/default/lib -lblas

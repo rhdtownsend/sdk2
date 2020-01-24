@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Link script for crlibm_fortran
+# Link script for crmath
 
-echo -L@SDK_ROOT@/lib -lcrlibm_fortran `crlibm_link`
+echo -L@SDK_ROOT@/lib -lcrmath `crlibm_link`
 
