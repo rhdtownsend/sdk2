@@ -9,4 +9,4 @@ LOADOPTS  =
 ARCH      = ar
 ARCHFLAGS = cr
 RANLIB    = ranlib
-BLASLIB   = libcrblas.a
+BLASLIB   = libblas.a
