@@ -76,7 +76,7 @@ install () {
     create_shared_lib \
         -c gfortran \
 	-L ${DEST_ROOT}/lib -lcrmath \
-        -L ${DEST_ROOT}/math-slots/crmath/lib -ltmg -llapack -lblas \
+        -L ${DEST_ROOT}/math-slots/crmath/lib -llapack -lblas \
         ${DEST_ROOT}/math-slots/crmath/lib/liblapack95.a
 
      # Create the link script
