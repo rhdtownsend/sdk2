@@ -1,9 +1,9 @@
-# SDK2 package definition for crlibm_lapack95
+# SDK2 package definition for crmath-slot lapack95
 
 # Set package-specific variables
 
-PACKAGE_NAME=crlibm_lapack95
-SRC_FILES=(lapack95.tgz crlibm_lapack95.tar.gz)
+PACKAGE_NAME=crmath_lapack95
+SRC_FILES=(lapack95.tgz crmath_lapack95.tar.gz)
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${SRC_DIR}/SRC
@@ -34,11 +34,11 @@ unpack () {
 
     cd $SD
 
-    ./fix_crlibm_lapack95.sh
+    ./fix_crmath_lapack95.sh
 
     # Move other files into place
 
-    cp ${PD}/crlibm_lapack95/make.inc ${SD}/make.inc
+    cp ${PD}/crmath_lapack95/make.inc ${SD}/make.inc
 
 }
 
@@ -68,20 +68,21 @@ install () {
 
     cd $SD
 
-    cp -av lapack95.a ${DEST_ROOT}/lib/math/crlibm/liblapack95.a
-    cp -av lapack95_modules/*.mod ${DEST_ROOT}/include/crlibm/default/
+    cp -av lapack95.a ${DEST_ROOT}/math-slots/crmath/lib/liblapack95.a
+    cp -av lapack95_modules/*.mod ${DEST_ROOT}/math-slots/crmath/include/
 
     # Create the shared libraries
 
     create_shared_lib \
         -c gfortran \
-        -L ${DEST_ROOT}/lib/crlibm/default -ltmg -llapack -lblas -lcrlibm_fortran -lcrlibm \
-        ${DEST_ROOT}/lib/math/crlibm/liblapack95.a
+	-L ${DEST_ROOT}/lib -lcrmath \
+        -L ${DEST_ROOT}/math-slots/crmath/lib -ltmg -llapack -lblas \
+        ${DEST_ROOT}/math-slots/crmath/lib/liblapack95.a
 
      # Create the link script
 
     sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g \
-	${SDK2_PROFILE_ROOT}/common/crlibm_lapack95/lapack95_link > ${DEST_ROOT}/bin/math/crlibm/lapack95_link
-    chmod a+x ${DEST_ROOT}/bin/math/crlibm/lapack95_link
+	${SDK2_PROFILE_ROOT}/common/crmath_lapack95/lapack95_link > ${DEST_ROOT}/math-slots/crmath/bin/lapack95_link
+    chmod a+x ${DEST_ROOT}/math-slots/crmath/bin/lapack95_link
 
 }

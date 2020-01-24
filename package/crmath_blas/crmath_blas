@@ -1,9 +1,9 @@
-# SDK2 package definition for crlibm_blas
+# SDK2 package definition for crmath-slot blas
 
 # Set package-specific variables
 
-PACKAGE_NAME=crlibm_blas
-SRC_FILES=(blas.tgz crlibm_blas.tar.gz)
+PACKAGE_NAME=crmath_blas
+SRC_FILES=(blas.tgz crmath_blas.tar.gz)
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -34,11 +34,11 @@ unpack () {
 
     cd $SD
 
-    ./fix_crlibm_blas.sh
+    ./fix_crmath_blas.sh
 
     # Copy other files into place
 
-    cp ${PD}/crlibm_blas/make.inc ${SD}/
+    cp ${PD}/crmath_blas/make.inc ${SD}/
 
 }
 
@@ -71,19 +71,19 @@ install () {
 
     cd $BD
 
-    cp -a libblas.a ${DEST_ROOT}/lib/math/crlibm/
+    cp -a libblas.a ${DEST_ROOT}/math-slots/crmath/lib/
 
     # Create the shared library
 
     create_shared_lib \
     	-c gfortran \
-	-L ${DEST_ROOT}/lib/math/crlibm -lcrlibm_fortran -lcrlibm \
-	${DEST_ROOT}/lib/math/crlibm/libblas.a
+	-L ${DEST_ROOT}/lib -lcrmath \
+	${DEST_ROOT}/math-slots/crmath/lib/libblas.a
 
     # Create the link script
 
     sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-	${SDK2_PROFILE_ROOT}/common/crlibm_blas/blas_link > ${DEST_ROOT}/bin/math/crlibm/blas_link
-    chmod a+x ${DEST_ROOT}/bin/math/crlibm/blas_link
+	${SDK2_PROFILE_ROOT}/common/crmath_blas/blas_link > ${DEST_ROOT}/math-slots/crmath/bin/blas_link
+    chmod a+x ${DEST_ROOT}/math-slots/crmath/bin/blas_link
 
 }
