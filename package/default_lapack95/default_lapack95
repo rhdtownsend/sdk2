@@ -58,7 +58,7 @@ install () {
 
     cd $SD
 
-    cp -av lapack95.a ${DEST_ROOT}/lib/math/default/liblapack95.a
+    cp -av lapack95.a ${DEST_ROOT}/lib/math/default/
     cp -av lapack95_modules/*.mod ${DEST_ROOT}/include/math/default/
 
     # Create the shared libraries
