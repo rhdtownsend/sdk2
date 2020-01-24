@@ -19,11 +19,15 @@ install () {
 
     echo "Installing $PACKAGE_NAME from $BD"
 
-    # Create the link script
+    # Create the compiler support scripts
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-    	-e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \
-	${SDK2_PROFILE_ROOT}/common/slot_lapack/lapack_link > ${DEST_ROOT}/bin/lapack_link
-    chmod a+x ${DEST_ROOT}/bin/lapack_link
+    for file in lapack_link lapack_modpath; do
+
+	sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+    	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \
+	    ${SDK2_PROFILE_ROOT}/common/slot_lapack/${file} > ${DEST_ROOT}/bin/${file}
+	chmod a+x ${DEST_ROOT}/bin/${file}
+
+    done
 
 }
