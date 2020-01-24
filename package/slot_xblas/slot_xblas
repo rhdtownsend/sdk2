@@ -21,7 +21,7 @@ install () {
 
     # Create the compiler support scripts
 
-    for file in xblas_link xblas_modpath; do
+    for file in xblas_link; do
 
 	sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
     	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \

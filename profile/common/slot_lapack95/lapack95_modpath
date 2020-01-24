@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Module path script for lapack95
+
+if [ -n "@SDK_MATH_SLOT@" ]; then
+    MODPATH=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include
+else
+    MODPATH=@SDK_ROOT@/math-slots/default/include
+fi
+
+echo $MODPATH
