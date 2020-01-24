@@ -81,7 +81,7 @@ install () {
 
      # Create the link script
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_ENV}}/g \
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
 	${SDK2_PROFILE_ROOT}/common/crmath_lapack95/lapack95_link > ${DEST_ROOT}/math-slots/crmath/bin/lapack95_link
     chmod a+x ${DEST_ROOT}/math-slots/crmath/bin/lapack95_link
 
