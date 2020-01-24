@@ -81,7 +81,7 @@ install () {
 	${DEST_ROOT}/lib/math/crlibm/liblapack.a
     create_shared_lib \
         -c gfortran  \
-        -L ${DEST_ROOT}/lib/math/crlibm -lblas -lcrlibm_fortran -lcrlibm -llapack \
+        -L ${DEST_ROOT}/lib/math/crlibm -llapack -lblas -lcrlibm_fortran -lcrlibm \
 	${DEST_ROOT}/lib/math/crlibm/libtmg.a
 
     # Create the link script
