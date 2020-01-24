@@ -55,19 +55,19 @@ build () {
 
 install () {
 
-    echo "Installing $PACKAGE_NAME from $BUILD_DIR"
-
-    build_dir=${SDK2_BUILD_ROOT}/${BUILD_DIR}
+    echo "Installing $PACKAGE_NAME from $BD"
 
     # Copy the static library
 
-    cd $build_dir
+    cd $BD
 
     cp -a libblas.a ${DEST_ROOT}/lib/math/default/
 
     # Create the shared library
 
-    create_shared_lib -c gfortran ${DEST_ROOT}/lib/math/default/libblas.a
+    create_shared_lib \
+	-c gfortran \
+	${DEST_ROOT}/lib/math/default/libblas.a
 
     # Create the link script
 
