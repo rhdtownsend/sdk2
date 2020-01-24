@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Link script for crlapack
-
-echo -L@SDK_ROOT@/lib -lcrlapack `xblas_link` `crblas_link`

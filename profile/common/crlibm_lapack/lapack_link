@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for crlibm_lapack
+
+echo -L@SDK_ROOT@/lib/math/crlibm -llapack `blas_link`

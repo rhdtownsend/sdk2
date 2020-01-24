@@ -66,9 +66,8 @@ RANLIB   = ranlib
 #  relevant routines will be compiled and XBLAS will be linked only if
 #  USEXBLAS is defined.
 #
-# USEXBLAS    = No
-# XBLASLIB    = libxblas.a
-# XBLASLIB    = -lxblas
+#USEXBLAS = Yes
+#XBLASLIB = -lxblas
 #
 #  The location of the libraries to which you will link.  (The
 #  machine-specific, optimized BLAS library should be used whenever
@@ -76,6 +75,6 @@ RANLIB   = ranlib
 #
 BLASLIB      = 
 CBLASLIB     = 
-LAPACKLIB    = libcrlapack.a
-TMGLIB       = libcrtmg.a
+LAPACKLIB    = liblapack.a
+TMGLIB       = libtmg.a
 LAPACKELIB   = 
