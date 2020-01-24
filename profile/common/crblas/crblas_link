@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Link script for crblas
-
-echo -L@SDK_ROOT@/lib -lcrblas -lcrlibm

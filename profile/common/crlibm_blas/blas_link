@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for crlibm_blas
+
+echo -L@SDK_ROOT@/lib/math/crlibm -lblas
