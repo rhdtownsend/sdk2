@@ -1,4 +1,4 @@
-# SDK2 package definition for default_lapack95
+# SDK2 package definition for default-slot lapack95
 
 # Set package-specific variables
 
@@ -58,15 +58,15 @@ install () {
 
     cd $SD
 
-    cp -av lapack95.a ${DEST_ROOT}/lib/math/default/liblapack95.a
-    cp -av lapack95_modules/*.mod ${DEST_ROOT}/include/math/default/
+    cp -av lapack95.a ${DEST_ROOT}/math-slots/default/lib/liblapack95.a
+    cp -av lapack95_modules/*.mod ${DEST_ROOT}/math-slots/default/include/
 
     # Create the shared libraries
 
     create_shared_lib \
         -c gfortran \
-        -L ${DEST_ROOT}/lib/math/default -lblas -lxblas -llapack -ltmg \
-        ${DEST_ROOT}/lib/math/default/liblapack95.a
+        -L ${DEST_ROOT}/math-slots/default/lib -lblas -lxblas -llapack -ltmg \
+        ${DEST_ROOT}/math-slots/default/lib/liblapack95.a
 
     # Copy docs
 
@@ -76,7 +76,7 @@ install () {
     # Create the link script
 
     sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-	${SDK2_PROFILE_ROOT}/common/default_lapack95/lapack95_link > ${DEST_ROOT}/bin/math/default/lapack95_link
-    chmod a+x ${DEST_ROOT}/bin/math/default/lapack95_link
+	${SDK2_PROFILE_ROOT}/common/default_lapack95/lapack95_link > ${DEST_ROOT}/math-slots/default/bin/lapack95_link
+    chmod a+x ${DEST_ROOT}/math-slots/default/bin/lapack95_link
 
 }

@@ -1,0 +1,59 @@
+# SDK2 package definition for crlibm_fortran
+
+# Set package-specific variables
+
+PACKAGE_NAME=crlibm_fortran
+SRC_FILE=crlibm_fortran.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    cp libcrlibm_fortran.a ${DEST_ROOT}/lib/
+
+    cp *.mod *.smod ${DEST_ROOT}/include/
+
+    # Create the shared library
+
+    create_shared_lib \
+    	-c gfortran \
+	-L ${DEST_ROOT}/lib -lcrlibm \
+	${DEST_ROOT}/lib/libcrlibm_fortran.a
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/crlibm_fortran/crlibm_fortran_link > \
+	${DEST_ROOT}/bin/crlibm_fortran_link
+    chmod a+x ${DEST_ROOT}/bin/crlibm_fortran_link
+
+}
