@@ -23,7 +23,7 @@ install () {
 
     sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
     	-e s/@SDK_MATH@/\${${PROFILE_PREFIX}_MATH}/g \
-	\${SDK2_PROFILE_ROOT}/common/virtual_lapack95/lapack95_link > ${DEST_ROOT}/bin/lapack95_link
+	${SDK2_PROFILE_ROOT}/common/virtual_lapack95/lapack95_link > ${DEST_ROOT}/bin/lapack95_link
     chmod a+x ${DEST_ROOT}/bin/lapack95_link
 
 }
