@@ -2,13 +2,13 @@
 
 # Relocate Mach-O binaries
 
-for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
+for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
     relocate_macho_binary $file ${DEST_ROOT}
 done
 
 # Sign Mach-O binaries
 
-for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
+for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
 
     entitle_file=${PD}/entitlements/$(basename $file).xml
 
