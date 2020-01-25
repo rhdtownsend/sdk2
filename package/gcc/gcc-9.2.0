@@ -49,12 +49,18 @@ build () {
 	fi
     fi
 
+    # Create sysroot link for OSX
+
+    if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
+	ln -sf ${SDK2_BUILD_ROOT}/xcode ${DEST_ROOT}/sysroot
+    fi
+	
     # Set extra configuration options
 
     EXTRA_CONFIG_OPTS=
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
-	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=/ --with-build-sysroot=${SDK2_BUILD_ROOT}/xcode"
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot"
     elif [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --enable-clocale=generic"
     fi	
@@ -138,17 +144,17 @@ install () {
 	${DEST_ROOT}/bin/gfortran.wrapper
     chmod a+x ${DEST_ROOT}/bin/gfortran.wrapper
 
-    # On OSX, move stub libraries and replace them by links to the full
+    # On OSX, replace stub libraries by links to the full
     # library. This is necessary because the install names of stub
-    # libraries can't be changed using install_name_tool
+    # libraries can't be changed using install_name_tool (nor can they
+    # be codesigned without creating extended attributes)
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
 	for lib in ${DEST_ROOT}/lib/*.dylib; do
             if [ -f $lib ]; then
 		if `file $lib | grep -q 'Mach-O .* shared library stub'`; then
                     full_lib_name=`otool -D $lib | awk 'NR == 2' | xargs basename`
-                    mkdir -pv ${DEST_ROOT}/lib/stubs
-                    mv -v $lib ${DEST_ROOT}/lib/stubs/
+                    rm $lib
                     ln -sfv $full_lib_name $lib
 		fi
             fi
