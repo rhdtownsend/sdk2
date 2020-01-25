@@ -65,6 +65,8 @@ install () {
 
     # Create the shared library
 
+    export ${PROFILE_PREFIX}_MATH_SLOT=default
+
     create_shared_lib \
 	-c gfortran \
 	${DEST_ROOT}/math-slots/default/lib/libblas.a
