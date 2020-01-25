@@ -26,7 +26,9 @@ if [[ $COMPILING == "y" ]]; then
 
     # Add SDK directories to the libary run path
 
-    FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/lib -Wl,-rpath -Wl,@SDK_ROOT@/lib64"
+    FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/lib"
+    FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/lib64"
+    FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib"
 
     # Deal with multiarch
 
