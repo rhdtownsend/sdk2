@@ -67,7 +67,7 @@ install () {
 
     create_shared_lib \
         -c gfortran \
-        -L ${DEST_ROOT}/math-slots/default/lib -llapack -lxblas -lblas \
+        -L ${DEST_ROOT}/math-slots/default/lib -llapack -ltmg -lxblas -lblas \
         ${DEST_ROOT}/math-slots/default/lib/liblapack95.a
 
     # Copy docs

@@ -2,4 +2,4 @@
 #
 # Link script for default-slot lapack95
 
-echo -L@SDK_ROOT@/math-slots/default/lib -llapack95 `lapack_link`
+echo -L@SDK_ROOT@/math-slots/default/lib -llapack95 -ltmg `lapack_link`
