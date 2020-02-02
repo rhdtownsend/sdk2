@@ -18,7 +18,9 @@ fi
 
 # Launch the session
 
+C_SDK2_ROOT=/root/sdk2
+
 docker run -it --name sdk2_build --rm \
-       --env-file env.list \
-       --mount type=bind,source=$SDK2_ROOT,target=/sdk2 \
+       --env SDK2_ROOT=$C_SDK2_ROOT --env SDK2_PROFILE --env SDK2_RELEASE \
+       --mount type=bind,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
        rhdtownsend/sdk2_build bash
