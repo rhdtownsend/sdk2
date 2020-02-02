@@ -421,6 +421,10 @@ case $ACTION in
     pre_install)
 	pre_install
 	;;
+    packages_install)
+	ACTION=install
+	packages_install
+	;;
     post_install)
 	post_install
 	;;
@@ -434,7 +438,7 @@ case $ACTION in
 	post_install
 	;;
     *)
-	echo "Syntax: sdk2 pre_install|post_install|install <package_list>"
+	echo "Syntax: sdk2 pre_install|packages_install|post_install|install <package_list>"
 	exit 1
 esac
 
