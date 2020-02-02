@@ -26,7 +26,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>../../../build/mesasdk</string>
+									<string>@DEST_ROOT@</string>
 									<key>PATH_TYPE</key>
 									<integer>1</integer>
 									<key>PERMISSIONS</key>
@@ -773,7 +773,7 @@
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
-				<string>build</string>
+				<string>@PKG_ROOT@</string>
 				<key>PATH_TYPE</key>
 				<integer>1</integer>
 			</dict>
