@@ -1,6 +1,10 @@
+# Base system
+
 FROM centos:5.11
 
 MAINTAINER NAME townsend@astro.wisc.edu
+
+# Get yum working again
 
 RUN sed -i -e 's/^#baseurl=/baseurl=/' \
            -e 's/^mirrorlist=/#mirrorlist=/' \
@@ -9,8 +13,20 @@ RUN sed -i -e 's/^#baseurl=/baseurl=/' \
     sed -i -e 's/enabled=1/enabled=0/' \
            /etc/yum.repos.d/libselinux.repo /etc/yum/pluginconf.d/fastestmirror.conf && \
     rpm -ivh --nodeps http://vault.centos.org/5.11/os/x86_64/CentOS/libselinux-python-1.33.4-5.7.el5.`uname -m`.rpm && \
-    yum -y clean all && \
-    echo "multilib_policy=best" >> /etc/yum.conf
+    yum -y clean all
 
-RUN yum -y install curl
+# Tell yum not to install 32-bit packages
+
+RUN echo "multilib_policy=best" >> /etc/yum.conf
+
+# Install basic developer tools
+
+RUN yum -y install \
+    curl make patch m4 bzip2 \
+    gcc gcc-c++ zlib-devel texinfo \
+    perl libX11-devel autoconf file
+    
+    
+
+
 
