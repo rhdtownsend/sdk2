@@ -16,11 +16,27 @@ if [[ ! -d $SDK2_ROOT ]]; then
     exit 1
 fi
 
+# Check SDK2_TMP is set and valid
+
+if [[ -z $SDK2_TMP ]]; then
+    echo "Environment variable SDK2_TMP is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_TMP ]]; then
+    echo "Root directory '$SDK2_TMP' is missing"
+    exit 1
+fi
+
 # Launch the session
 
 C_SDK2_ROOT=/root/sdk2
+C_SDK2_TMP=/root/sdk2-tmp
 
 docker run -it --name sdk2_build --rm \
-       --env SDK2_ROOT=$C_SDK2_ROOT --env SDK2_PROFILE --env SDK2_RELEASE \
-       --mount type=bind,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
+       --env SDK2_ROOT=$C_SDK2_ROOT \
+       --env SDK2_TMP=$C_SDK2_TMP \
+       --env SDK2_PROFILE --env SDK2_RELEASE \
+       --mount type=bind,readonly,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
+       --mount type=bind,source=$SDK2_ROOT,target=$C_SDK2_TMP \
        rhdtownsend/sdk2_build bash
