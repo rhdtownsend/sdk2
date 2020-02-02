@@ -1,4 +1,4 @@
-build
+tmp
 *~
 *.pkg
 .DS_Store

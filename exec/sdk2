@@ -48,9 +48,12 @@ fi
 
 export SDK2_PACKAGE_ROOT=${SDK2_ROOT}/package
 export SDK2_PROFILE_ROOT=${SDK2_ROOT}/profile
-export SDK2_SRC_ROOT=${SDK2_ROOT}/src
-export SDK2_BUILD_ROOT=${SDK2_ROOT}/build
 export SDK2_EXEC_ROOT=${SDK2_ROOT}/exec
+
+export SDK2_TMP=${SDK2_TMP:-${SDK2_ROOT}/tmp}
+
+export SDK2_SRC_ROOT=${SDK2_TMP}/src
+export SDK2_BUILD_ROOT=${SDK2_TMP}/build
 
 # Define platform variables
 
@@ -161,6 +164,11 @@ fi
 # Set the SDK_ROOT environment variable
 
 export ${PROFILE_PREFIX}_ROOT=${DEST_ROOT}
+
+# Create any missing directories
+
+mkdir -p $SDK2_SRC_ROOT
+mkdir -p $SDK2_BUILD_ROOT
 
 ### FUNCTIONS ###
 
