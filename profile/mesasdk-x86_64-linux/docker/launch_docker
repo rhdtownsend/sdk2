@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Launch an SDK2 docker session
+
+### VALIDATION ###
+
+# Check SDK2_ROOT is set and valid
+
+if [[ -z $SDK2_ROOT ]]; then
+    echo "Environment variable SDK2_ROOT is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_ROOT ]]; then
+    echo "Root directory '$SDK2_ROOT' is missing"
+    exit 1
+fi
+
+# Launch the session
+
+docker run -it --name sdk2_build --rm \
+       --env-file env.list \
+       --mount type=bind,source=$SDK2_ROOT,target=/sdk2 \
+       rhdtownsend/sdk2_build bash
