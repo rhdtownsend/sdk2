@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Launch an SDK2 docker session
+# Launch an SDK2 docker container
 
 ### VALIDATION ###
 
@@ -30,13 +30,13 @@ fi
 
 # Launch the session
 
-C_SDK2_ROOT=/root/sdk2
-C_SDK2_TMP=/root/sdk2-tmp
+C_SDK2_ROOT=/home/user/sdk2
+C_SDK2_TMP=/home/user/sdk2-tmp
 
-docker run -it --name sdk2_build --rm \
+docker run -it --rm \
        --env SDK2_ROOT=$C_SDK2_ROOT \
        --env SDK2_TMP=$C_SDK2_TMP \
        --env SDK2_PROFILE --env SDK2_RELEASE \
        --mount type=bind,readonly,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
-       --mount type=bind,source=$SDK2_ROOT,target=$C_SDK2_TMP \
-       rhdtownsend/sdk2_build bash
+       --mount type=bind,source=$SDK2_TMP,target=$C_SDK2_TMP \
+       sdk2_build bash

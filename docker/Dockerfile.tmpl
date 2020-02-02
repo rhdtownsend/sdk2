@@ -2,7 +2,14 @@
 
 FROM centos:5.11
 
+# Metadata
+
 MAINTAINER NAME townsend@astro.wisc.edu
+
+# Add user
+
+RUN groupadd --gid @GROUP_ID@ user
+RUN useradd --uid @USER_ID@ --gid @GROUP_ID@ -m user
 
 # Get yum working again
 
@@ -25,8 +32,7 @@ RUN yum -y install \
     curl make patch m4 bzip2 \
     gcc gcc-c++ zlib-devel texinfo \
     perl libX11-devel autoconf file
-    
-    
 
+# Set user
 
-
+USER user
