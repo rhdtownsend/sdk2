@@ -28,6 +28,18 @@ if [[ ! -d $SDK2_ROOT ]]; then
     exit 1
 fi
 
+# Check SDK2_TMP is set and valid
+
+if [[ -z $SDK2_TMP ]]; then
+    echo "Environment variable SDK2_TMP is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_TMP ]]; then
+    echo "Temporary directory '$SDK2_TMP' is missing"
+    exit 1
+fi
+
 # Check SDK2_PROFILE is set
 
 if [[ -z $SDK2_PROFILE ]]; then
@@ -49,8 +61,6 @@ fi
 export SDK2_PACKAGE_ROOT=${SDK2_ROOT}/package
 export SDK2_PROFILE_ROOT=${SDK2_ROOT}/profile
 export SDK2_EXEC_ROOT=${SDK2_ROOT}/exec
-
-export SDK2_TMP=${SDK2_TMP:-${SDK2_ROOT}/tmp}
 
 export SDK2_SRC_ROOT=${SDK2_TMP}/src
 export SDK2_BUILD_ROOT=${SDK2_TMP}/build
