@@ -28,7 +28,21 @@ if [[ ! -d $SDK2_TMP ]]; then
     exit 1
 fi
 
-# Launch the session
+# Check SDK2_PROFILE is set
+
+if [[ -z $SDK2_PROFILE ]]; then
+    echo "Environment variable SDK2_PROFILE is not set"
+    exit 1
+fi
+
+# Check SDK2_RELEASE is set
+
+if [[ -z $SDK2_RELEASE ]]; then
+    echo "Environment variable SDK2_RELEASE is not set"
+    exit 1
+fi
+
+# Run the container
 
 C_SDK2_ROOT=/home/user/sdk2
 C_SDK2_TMP=/home/user/sdk2-tmp
@@ -37,6 +51,8 @@ docker run -it --rm \
        --env SDK2_ROOT=$C_SDK2_ROOT \
        --env SDK2_TMP=$C_SDK2_TMP \
        --env SDK2_PROFILE --env SDK2_RELEASE \
+       --user=user -w=/home/user \
        --mount type=bind,readonly,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
        --mount type=bind,source=$SDK2_TMP,target=$C_SDK2_TMP \
        sdk2_build bash
+
