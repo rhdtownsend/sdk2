@@ -28,7 +28,7 @@ fi
 export SDK2_BUILD_ROOT=${SDK2_TMP}/build
 export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
 
-export DEST_ROOT=${SDK2_BUILD_ROOT}/mesasdk
+export DEST_ROOT=${SDK2_TMP}/mesasdk
 
 ### ACTION ###
 
