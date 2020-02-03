@@ -38,7 +38,7 @@ mkdir -p $SDK2_PKG_ROOT
 
 # Customize the template pkproj file
 
-pkgproj_file=${SDK2_PKG_ROOT}/$(mktemp mesasdk.XXXXXX)
+pkgproj_file=$(mktemp ${SDK2_PKG_ROOT}/mesasdk.XXXXXX)
 
 sed -e "s|@RELEASE@|$SDK2_RELEASE|g" \
     -e "s|@PKG_ROOT@|$SDK2_PKG_ROOT|g" \
