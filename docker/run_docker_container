@@ -7,6 +7,7 @@
 # Store and validate arguments
 
 CMD=$1
+shift
 
 if [[ -z $CMD ]]; then
     CMD=bash
@@ -64,5 +65,4 @@ docker run -it --rm \
        --user=user -w=/home/user \
        --mount type=bind,readonly,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
        --mount type=bind,source=$SDK2_TMP,target=$C_SDK2_TMP \
-       sdk2_build $CMD
-
+       sdk2_build $CMD "$@"
