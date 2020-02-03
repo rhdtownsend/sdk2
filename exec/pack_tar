@@ -22,11 +22,6 @@ if [[ ! -d $DEST_ROOT ]]; then
     exit 1
 fi
 
-if [[ -f $TAR_FILE ]]; then
-    echo "File '$TAR_FILE' already exists"
-    exit 1
-fi
-
 # Pack all
 
 tar cfz $TAR_FILE -C `dirname $DEST_ROOT` --exclude='etc/*.done' `basename $DEST_ROOT`

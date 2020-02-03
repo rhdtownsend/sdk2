@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+# Create a SDK2 docker image
+
+### VALIDATION ###
+
+# Check SDK2_ROOT is set and valid
+
+if [[ -z $SDK2_ROOT ]]; then
+    echo "Environment variable SDK2_ROOT is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_ROOT ]]; then
+    echo "Root directory '$SDK2_ROOT' is missing"
+    exit 1
+fi
+
+### VARIABLES ###
+
+export SDK2_DOCKER_ROOT=${SDK2_ROOT}/docker
+
+### ACTIONS ###
+
+# Build the image
+
+sed -e "s/@USER_ID@/$(id -u)/g" \
+    -e "s/@GROUP_ID@/$(id -g)/g" ${SDK2_DOCKER_ROOT}/Dockerfile.tmpl | \
+    docker build -t sdk2_build -
+

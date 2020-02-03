@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# Launch an SDK2 docker container
+
+### COMMAND-LINE ARGUMENTS ###
+
+# Store and validate arguments
+
+CMD=$1
+shift
+
+if [[ -z $CMD ]]; then
+    CMD=bash
+fi
+
+### VALIDATION ###
+
+# Check SDK2_ROOT is set and valid
+
+if [[ -z $SDK2_ROOT ]]; then
+    echo "Environment variable SDK2_ROOT is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_ROOT ]]; then
+    echo "Root directory '$SDK2_ROOT' is missing"
+    exit 1
+fi
+
+# Check SDK2_TMP is set and valid
+
+if [[ -z $SDK2_TMP ]]; then
+    echo "Environment variable SDK2_TMP is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_TMP ]]; then
+    echo "Root directory '$SDK2_TMP' is missing"
+    exit 1
+fi
+
+# Check SDK2_PROFILE is set
+
+if [[ -z $SDK2_PROFILE ]]; then
+    echo "Environment variable SDK2_PROFILE is not set"
+    exit 1
+fi
+
+# Check SDK2_RELEASE is set
+
+if [[ -z $SDK2_RELEASE ]]; then
+    echo "Environment variable SDK2_RELEASE is not set"
+    exit 1
+fi
+
+# Run the container
+
+C_SDK2_ROOT=/home/user/sdk2
+C_SDK2_TMP=/home/user/sdk2-tmp
+
+docker run -it --rm \
+       --env SDK2_ROOT=$C_SDK2_ROOT \
+       --env SDK2_TMP=$C_SDK2_TMP \
+       --env SDK2_PROFILE --env SDK2_RELEASE --env DEST_ROOT \
+       --user=user -w=/home/user \
+       --mount type=bind,readonly,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
+       --mount type=bind,source=$SDK2_TMP,target=$C_SDK2_TMP \
+       sdk2_build $CMD "$@"
