@@ -347,7 +347,7 @@ packages_install () {
 
 }
 
-clean {
+clean () {
 
     # Clean src and build directories
     
