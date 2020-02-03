@@ -130,18 +130,6 @@ if [[ -z $LIB_EXT ]]; then
     exit 1
 fi
 
-# Further checks
-
-if [[ ! -d $DEST_ROOT ]]; then
-    echo "Destination directory '$DEST_ROOT' is missing"
-    exit 1
-fi
-
-if [[ ! -w $DEST_ROOT ]]; then
-    echo "Destination directory '$DEST_ROOT' is not writable"
-    exit 1
-fi
-
 ### PACKAGES ###
 
 # If PACKAGES is empty, read packages from the profile packages list
@@ -177,9 +165,25 @@ export ${PROFILE_PREFIX}_ROOT=${DEST_ROOT}
 
 # If necessary, create src, build and destination directories
 
-mkdir -p $SDK2_SRC_ROOT
-mkdir -p $SDK2_BUILD_ROOT
-mkdir -p $DEST_ROOT
+for dir in $SDK2_SRC_ROOT $SDK2_BUILD_ROOT $DEST_ROOT; do
+
+    if [[ ! -d $dir ]]; then
+
+	mkdir -p $dir
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED when creating directory '$dir'"
+	    exit 1
+	fi
+
+    fi
+
+    if [[ ! -w $dir ]]; then
+	echo "Directory '$dir' is not writable"
+	exit 1
+    fi
+
+done
 
 ### FUNCTIONS ###
 
