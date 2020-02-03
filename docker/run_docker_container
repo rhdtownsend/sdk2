@@ -61,7 +61,7 @@ C_SDK2_TMP=/home/user/sdk2-tmp
 docker run -it --rm \
        --env SDK2_ROOT=$C_SDK2_ROOT \
        --env SDK2_TMP=$C_SDK2_TMP \
-       --env SDK2_PROFILE --env SDK2_RELEASE --env DEST_ROOT \
+       --env SDK2_PROFILE --env SDK2_RELEASE \
        --user=user -w=/home/user \
        --mount type=bind,readonly,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
        --mount type=bind,source=$SDK2_TMP,target=$C_SDK2_TMP \
