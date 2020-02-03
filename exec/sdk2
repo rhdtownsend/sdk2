@@ -175,10 +175,11 @@ fi
 
 export ${PROFILE_PREFIX}_ROOT=${DEST_ROOT}
 
-# Create any missing directories
+# If necessary, create src, build and destination directories
 
 mkdir -p $SDK2_SRC_ROOT
 mkdir -p $SDK2_BUILD_ROOT
+mkdir -p $DEST_ROOT
 
 ### FUNCTIONS ###
 
@@ -342,6 +343,16 @@ packages_install () {
 
 }
 
+clean {
+
+    # Clean src and build directories
+    
+    rm -rf ${SDK2_SRC_ROOT}/*
+    rm -rf ${SDK2_BUILD_ROOT}/*
+
+}
+
+
 # Default package functions
 
 fetch () {
@@ -448,6 +459,9 @@ case $ACTION in
 	;;
     fetch|fetch_only|unpack|unpack_only|build|build_only|install|install_only)
 	packages_install
+	;;
+    clean)
+	clean
 	;;
     all)
 	ACTION=install
