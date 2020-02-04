@@ -19,7 +19,7 @@ default_xblas/default_xblas
 default_lapack/default_lapack-3.8.0
 default_lapack95/default_lapack95
 crlibm/crlibm-1.0beta4
-crmath/crmath-1.0
+crmath/crmath-1.1
 crmath_blas/crmath_blas
 crmath_lapack/crmath_lapack-3.8.0
 crmath_lapack95/crmath_lapack95
