@@ -28,7 +28,11 @@ if [[ $COMPILING == "y" ]]; then
 
     FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/lib"
     FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/lib64"
-    FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib"
+    if [ -n "@SDK_MATH_SLOT@" ]; then
+	FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib"
+    else
+	FLAGS="${FLAGS} -Wl,-rpath -Wl,@SDK_ROOT@/math-slots/default/lib"
+    fi
 
     # Deal with multiarch
 
