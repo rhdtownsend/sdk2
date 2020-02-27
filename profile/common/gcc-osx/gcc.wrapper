@@ -18,6 +18,14 @@ if [ "$OPTIND" -le "$#" ]; then
    COMPILING="y"
 fi
 
+# Determine the math slot path
+
+if [ -n "@SDK_MATH_SLOT@" ]; then
+    MATH_SLOT_PATH=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@
+else
+    MATH_SLOT_PATH=@SDK_ROOT@/math-slots/default
+fi
+
 # Set up compilation flags
 
 FLAGS=$SDK2_GCC_FLAGS

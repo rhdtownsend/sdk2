@@ -4,7 +4,7 @@
 # are used in naming scripts and versioning)
 
 export PROFILE_NAME=mesasdk
-export PROFILE_ARCH=x86_64-osx-macos
+export PROFILE_ARCH=x86_64-macos
 
 # Set the profile prefix (this is used generate the names of
 # environment variables associated with the profile)
