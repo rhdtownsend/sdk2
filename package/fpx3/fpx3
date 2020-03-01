@@ -22,11 +22,17 @@ install () {
 
     echo "Installing $PACKAGE_NAME from $BD"
 
-    # Copy the scripts
+    # Copy the fxp3 script
 
     cd $BD
 
     cp -av fpx3 ${DEST_ROOT}/bin/
-    cp -av fpx3_deps ${DEST_ROOT}/bin/
+
+    # Create the fpx3_deps script
+
+    sed -e s/@SDK_ROOT@/${PROFILE_PREFIX}_ROOT/g \
+        -e s/@SDK_MATH_SLOT@/${PROFILE_PREFIX}_MATH_SLOT/g \
+        ${SDK2_PROFILE_ROOT}/common/fpx3/fpx3_deps > ${DEST_ROOT}/bin/fpx3_deps
+    chmod a+x ${DEST_ROOT}/bin/fpx3_deps
 
 }

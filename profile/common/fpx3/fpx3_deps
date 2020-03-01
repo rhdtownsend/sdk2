@@ -1,0 +1,172 @@
+#!/usr/bin/perl -w
+#
+# Generate makefile dependencies from fpx3-created header
+
+# Constants
+
+$FPX3_EXEC = 'fpx3';
+
+$FPP_SUFFIX = 'fpp';
+$F90_SUFFIX = 'f90';
+
+@EXCLUDE_MODS = (
+    'iso_fortran_env',
+    'iso_c_binding',
+    'omp_lib',
+    'omp_lib_kinds',
+    'ieee_arithmetic',
+    'ieee_exceptions',
+    'ieee_features'
+    );
+
+$EXCLUDE_PATHS="$ENV{'@SDK_ROOT@'}/include";
+
+if (exists $ENV{'@SDK_MATH_SLOT@'}) {
+    $EXCLUDE_PATHS .= ":$ENV{'@SDK_ROOT@'}/math-slots/$ENV{'@SDK_MATH_SLOT@'}/include";
+}
+else {
+    $EXCLUDE_PATHS .= ":$ENV{'@SDK_ROOT@'}/math-slots/default/include";
+}
+    
+# Split the command-line arguments into program 
+# units and fpx3 arguments
+
+@units = grep !/^-/, @ARGV;
+@args = grep /^-/, @ARGV;
+
+# Extract arguments specifying paths
+
+@paths = grep s/^-I//, @ARGV;
+$paths = join(':', @paths);
+
+# Build up the dependency table
+
+%dep_table = ();
+
+foreach my $unit (@units) {
+
+    # Skip the unit if it has already been processed
+
+    exists($dep_table{$unit}) && next;
+
+    # Skip if there is no preprocessor file associated
+    # with the unit
+
+    my $file = "$unit.$FPP_SUFFIX";
+
+    my $pathname = path_search($file);
+
+    $pathname || next;
+
+    # Run the file through fpx3, piping the output
+    # into a buffer
+
+    open FPX3, "$FPX3_EXEC -nofo ".join(' ', @args)." < $pathname|" 
+	or die "Unable to open pipe to $FPX3_EXEC\n$!";
+    my $buffer = join('', <FPX3>);
+    close FPX3;
+
+    # Extract the dependency info
+
+    foreach $field (('includes', 'uses', 'provides')) {
+
+	$buffer =~ /^!   $field: (.*)$/m;
+	@deps = split(' ', lc $1);
+
+	if($field eq 'uses') {
+
+	    # Remove dependencies listed in EXCLUDE_MODS
+
+	    foreach $mod (@EXCLUDE_MODS) {
+		@deps = grep $_ ne $mod, @deps;
+	    }
+
+	    # Remove dependencies found in EXCLUDE_PATHS
+	    
+	    foreach $path (split(':', $EXCLUDE_PATHS)) {
+		@deps = grep ! -f "$path/$_.mod", @deps;
+	    }
+
+	}
+
+	$dep_table{$unit}->{$field} = [@deps];
+    }
+
+    # Add the uses to the unit list
+
+    push @units, @{$dep_table{$unit}->{'uses'}};
+
+    # Loop around
+
+}
+
+# Write out the dependency info
+
+foreach $unit (sort keys %dep_table) {
+
+    # Module dependencies
+
+    print "$unit.o $unit.mod : ".join(' ', (map "$_.mod", @{$dep_table{$unit}->{'uses'}}))."\n";
+
+    # Include dependencies
+
+    print "$unit.f90 : ".join(' ', @{$dep_table{$unit}->{'includes'}})."\n";
+
+    # Executable dependencies - only add in if the unit
+    # has a null provides
+
+    if(!@{$dep_table{$unit}->{'provides'}}) {
+	print "$unit : ".join(' ', map "$_.o", keys %{&flatten_deps($unit)})."\n";
+    }
+
+}
+
+# Finish
+
+sub flatten_deps {
+
+    my $unit = $_[0];
+
+    # Find *all* units that $unit depends upon (including
+    # itself)
+
+    $pathname = path_search("$unit.$FPP_SUFFIX", $path) || 
+	path_search("$unit.$F90_SUFFIX", $path);
+
+    if($pathname) {
+
+	my $deps = { $unit => 1 };
+
+	foreach (@{$dep_table{$unit}->{'uses'}}) {
+	    $deps = { %{$deps}, %{&flatten_deps($_)} };
+	}
+
+	return $deps;
+
+    }
+
+    else {
+
+	# Ignore the unit if it has no associated file(s)
+
+	return {};
+
+    }
+
+}
+
+sub path_search {
+
+    $filename = $_[0];
+
+    # Loop through the path elements, seeing if a file with the given
+    # name exists
+
+    foreach $path (split(':', $paths)) {
+	$pathname = "$path/$filename";
+	-f $pathname && return $pathname;
+    }
+
+    return 0;
+
+}
