@@ -67,8 +67,8 @@ install () {
 
     cd $BD
 
-    cp -av libodepack.a ${DEST_ROOT}/math-slots/default/lib/
-    cp -av odepack.mod ${DEST_ROOT}/math-slots/default/include/
+    cp -av libodepack.a ${DEST_ROOT}/math-slots/crmath/lib/
+    cp -av odepack.mod ${DEST_ROOT}/math-slots/crmath/include/
 
     # Create the shared library
 
