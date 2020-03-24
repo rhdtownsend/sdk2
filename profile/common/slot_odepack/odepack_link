@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Link script for odepack
+
+if [ -n "@SDK_MATH_SLOT@" ]; then
+    EXEC=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/bin/odepack_link
+else
+    EXEC=@SDK_ROOT@/math-slots/default/bin/odepack_link
+fi
+
+if [ -x "$EXEC" ]; then
+    exec $EXEC
+else
+    echo "Unable to locate slot link script for odepack"
+    exit 1
+fi

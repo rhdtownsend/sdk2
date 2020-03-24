@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Link script for crmath-slot odepack
+
+echo -L@SDK_ROOT@/math-slots/crmath/lib -lodepack

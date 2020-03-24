@@ -1,0 +1,89 @@
+# SDK2 package definition for crmath-slot odepack
+
+# Set package-specific variables
+
+PACKAGE_NAME=crmath_odepack
+SRC_FILES=(odepack-omp.tar.gz crmath_odepack.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=${SRC_DIR}/SRC
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE_NAME (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources
+
+    cd $SD
+
+    ./fix_crmath_odepack.sh
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $SD"
+
+    # Copy the static library and module file
+
+    cd $BD
+
+    cp -av libodepack.a ${DEST_ROOT}/math-slots/default/lib/
+    cp -av odepack.mod ${DEST_ROOT}/math-slots/default/include/
+
+    # Create the shared library
+
+    export ${PROFILE_PREFIX}_MATH_SLOT=crmath
+
+    create_shared_lib \
+        -c gfortran \
+	-L ${DEST_ROOT}/lib -lcrmath \
+        -L ${DEST_ROOT}/math-slots/crmath/lib \
+        ${DEST_ROOT}/math-slots/crmath/lib/libodepack.a
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/crmath_odepack/odepack_link > ${DEST_ROOT}/math-slots/crmath/bin/odepack_link
+    chmod a+x ${DEST_ROOT}/math-slots/crmath/bin/odepack_link
+
+}
