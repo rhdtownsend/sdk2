@@ -2,4 +2,4 @@
 #
 # Link script for default-slot odepack
 
-echo -L@SDK_ROOT@/math-slots/default/lib -lodepack
+echo -L@SDK_ROOT@/math-slots/default/lib -lodepack `blas_link`

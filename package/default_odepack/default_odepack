@@ -44,12 +44,12 @@ install () {
 
     # Create the shared library
 
-    export ${PROFILE_PREFIX}_MATH_SLOT=default
+#    export ${PROFILE_PREFIX}_MATH_SLOT=default
 
-    create_shared_lib \
-        -c gfortran \
-        -L ${DEST_ROOT}/math-slots/default/lib \
-        ${DEST_ROOT}/math-slots/default/lib/libodepack.a
+#    create_shared_lib \
+#        -c gfortran \
+#        -L ${DEST_ROOT}/math-slots/default/lib -lblas \
+#        ${DEST_ROOT}/math-slots/default/lib/libodepack.a
 
     # Create the link script
 

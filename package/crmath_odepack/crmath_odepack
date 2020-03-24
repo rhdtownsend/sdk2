@@ -72,13 +72,13 @@ install () {
 
     # Create the shared library
 
-    export ${PROFILE_PREFIX}_MATH_SLOT=crmath
+#    export ${PROFILE_PREFIX}_MATH_SLOT=crmath
 
-    create_shared_lib \
-        -c gfortran \
-	-L ${DEST_ROOT}/lib -lcrmath \
-        -L ${DEST_ROOT}/math-slots/crmath/lib \
-        ${DEST_ROOT}/math-slots/crmath/lib/libodepack.a
+#    create_shared_lib \
+#        -c gfortran \
+#	-L ${DEST_ROOT}/lib -lcrmath \
+#        -L ${DEST_ROOT}/math-slots/crmath/lib -lblas \
+#        ${DEST_ROOT}/math-slots/crmath/lib/libodepack.a
 
     # Create the link script
 

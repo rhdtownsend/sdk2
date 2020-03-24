@@ -2,4 +2,4 @@
 #
 # Link script for crmath-slot odepack
 
-echo -L@SDK_ROOT@/math-slots/crmath/lib -lodepack
+echo -L@SDK_ROOT@/math-slots/crmath/lib -lodepack `blas_link`
