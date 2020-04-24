@@ -26,6 +26,7 @@ crmath_blas/crmath_blas
 crmath_lapack/crmath_lapack-3.8.0
 crmath_lapack95/crmath_lapack95
 crmath_odepack/crmath_odepack
+corehash/corehash-8.32
 png_pgplot/png_pgplot-1.5.13
 pgplot/pgplot-5.2
 hdf5/hdf5-1.10.5

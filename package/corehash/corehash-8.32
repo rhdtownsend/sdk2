@@ -1,0 +1,64 @@
+# SDK2 package definition for corehash (hashing utilities from coreutils)
+
+# Set package-specific variables
+
+PACKAGE_NAME=corehash
+SRC_FILE=coreutils-8.32.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--without-openssl
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Tweak the makefile so that gnulib-tests is not built (it breaks
+    # the compile on old OSX systems)
+
+    sed -e 's+^\(SUBDIRS.*\)gnulib-tests$+\1+' Makefile > Makefile.tmp
+    mv Makefile.tmp Makefile
+
+    # Build
+
+    make 
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    for f in b2sum cksum md5sum sha1sum sha224sum \
+    	     sha256sum sha384sum sha512sum sum; do
+	cp -av src/$f ${DEST_ROOT}/bin/
+    done
+
+}

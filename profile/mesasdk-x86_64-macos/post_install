@@ -29,7 +29,3 @@ done
 for p in lapack95; do
     ln -sf ${p}_modpath ${DEST_ROOT}/bin/mesasdk_${p}_modpath
 done
-
-# Install md5sum wrapper
-
-cp ${PD}/md5sum/md5sum ${DEST_ROOT}/bin/
