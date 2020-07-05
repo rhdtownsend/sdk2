@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 #
 # Check to see whether the current architecture is supported
+# (Linux x86_64)
 
 # Determine OS type
 
@@ -13,8 +14,6 @@ my $supported = 'N';
 
 if($os eq 'Linux') {
 
-    # Linux -- use uname -m
-
     my $arch = `uname -m 2>/dev/null`;
     chomp $arch;
 
@@ -24,27 +23,8 @@ if($os eq 'Linux') {
     if($arch eq 'x86_64') {
 	$supported = 'Y';
     }
-    elsif($arch eq 'i686') {
-	$supported = 'Y';
-    }
     
     if($verstr =~ /Microsoft/){
-	$supported = 'N';
-    }
-
-}
-elsif($os eq 'Darwin') {
-
-    # Darwin (OS X) -- use sysctl (on some systems uname -m returns
-    # i386 even though 64-bit userspace progs are fine)
-
-    my $sysctl_data = `sysctl -n hw.cpu64bit_capable`;
-    chomp $sysctl_data;
-
-    if($sysctl_data eq '1') {
-	$supported = 'Y';
-    }
-    else {
 	$supported = 'N';
     }
 

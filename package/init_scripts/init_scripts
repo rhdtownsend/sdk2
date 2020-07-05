@@ -50,7 +50,7 @@ install () {
     cp -av ${PD}/init_scripts/init.sh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.sh
     cp -av ${PD}/init_scripts/init.csh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.csh
     
-    cp -av ${SDK2_PROFILE_ROOT}/common/init_scripts/arch_check ${DEST_ROOT}/bin/${PROFILE_NAME}_arch_check
+    cp -av ${PD}/init_scripts/arch_check ${DEST_ROOT}/bin/${PROFILE_NAME}_arch_check
     cp -av preq_check ${DEST_ROOT}/bin/${PROFILE_NAME}_preq_check
 
     # Create the version script
