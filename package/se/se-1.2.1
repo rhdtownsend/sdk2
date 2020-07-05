@@ -23,6 +23,7 @@ build () {
     # Configure
 
     ./configure \
+	--build=$BUILD_SPEC \
         --prefix=$DEST_ROOT \
 	F77=gfortran \
 	--with-hdf5=$DEST_ROOT
