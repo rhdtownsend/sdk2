@@ -32,7 +32,7 @@ pgplot/pgplot-5.2
 hdf5/hdf5-1.10.5
 se/se-1.2.1
 x264/x264-20190310-2245
-# ffmpeg/ffmpeg-4.2
+ffmpeg/ffmpeg-4.2
 ndiff/ndiff-2.00
 fpx3/fpx3
 ar_wrapper/ar_wrapper
