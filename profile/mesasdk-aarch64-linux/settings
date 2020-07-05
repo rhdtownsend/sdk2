@@ -1,0 +1,40 @@
+# Profile-specific sewttings
+
+# Set the profile name and architecture string (these
+# are used in naming scripts and versioning)
+
+export PROFILE_NAME=mesasdk
+export PROFILE_ARCH=aarch64-linux
+
+# Set the profile prefix (this is used generate the names of
+# environment variables associated with the profile)
+
+export PROFILE_PREFIX=MESASDK
+
+# Set the profile source URL
+
+export PROFILE_URL=http://www.astro.wisc.edu/~townsend/resource/download/sdk2/src
+
+# Set the default destination
+
+export DEST_ROOT=${SDK2_TMP}/${PROFILE_NAME}
+
+# Count the number of cores
+
+if `cat /proc/cpuinfo | grep -q "processor"`; then
+    export NCORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
+else
+    export NCORES=1
+fi
+
+# Set the build spec (for tools)
+
+export BUILD_SPEC="aarch64-unknown-linux-gnu"
+
+# Set the extension for library files
+
+export LIB_EXT=so
+
+# Reset paths
+
+export PATH=${DEST_ROOT}/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
