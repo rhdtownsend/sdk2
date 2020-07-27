@@ -20,11 +20,15 @@ build () {
 
     make distclean
 
+    # Remove SDK toolchain from the path (since patchelf should be
+    # compiled with the build system toolchain)
+
+    export PATH=`echo $PATH | tr ":" "\n" | grep -v "$DEST_ROOT" | tr "\n" ":"`
+    unset LD_RUN_PATH
+
     # Configure
 
-    ./bootstrap.sh
-
-    CXXFLAGS='-static' ./configure \
+    ./configure \
 	--build=$BUILD_SPEC \
 	--prefix=$BD
 

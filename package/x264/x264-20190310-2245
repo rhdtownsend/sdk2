@@ -20,13 +20,25 @@ build () {
 
     make distclean
 
+    # Set extra configuration options
+
+    EXTRA_CONFIG_OPTS=
+
+    if [[ $SDK2_PLATFORM_ISA = 'x86_64' ]]; then
+
+	# For portability?
+	
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-asm"
+
+    fi
+	
     # Configure
 
     ./configure \
 	--host=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
 	--enable-shared \
-	--disable-asm
+	$EXTRA_CONFIG_OPTS
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in configure for $PACKAGE_NAME"

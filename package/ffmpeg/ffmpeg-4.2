@@ -24,6 +24,14 @@ build () {
 
     EXTRA_CONFIG_OPTS=
 
+    if [[ $SDK2_PLATFORM_ISA = 'x86_64' ]]; then
+
+	# Use NASM as the assembler on x86_64
+	
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --x86asmexe=${SDK2_BUILD_ROOT}/nasm_ffmpeg/bin/nasm"
+
+    fi
+	
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
 	
 	# This is to work around the fact that various OSX components
@@ -49,7 +57,8 @@ build () {
 	--enable-shared \
 	--enable-gpl \
 	--enable-libx264 \
-	--x86asmexe=${SDK2_BUILD_ROOT}/nasm_ffmpeg/bin/nasm \
+	--extra-cflags=-I${DEST_ROOT}/include \
+	--extra-ldflags=-L${DEST_ROOT}/lib \
 	$EXTRA_CONF_OPTS
 
     if [ $? -ne 0 ]; then
