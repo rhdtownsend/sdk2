@@ -1,0 +1,63 @@
+# SDK2 package definition for crmath
+
+# Set package-specific variables
+
+PACKAGE_NAME=crmath
+SRC_FILE=crmath-1.2.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Move other files into place
+
+    cp ${PD}/crmath/Make.inc ${SD}/Make.inc
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    cp libcrmath.a ${DEST_ROOT}/lib/
+
+    cp *.mod *.smod ${DEST_ROOT}/include/
+
+    # Create the shared library
+
+    create_shared_lib \
+    	-c gfortran \
+	-L ${DEST_ROOT}/lib -lcrlibm \
+	${DEST_ROOT}/lib/libcrmath.a
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/crmath/crmath_link > ${DEST_ROOT}/bin/crmath_link
+    chmod a+x ${DEST_ROOT}/bin/crmath_link
+
+}
