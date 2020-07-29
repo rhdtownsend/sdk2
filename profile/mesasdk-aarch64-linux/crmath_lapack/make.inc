@@ -17,7 +17,7 @@ SHELL = /bin/sh
 #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
 #
 FORTRAN  = gfortran
-OPTS     = -O2 -frecursive -fPIC -I${DEST_ROOT}/include
+OPTS     = -O1 -frecursive -fPIC -I${DEST_ROOT}/include
 DRVOPTS  = $(OPTS)
 NOOPT    = -O0 -frecursive -fPIC -I${DEST_ROOT}/include
 LOADER   = gfortran
@@ -52,7 +52,7 @@ TIMER    = INT_ETIME
 # CC is the C compiler, normally invoked with options CFLAGS.
 #
 CC = gcc
-CFLAGS = -O3 -fPIC
+CFLAGS = -O1 -fPIC
 #
 #  The archiver and the flag(s) to use when building archive (library)
 #  If you system has no ranlib, set RANLIB = echo.

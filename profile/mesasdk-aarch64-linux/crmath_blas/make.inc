@@ -1,8 +1,8 @@
 SHELL     = /bin/sh
 PLAT      = _GFORTRAN
 FORTRAN   = gfortran
-OPTS      = -O3 -fPIC -I${DEST_ROOT}/include
-DRVOPTS   = -O3
+OPTS      = -O1 -fPIC -I${DEST_ROOT}/include
+DRVOPTS   = -O1
 NOOPT     = -fPIC -I${DEST_ROOT}/include
 LOADER    = gfortran
 LOADOPTS  =

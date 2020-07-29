@@ -1,8 +1,8 @@
 SHELL     = /bin/sh
 PLAT      = _GFORTRAN
 FORTRAN   = gfortran
-OPTS      = -O3 -fPIC
-DRVOPTS   = -O3
+OPTS      = -O1 -fPIC
+DRVOPTS   = -O1
 NOOPT     = -fPIC
 LOADER    = gfortran
 LOADOPTS  =
