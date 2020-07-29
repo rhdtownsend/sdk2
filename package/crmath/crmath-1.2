@@ -10,6 +10,32 @@ BUILD_DIR=$SRC_DIR
 
 # Functions
 
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarballs
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Move other files into place
+
+    cp ${PD}/crmath/Make.inc ${SD}/Make.inc
+
+}
+
 build () {
 
     echo "Building $PACKAGE_NAME in $BD"
@@ -28,10 +54,6 @@ build () {
 	echo "FAILED in make for $PACKAGE_NAME"
 	exit 1
     fi
-
-    # Move other files into place
-
-    cp ${PD}/crmath/Make.inc ${SD}/Make.inc
 
 }
 
