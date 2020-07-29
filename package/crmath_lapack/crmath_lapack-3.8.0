@@ -8,6 +8,8 @@ SRC_FILES=(lapack-3.8.0.tar.gz crmath_lapack.tar.gz)
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
 
+# Functions
+
 unpack () {
 
     echo "Unpacking $PACKAGE_NAME into $SD"
