@@ -126,7 +126,7 @@ install () {
 
     case $SDK2_PLATFORM_NAME in
 	Linux)
-	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-linux
+	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-`uname -m`-linux
 	    ;;
 	Darwin)
 	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-osx
