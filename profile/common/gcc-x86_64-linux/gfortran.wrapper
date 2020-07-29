@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Wrapper for gfortran (linux)
+# Wrapper for gfortran (x86_64 linux)
 
 # Examine arguments to decide whether we're actually compiling
 
@@ -34,7 +34,7 @@ if [[ $COMPILING == "y" ]]; then
 
     # Set flags to suppress FPE summary notices
 
-    FLAGS="-ffpe-summary=none"
+    FLAGS="${FFLAGS} -ffpe-summary=none"
 
     # Add SDK directories to the libary run path
 

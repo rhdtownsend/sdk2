@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Wrapper for gcc (linux)
+# Wrapper for gcc (x86_64 linux)
 
 # Examine arguments to decide whether we're actually compiling
 
