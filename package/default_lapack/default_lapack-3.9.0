@@ -3,7 +3,7 @@
 # Set package-specific variables
 
 PACKAGE_NAME=default_lapack
-SRC_FILE=lapack-3.8.0.tar.gz
+SRC_FILE=lapack-3.9.0.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -28,7 +28,7 @@ unpack () {
 
     # Move other files into place
 
-    cp ${PD}/default_lapack/make.inc-3.8.0 ${SD}/make.inc
+    cp ${PD}/default_lapack/make.inc-3.9.0 ${SD}/make.inc
 
 }
 
@@ -62,8 +62,8 @@ install () {
 
     cd $BD
 
-    cp -av liblapack.a ${DEST_ROOT}/math-slots/default/lib/
-    cp -av libtmg.a ${DEST_ROOT}/math-slots/default/lib/
+    cp -av SRC/liblapack.a ${DEST_ROOT}/math-slots/default/lib/
+    cp -av TESTING/MATGEN/libtmg.a ${DEST_ROOT}/math-slots/default/lib/
 
     # Create the shared libraries
 

@@ -74,8 +74,8 @@ XBLASLIB     = ${DEST_ROOT}/lib/libxblas.a
 #  machine-specific, optimized BLAS library should be used whenever
 #  possible.)
 #
-BLASLIB      = ${DEST_ROOT}/lib/libblas.a
-CBLASLIB     = ${DEST_ROOT}/lib/libcblas.a
+BLASLIB      = 
+CBLASLIB     = 
 LAPACKLIB    = liblapack.a
 TMGLIB       = libtmg.a
-LAPACKELIB   = liblapacke.a
+LAPACKELIB   = 

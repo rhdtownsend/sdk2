@@ -1,0 +1,60 @@
+# SDK2 package definition for gmp
+
+# Set package-specific variables
+
+PACKAGE_NAME=gmp
+SRC_FILE=gmp-6.2.0.tar.bz2
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Install docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/${PACKAGE_NAME}
+    cp -av AUTHORS COPYING* INSTALL* NEWS README ${DEST_ROOT}/share/doc/${PACKAGE_NAME}
+
+}
