@@ -3,4 +3,4 @@
 # Variables
 
 F9XC = gfortran
-F9XFLAGS =-O1 -fPIC -std=f2008
+F9XFLAGS = -O2 -ffp-contract=off -fPIC -std=f2008

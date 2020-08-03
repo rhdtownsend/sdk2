@@ -17,9 +17,9 @@ SHELL = /bin/sh
 #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
 #
 FORTRAN  = gfortran
-OPTS     = -O1 -frecursive -fPIC -I${DEST_ROOT}/include
+OPTS     = -O2 -ffp-contract=off -frecursive -fPIC -I${DEST_ROOT}/include
 DRVOPTS  = $(OPTS)
-NOOPT    = -O0 -frecursive -fPIC -I${DEST_ROOT}/include
+NOOPT    = -O0 -ffp-contract=off -frecursive -fPIC -I${DEST_ROOT}/include
 LOADER   = gfortran
 LOADOPTS =
 #

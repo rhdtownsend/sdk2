@@ -1,6 +1,6 @@
 FC	    = gfortran -ffree-form
 FC1         = gfortran -ffixed-form
-OPTS0       = -O1 -fPIC
+OPTS0       = -O2 -ffp-contract=off -fPIC
 MODLIB      = -I./../lapack95_modules -I${DEST_ROOT}/include/
 OPTS1       = -c $(OPTS0)
 OPTS3       = $(OPTS1) $(MODLIB)
