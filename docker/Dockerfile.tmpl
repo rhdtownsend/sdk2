@@ -30,5 +30,6 @@ RUN echo "multilib_policy=best" >> /etc/yum.conf
 
 RUN yum -y install \
     curl make patch m4 bzip2 \
-    gcc gcc-c++ zlib-devel texinfo \
-    perl libX11-devel autoconf file
+    gcc gcc-c++ gdb texinfo \
+    perl libX11-devel autoconf file \
+    zlib-devel nano
