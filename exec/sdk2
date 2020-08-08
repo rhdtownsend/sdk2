@@ -147,9 +147,9 @@ fi
 
 ### ENVIRONMENT ###
 
-# Add the exec directory and DEST_ROOT/bin to the path
+# Add directories to the path
 
-export PATH=${SDK2_EXEC_ROOT}:${DEST_ROOT}/bin:${PATH}
+export PATH=${SDK2_EXEC_ROOT}:${DEST_ROOT}/bin:${SDK2_BUILD_PATH}:${PATH}
 
 # On Linux systems, add DEST_ROOT/bin to LD_RUN_PATH. This 
 # ensures libraries are found by executables run during 
