@@ -20,10 +20,11 @@ build () {
 
     make distclean
 
-    # Remove SDK toolchain from the path (since patchelf should be
+    # Remove SDK toolchain(s) from the path (since patchelf should be
     # compiled with the build system toolchain)
 
     export PATH=`echo $PATH | tr ":" "\n" | grep -v "$DEST_ROOT" | tr "\n" ":"`
+    export PATH=`echo $PATH | tr ":" "\n" | grep -v "$SDK2_BUILD_PATH" | tr "\n" ":"`
     unset LD_RUN_PATH
 
     # Configure
