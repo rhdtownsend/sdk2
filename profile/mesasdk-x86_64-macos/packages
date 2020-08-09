@@ -4,7 +4,7 @@ gmp/gmp-6.2.0
 mpfr/mpfr-4.1.0
 mpc/mpc-1.1.0
 xcode/xcode
-gcc/gcc-9.3.0
+gcc/gcc-10.2.0
 #gdb/gdb-8.3.50.20190312
 gdb/gdb-9.2
 makedepf90/makedepf90-2.8.8
@@ -34,7 +34,7 @@ hdf5/hdf5-1.12.0
 se/se-1.2.1
 x264/x264-master-20200729
 nasm_ffmpeg/nasm_ffmpeg-2.15.03
-ffmpeg/ffmpeg-4.3
+ffmpeg/ffmpeg-4.3.1
 ndiff/ndiff-2.00
 fpx3/fpx3
 ar_wrapper/ar_wrapper
