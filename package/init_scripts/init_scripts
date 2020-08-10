@@ -49,9 +49,11 @@ install () {
 
     cp -av ${PD}/init_scripts/init.sh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.sh
     cp -av ${PD}/init_scripts/init.csh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.csh
-    
-    cp -av ${PD}/init_scripts/arch_check ${DEST_ROOT}/bin/${PROFILE_NAME}_arch_check
-    cp -av preq_check ${DEST_ROOT}/bin/${PROFILE_NAME}_preq_check
+
+    if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
+        cp -av ${PD}/init_scripts/arch_check ${DEST_ROOT}/bin/${PROFILE_NAME}_arch_check
+    	cp -av preq_check ${DEST_ROOT}/bin/${PROFILE_NAME}_preq_check
+    fi
 
     # Create the version script
 
