@@ -1,4 +1,4 @@
-AC_INIT(SDK2 Dependency Checker, 1)
+AC_INIT(SDK2 Dependency Checker, 2)
 
 missing=()
 
@@ -15,6 +15,11 @@ fi
 AC_CHECK_PROG(TCSH, tcsh, tcsh, '')
 if [[ -z ${TCSH} ]]; then
     missing+=("C shell")
+fi
+
+AC_CHECK_PROG(AS, as, as, '')
+if [[ -z ${AS} ]]; then
+    missing+=("Binutils (as)")
 fi
 
 AC_CHECK_LIB(z, 
