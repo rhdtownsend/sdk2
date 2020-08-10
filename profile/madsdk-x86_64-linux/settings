@@ -17,7 +17,7 @@ export PROFILE_URL=http://www.astro.wisc.edu/~townsend/resource/download/sdk2/sr
 
 # Set the default destination
 
-export DEST_ROOT=~/${PROFILE_NAME}
+export DEST_ROOT=${SDK2_TMP}/${PROFILE_NAME}
 
 # Count the number of cores
 
@@ -37,4 +37,4 @@ export LIB_EXT=so
 
 # Reset paths
 
-export PATH=${DEST_ROOT}/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin

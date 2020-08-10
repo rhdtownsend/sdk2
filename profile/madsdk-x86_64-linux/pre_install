@@ -5,3 +5,13 @@
 for f in ${DEST_ROOT}/*; do
     rm -rfv $f
 done
+
+# Create slot directories
+
+mkdir -pv ${DEST_ROOT}/math-slots
+
+for slot in default crmath; do
+    for dir in bin include lib; do
+        mkdir -pv ${DEST_ROOT}/math-slots/${slot}/${dir}
+    done
+done

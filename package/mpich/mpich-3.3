@@ -22,7 +22,11 @@ build () {
 
     # Configure
 
-    F77=gfortran FC=gfortran ./configure \
+    export F77=gfortran
+    export FC=gfortran
+    export FFLAGS="-w -fallow-argument-mismatch -O2" 
+
+    ./configure \
          --build=$BUILD_SPEC \
          --prefix=$DEST_ROOT \
 	 --with-pm=gforker \
