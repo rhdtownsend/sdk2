@@ -50,6 +50,16 @@ variable accordingly, e.g.
 
    $ export SDK2_PROFILE=mesasdk-x86_64-linux
 
+Finally, set the :envvar:`SDK2_RELEASE` environment variable to the
+relase number of the SDK. Convention is to use ``Y.M.N``, where
+``Y`` is the two-digit year, ``M`` is the month number, and ``N``
+is an index counting upward from ``1`` for each release made
+in that month. So, for the third release in November 2020, you would use
+
+.. code-block:: console
+
+   $ export SDK2_RELEASE=20.11.3
+
 With these three environment variables set, you can now build the SDK
 via
 
@@ -61,6 +71,5 @@ After some time (typically, an hour or two, depending on the speed of
 your system), the SDK2 will complete the build process, and you’ll
 have a fresh SDK sitting in the directory
 :file:`{$SDK2_TMP}/{$PROFILE_NAME}`. Here, :envvar:`PROFILE_NAME` is
-the name of the profile --- 'mesasdk' for the MESA SDK, and
-'madsdk' for the Mad SDK.
-
+the name of the profile --- ``mesasdk`` for the MESA SDK, and
+``madsdk`` for the Mad SDK.
