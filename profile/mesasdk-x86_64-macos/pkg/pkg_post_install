@@ -11,23 +11,45 @@ os_ver=$(sw_vers -productVersion)
 major=$(echo "$os_ver" | awk -F. '{ print $1; }')
 minor=$(echo "$os_ver" | awk -F. '{ print $2; }')
 
-if [[ $major != 10 ]]; then
-   echo "Invalid OS major version number: $major"
-   exit 1
-fi
+case $major in
 
-case $minor in
-    10|11|12|13)
-	sysroot='/'
+    10)
+
+	case $minor in
+	    10|11|12|13)
+		sysroot='/'
+		;;
+	    14|15)
+		sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
+		;;
+	    *)
+		echo "Invalid OS minor version number: $minor"
+		exit 1
+		;;
+	esac
 	;;
-    14|15)
-	sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk'
+
+    11)
+
+	case $minor in
+	    0)
+		sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
+		;;
+	    *)
+		echo "Invalid OS minor version number: $minor"
+		exit 1
+		;;
+	esac
 	;;
+
     *)
-	echo "Invalid OS minor version number: $minor"
+	
+	echo "Invalid OS major version number: $major"
 	exit 1
 	;;
+
 esac
+
 
 rm -f ${MESASDK_ROOT}/sysroot
 ln -s $sysroot ${MESASDK_ROOT}/sysroot
