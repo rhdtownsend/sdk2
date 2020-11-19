@@ -7,6 +7,12 @@ if [[ -z "$MESASDK_ROOT" ]]; then
     return 1
 fi
 
+if [[ "$MESASDK_ROOT" == *" "* ]]; then
+    echo "mesasdk_init.sh: MESASDK_ROOT can not contain spaces"
+    echo "mesasdk_init.sh: Please move your sdk to a folder without spaces in the full path name"
+    return 1
+fi
+
 # Check architecture
 
 if [ ! -f "${MESASDK_ROOT}/etc/check_arch.done" ]; then
