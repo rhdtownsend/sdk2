@@ -32,7 +32,7 @@ case $major in
     11)
 
 	case $minor in
-	    0)
+	    0|1)
 		sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
 		;;
 	    *)
