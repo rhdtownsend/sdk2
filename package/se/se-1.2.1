@@ -20,6 +20,10 @@ build () {
 
     make distclean
 
+    # If necessary, modify the BUILD_SPEC
+
+    BUILD_SPEC=${BUILD_SPEC/apple/unknown}
+
     # Configure
 
     ./configure \
