@@ -1,0 +1,27 @@
+# SDK2 package definition for mpfr-src
+
+# Set package-specific variables
+
+PACKAGE_NAME=mpfr-src
+SRC_FILE=mpfr-4.1.0.tar.bz2
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    echo "Nothing to do..."
+
+}
+
+install () {
+
+    echo "Installing package $PACKAGE from $BD"
+
+    echo "Nothing to do..."
+
+}
