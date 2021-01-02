@@ -147,10 +147,6 @@ fi
 
 ### ENVIRONMENT ###
 
-# Add directories to the path
-
-export PATH=${SDK2_EXEC_ROOT}:${DEST_ROOT}/bin:${SDK2_BUILD_PATH}:${PATH}
-
 # On Linux systems, add DEST_ROOT/bin to LD_RUN_PATH. This 
 # ensures libraries are found by executables run during 
 # the build process
@@ -199,6 +195,8 @@ pre_install() {
 
 	. ${profile_dir}/settings
 
+	export PATH=${SDK2_EXEC_ROOT}:$PATH
+
 	# Set full path variables
 
 	PD=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
@@ -225,6 +223,8 @@ post_install () {
 	# Re-import settings
 
 	. ${profile_dir}/settings
+
+	export PATH=${SDK2_EXEC_ROOT}:$PATH
 
 	# Set full path variables
 
@@ -256,6 +256,8 @@ packages_install () {
 	    # Re-import settings
 
 	    . ${profile_dir}/settings
+
+	    export PATH=${SDK2_EXEC_ROOT}:$PATH
 
 	    # Import the package definition. This should define the following
 	    # variables:
