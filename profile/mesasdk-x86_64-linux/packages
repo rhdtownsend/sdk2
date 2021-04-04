@@ -1,9 +1,12 @@
 # Packages list for MESA SDK
  
 gmp/gmp-6.2.0
-mpfr/mpfr-4.1.0
+mpfr/mpfr-4.1.0-r1
 mpc/mpc-1.1.0
 gcc/gcc-10.2.0
+gmp/gmp-6.2.0
+mpfr/mpfr-4.1.0-r1
+mpc/mpc-1.1.0
 ncurses/ncurses-6.0
 gdb/gdb-9.2
 valgrind/valgrind-3.13.0

@@ -1,10 +1,13 @@
 # Packages list for MESA SDK
  
 gmp/gmp-6.2.0
-mpfr/mpfr-4.1.0
+mpfr/mpfr-4.1.0-r1
 mpc/mpc-1.1.0
 xcode/xcode
 gcc/gcc-10.2.0
+gmp/gmp-6.2.0
+mpfr/mpfr-4.1.0-r1
+mpc/mpc-1.1.0
 #gdb/gdb-8.3.50.20190312
 gdb/gdb-9.2
 makedepf90/makedepf90-2.8.8
