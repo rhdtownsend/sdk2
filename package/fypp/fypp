@@ -1,0 +1,31 @@
+# SDK2 package definition for fypp
+
+# Set package-specific variables
+
+PACKAGE_NAME=fypp
+SRC_FILE=fypp-master-e2f0183.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    # Empty function, as there is no build action
+
+    true
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the fypp script
+
+    cd $BD
+
+    cp -av fypp ${DEST_ROOT}/bin/
+
+}

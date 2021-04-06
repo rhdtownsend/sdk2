@@ -40,5 +40,6 @@ nasm_ffmpeg/nasm_ffmpeg-2.15.03
 ffmpeg/ffmpeg-4.3.1
 ndiff/ndiff-2.00
 fpx3/fpx3
+fypp/fypp
 ar_wrapper/ar_wrapper
 init_scripts/init_scripts
