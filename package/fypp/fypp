@@ -26,6 +26,12 @@ install () {
 
     cd $BD
 
-    cp -av fypp ${DEST_ROOT}/bin/
+    mkdir -p ${DEST_ROOT}/lib/python
+
+    cp -av fypp ${DEST_ROOT}/lib/python/fypp.py
+
+    # Create the exetutable symlink
+
+    ln -sf ../lib/python/fypp.py ${DEST_ROOT}/bin/fypp
 
 }
