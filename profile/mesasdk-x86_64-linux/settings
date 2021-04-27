@@ -37,4 +37,4 @@ export LIB_EXT=so
 
 # Reset paths
 
-export PATH=${DEST_ROOT}/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+export PATH=${DEST_ROOT}/bin:${BOOT_ROOT}/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
