@@ -41,5 +41,5 @@ export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
 xcrun altool --notarize-app \
              --primary-bundle-id "edu.wisc.astro.pkg.mesasdk" \
              --username "$SDK2_NUSER" \
-	     --password "@keychain:AC_PASSWORD" \
+	     --password "$SDK2_NPASS" \
              --file ${SDK2_PKG_ROOT}/mesasdk-x86_64-macos-$SDK2_RELEASE.pkg
