@@ -7,19 +7,20 @@ To use the SDK2, first clone the repository from GitHub:
 
    $ git clone https://github.com/rhdtownsend/sdk2.git
 
-Set the :envvar:`SDK2_ROOT` environment variable to point to the downloaded
-files:
+Set the :envvar:`SDK2_ROOT` environment variable to point to the root directory of the 
+repository:
 
 .. code-block:: console
 		
    $ export SDK2_ROOT=~/sdk2
 
-Also, set the :envvar:`SDK2_TMP` environment variable to point to a temporary
-space that will be used to build SDKs:
+Also, set the :envvar:`SDK2_TMP` environment variable to point to a
+temporary directory that will be used to build SDKs (if possible,
+place this directory on a fast storage device, such as an SSD):
 
 .. code-block:: console
 		
-   $ export SDK2_ROOT=~/sdk2-tmp
+   $ export SDK2_TMP=~/sdk2-tmp
 
 Next, choose an appropriate *profile*. The profile determines which SDK
 will be built, and for what platform. Current choices include:
