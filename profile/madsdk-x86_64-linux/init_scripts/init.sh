@@ -44,6 +44,7 @@ if [ ! -f "${MADSDK_ROOT}/etc/check_preq.done" ]; then
 	echo "madsdk_init.sh: missing prerequisites:"
 	echo $missing | awk '{print "  "$0}'
 	echo "Please visit http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Prerequisites and review the prerequisites required for use of the Mad SDK"
+	popd > /dev/null
 	return 1
     fi
     rm config.log

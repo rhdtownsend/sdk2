@@ -48,6 +48,7 @@ if ( ! -f "${MESASDK_ROOT}/etc/check_preq.done" ) then
 	echo "mesasdk_init.csh: missing prerequisites:"
 	echo $missing | awk '{print "  "$0}'
 	echo "Please visit http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Prerequisites_2 and review the prerequisites required for use of the MESA SDK"
+        popd > /dev/null
 	exit 1
     endif
     rm config.log
