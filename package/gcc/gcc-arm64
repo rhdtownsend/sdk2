@@ -3,7 +3,7 @@
 # Set package-specific variables
 
 PACKAGE_NAME=gcc
-SRC_FILE=gcc-arm64.tar.gz 
+SRC_FILE=gcc-arm64.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${PACKAGE_NAME}-build
@@ -60,9 +60,6 @@ build () {
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot"
-	if [[ $SDK_PLATFORM_ISA = 'arm64' ]]; then
-	    EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-libstdcxx-pch"
-	fi
     elif [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --enable-clocale=generic"
     fi
@@ -71,16 +68,15 @@ build () {
 
     ${SD}/configure CC="$CC_TOOLS" CXX="$CXX_TOOLS" \
         --build=$BUILD_SPEC \
-	--host=$BUILD_SPEC \
-	--target=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
 	--with-gmp=$DEST_ROOT \
 	--with-mpfr=$DEST_ROOT \
 	--with-mpc=$DEST_ROOT \
 	--enable-languages=c,c++,fortran \
-	--disable-multilib \
+	--enable-pie-tools \
 	--disable-nls \
 	--disable-libsanitizer \
+	--disable-darwin-at-rpath \
 	$EXTRA_CONFIG_OPTS
 
     if [ $? -ne 0 ]; then
