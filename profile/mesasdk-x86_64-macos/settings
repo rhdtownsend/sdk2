@@ -25,7 +25,7 @@ export NCORES=`sysctl hw.ncpu | awk '{print $2}'`
 
 # Set the build spec (for tools)
 
-export BUILD_SPEC="x86_64-apple-darwin`uname -r`"
+export BUILD_SPEC="x86_64-apple-darwin"
 
 # Set the extension for library files
 
