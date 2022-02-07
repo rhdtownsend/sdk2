@@ -1,0 +1,167 @@
+# SDK2 package definition for pgplot
+
+# Set package-specific variables
+
+PACKAGE_NAME=pgplot
+SRC_FILE=pgplot5.2.tar.gz
+PATCH_FILES=pgplot5.2-png-1.5.diff
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=${PACKAGE_NAME}-build
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    tar xf $SF -C $SD --strip-components 1
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in tar for $PACKAGE_NAME (file $SF)"
+	exit 1
+    fi
+
+    # Apply patches
+
+    for patch_file in $PF; do
+
+	patch -d $SD -p1 < $patch_file
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in patch for $PACKAGE_NAME (file $patch_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Move other files into place
+
+    mkdir ${SD}/sys_sdk2
+
+    cp ${PD}/pgplot/gfortran.conf ${SD}/sys_sdk2/gfortran.conf
+
+    # Create the build dir
+
+    rm -rf $BD
+    mkdir $BD
+
+    # Copy over a customized driver list
+
+    sed -e "s/^! PNDRIV/ PNDRIV/g" \
+	-e "s/^! PSDRIV/ PSDRIV/g" \
+	-e "s/^! XWDRIV/ XWDRIV/g" ${SD}/drivers.list > ${BD}/drivers.list    
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Make the makefile
+
+    ${SD}/makemake $SD sdk2
+
+    # Fix a bogus dependency on PNG headers
+
+    sed -i.bak \
+    	-e 's|\./png\.h||g' \
+	-e 's|\./pngconf\.h||g' \
+	-e 's|\./zlib\.h||g' \
+	-e 's|\./zconf\.h||g' ${BD}/makefile && rm -f ${BD}/makefile.bak
+
+    # Remove libpng from the link list (should now be built into
+    # libpgplot)
+    
+    sed -i.bak -e 's|-lpng||g' ${BD}/makefile && rm -f ${BD}/makefile.bak
+
+    # Build (doesn't play well with multi-core)
+
+    LC_ALL=C make all cpg
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Merge the pgplot libs with the png libs, to create the static
+    # libraries
+
+    cd $BD
+
+    pgplot_lib_dir=${DEST_ROOT}/lib/pgplot
+
+    mkdir -pv $pgplot_lib_dir
+
+    for lib_file in libpgplot.a libcpgplot.a; do
+	rm -f ${pgplot_lib_dir}/${lib_file}
+	merge_static_libs ${pgplot_lib_dir}/${lib_file} ${lib_file} ${SDK2_BUILD_ROOT}/png_pgplot/lib/libpng15.a
+    done
+
+    # Copy the include files
+
+    cp -av cpgplot.h ${pgplot_lib_dir}/
+
+    # Copy the support files
+
+    cp -av grfont.dat rgb.txt pgxwin_server ${pgplot_lib_dir}/
+
+    # Create symlinks
+
+    ln -sfv pgplot/libpgplot.a ${DEST_ROOT}/lib/libpgplot.a
+    ln -sfv pgplot/libcpgplot.a ${DEST_ROOT}/lib/libcpgplot.a
+
+    ln -sfv ../lib/pgplot/cpgplot.h ${DEST_ROOT}/include/cpgplot.h
+
+    # Create the shared libraries
+
+    create_shared_lib \
+        -c gfortran \
+	-L/opt/X11/lib -lX11 -lz \
+	${DEST_ROOT}/lib/libpgplot.a
+
+    if [ $? -ne 0 ]; then
+	exit 1
+    fi
+
+    create_shared_lib \
+        -c gfortran  \
+	-L/opt/X11/lib -lX11 -lz \
+	-L${DEST_ROOT}/lib -lpgplot \
+        ${DEST_ROOT}/lib/libcpgplot.a
+
+    if [ $? -ne 0 ]; then
+	exit 1
+    fi
+
+    # Copy docs
+    
+    cd $SD
+
+    mkdir -pv ${DEST_ROOT}/share/doc/pgplot
+    cp -av aaaread.me copyright.notice install* ${DEST_ROOT}/share/doc/pgplot/
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/pgplot/pgplot_link > \
+	${DEST_ROOT}/bin/pgplot_link
+    chmod a+x ${DEST_ROOT}/bin/pgplot_link
+
+}
