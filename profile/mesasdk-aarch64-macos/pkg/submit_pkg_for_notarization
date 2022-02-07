@@ -42,4 +42,4 @@ xcrun altool --notarize-app \
              --primary-bundle-id "edu.wisc.astro.pkg.mesasdk" \
              --username "$SDK2_NUSER" \
 	     --password "@keychain:AC_PASSWORD" \
-             --file ${SDK2_PKG_ROOT}/mesasdk-arm64-macos-$SDK2_RELEASE.pkg
+             --file ${SDK2_PKG_ROOT}/mesasdk-aarch64-macos-$SDK2_RELEASE.pkg

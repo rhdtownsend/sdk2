@@ -4,7 +4,7 @@
 # are used in naming scripts and versioning)
 
 export PROFILE_NAME=mesasdk
-export PROFILE_ARCH=arm64-macos
+export PROFILE_ARCH=aarch64-macos
 
 # Set the profile prefix (this is used generate the names of
 # environment variables associated with the profile)
@@ -25,7 +25,7 @@ export NCORES=`sysctl hw.ncpu | awk '{print $2}'`
 
 # Set the build spec (for tools)
 
-export BUILD_SPEC="arm64-apple-darwin`uname -r`"
+export BUILD_SPEC="aarch64-apple-darwin20"
 
 # Set the extension for library files
 

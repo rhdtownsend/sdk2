@@ -1,12 +1,12 @@
 # Packages list for MESA SDK
  
-gmp/gmp-src-6.2.1
-mpfr/mpfr-src-4.1.0
-mpc/mpc-src-1.1.0
+gmp/gmp-6.2.1
+mpfr/mpfr-4.1.0-r1
+mpc/mpc-1.1.0
 xcode/xcode
 gcc/gcc-arm64
-#gdb/gdb-8.3.50.20190312
-#gdb/gdb-9.2
+# #gdb/gdb-8.3.50.20190312
+# #gdb/gdb-9.2
 makedepf90/makedepf90-2.8.8
 xz/xz-5.2.5
 tar/tar-1.32
@@ -28,12 +28,12 @@ crmath_lapack/crmath_lapack-3.9.0
 crmath_lapack95/crmath_lapack95
 crmath_odepack/crmath_odepack
 corehash/corehash-8.32
-#png_pgplot/png_pgplot-1.5.13
-#pgplot/pgplot-5.2
+png_pgplot/png_pgplot-1.5.30
+pgplot/pgplot-5.2-r1
 hdf5/hdf5-1.12.0
 se/se-1.2.1
-#x264/x264-master-20200729
-#ffmpeg/ffmpeg-4.3.1
+x264/x264-master-20200729
+ffmpeg/ffmpeg-4.3.1
 ndiff/ndiff-2.00
 fpx3/fpx3
 ar_wrapper/ar_wrapper

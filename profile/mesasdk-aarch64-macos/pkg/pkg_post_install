@@ -29,17 +29,9 @@ case $major in
 	esac
 	;;
 
-    11)
+    11|12)
 
-	case $minor in
-	    0|1)
-		sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
-		;;
-	    *)
-		echo "Invalid OS minor version number: $minor"
-		exit 1
-		;;
-	esac
+	sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
 	;;
 
     *)
@@ -50,6 +42,16 @@ case $major in
 
 esac
 
+if [[ ! -e $sysroot ]]; then
+   osascript <<-EndOfScript
+display dialog "Error locating Xcode command-line tools" buttons {"OK"} default button 1 with icon caution with title "Install MESA SDK"
+EndOfScript
+   exit 1
+fi
+
+if [[ -L $sysroot ]]; then
+    sysroot=`dirname $sysroot`/`readlink $sysroot`
+fi
 
 rm -f ${MESASDK_ROOT}/sysroot
 ln -s $sysroot ${MESASDK_ROOT}/sysroot
@@ -60,7 +62,9 @@ mkheaders=$(find "$MESASDK_ROOT/" -name mkheaders | head -n 1)
 $mkheaders "$MESASDK_ROOT"
 
 if [ $? != 0 ]; then
-    echo "Error regenerating headers"
+   osascript <<-EndOfScript
+display dialog "Error regenerating compiler headers" buttons {"OK"} default button 1 with icon note caution title "Install MESA SDK"
+EndOfScript
     exit 1
 fi
 
