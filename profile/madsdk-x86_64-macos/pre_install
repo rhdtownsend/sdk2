@@ -9,3 +9,14 @@ done
 # Set the icon
 
 add_dir_icon ${PD}/Icon.icns $DEST_ROOT
+
+# Create slot directories
+
+mkdir -pv ${DEST_ROOT}/math-slots
+
+for slot in default crmath; do
+    for dir in bin include lib; do
+        mkdir -pv ${DEST_ROOT}/math-slots/${slot}/${dir}
+    done
+done
+

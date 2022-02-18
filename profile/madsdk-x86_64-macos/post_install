@@ -2,13 +2,13 @@
 
 # Relocate Mach-O binaries
 
-for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
+for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
     relocate_macho_binary $file ${DEST_ROOT}
 done
 
 # Sign Mach-O binaries
 
-for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
+for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
 
     entitle_file=${PD}/entitlements/$(basename $file).xml
 
@@ -20,16 +20,12 @@ for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec`; do
 
 done
 
-# Create symlinks to the link scripts
+# Create symlinks to the build scripts
 
-for p in blas hdf5 lapack lapack95 crlibm pgplot se xblas; do
+for p in blas crlibm crmath hdf5 lapack lapack95 pgplot se xblas odepack; do
     ln -sf ${p}_link ${DEST_ROOT}/bin/mesasdk_${p}_link
 done
 
-for p in odepack; do
-    ln -sf ${p}_link ${DEST_ROOT}/bin/madsdk_${p}_link
+for p in lapack95 odepack; do
+    ln -sf ${p}_modpath ${DEST_ROOT}/bin/mesasdk_${p}_modpath
 done
-
-# Install md5sum wrapper
-
-cp ${PD}/md5sum/md5sum ${DEST_ROOT}/bin/
