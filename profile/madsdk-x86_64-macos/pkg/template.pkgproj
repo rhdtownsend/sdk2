@@ -26,7 +26,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>../../../build/madsdk</string>
+									<string>@DEST_ROOT@</string>
 									<key>PATH_TYPE</key>
 									<integer>1</integer>
 									<key>PERMISSIONS</key>
@@ -633,8 +633,6 @@
 						<integer>0</integer>
 						<key>IC_REQUIREMENT_OS_DISTRIBUTION_TYPE</key>
 						<integer>0</integer>
-						<key>IC_REQUIREMENT_OS_MAXIMUM_VERSION</key>
-						<integer>101599</integer>
 						<key>IC_REQUIREMENT_OS_MINIMUM_VERSION</key>
 						<integer>101000</integer>
 					</dict>
@@ -648,7 +646,7 @@
 							<key>LANGUAGE</key>
 							<string>English</string>
 							<key>VALUE</key>
-							<string>This version of the software is for Mac OS X 10.10 (Yosemite) through 10.15 (Catalina).</string>
+							<string>This version of the software is for Mac OS X 10.10 (Yosemite) onward.</string>
 						</dict>
 					</array>
 					<key>NAME</key>
@@ -773,7 +771,7 @@
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
-				<string>build</string>
+				<string>@PKG_ROOT@</string>
 				<key>PATH_TYPE</key>
 				<integer>1</integer>
 			</dict>
