@@ -1,0 +1,92 @@
+# SDK2 package definition for default-slot lapack
+
+# Set package-specific variables
+
+PACKAGE_NAME=default_lapack
+SRC_FILE=lapack-3.10.1.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    tar xf $SF -C $SD --strip-components 1
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in tar for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Move other files into place
+
+    cp ${PD}/default_lapack/make.inc-3.9.0 ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+    rm -f *.a
+
+    # Build
+
+    make -j$NCORES lib
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static libraries
+
+    cd $BD
+
+    cp -av SRC/liblapack.a ${DEST_ROOT}/math-slots/default/lib/
+    cp -av TESTING/MATGEN/libtmg.a ${DEST_ROOT}/math-slots/default/lib/
+
+    # Create the shared libraries
+
+    export ${PROFILE_PREFIX}_MATH_SLOT=default
+
+    create_shared_lib \
+        -c gfortran \
+        -L ${DEST_ROOT}/math-slots/default/lib -lblas -lxblas \
+	${DEST_ROOT}/math-slots/default/lib/liblapack.a
+    create_shared_lib \
+        -c gfortran  \
+        -L ${DEST_ROOT}/math-slots/default/lib -lblas -lxblas -llapack \
+	${DEST_ROOT}/math-slots/default/lib/libtmg.a
+
+    # Copy docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/lapack
+    cp -av LICENSE README.md ${DEST_ROOT}/share/doc/lapack/
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/default_lapack/lapack_link > ${DEST_ROOT}/math-slots/default/bin/lapack_link
+    chmod a+x ${DEST_ROOT}/math-slots/default/bin/lapack_link
+
+}
