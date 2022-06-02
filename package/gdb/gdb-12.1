@@ -28,6 +28,7 @@ build () {
 
     if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	export CFLAGS=-L${DEST_ROOT}/lib
+	export LDFLAGS=-lrt
     fi
 
     # Configure

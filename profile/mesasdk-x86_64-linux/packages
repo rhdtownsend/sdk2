@@ -1,13 +1,13 @@
 # Packages list for MESA SDK
  
-gmp/gmp-6.2.0
+gmp/gmp-6.2.1
 mpfr/mpfr-4.1.0-r1
 mpc/mpc-1.2.1
 gcc/gcc-12.1.0
-gmp/gmp-6.2.0
+gmp/gmp-6.2.1
 mpfr/mpfr-4.1.0-r1
 mpc/mpc-1.2.1
-ncurses/ncurses-6.0
+ncurses/ncurses-6.3
 gdb/gdb-12.1
 valgrind/valgrind-3.19.0
 makedepf90/makedepf90-2.8.8
