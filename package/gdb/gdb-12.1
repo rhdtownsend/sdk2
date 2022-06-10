@@ -36,6 +36,9 @@ build () {
     ${SD}/configure \
 	--build=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
+	--with-gmp=$DEST_ROOT \
+	--with-mpc=$DEST_ROOT \
+	--with-mpfr=$DEST_ROOT \
 	--disable-werror
 
     if [ $? -ne 0 ]; then
