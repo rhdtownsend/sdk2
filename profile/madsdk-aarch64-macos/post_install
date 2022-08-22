@@ -1,0 +1,34 @@
+# SDK2 post-install commands
+
+# Relocate Mach-O binaries
+
+for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
+    relocate_macho_binary $file ${DEST_ROOT}
+done
+
+# Sign Mach-O binaries
+
+for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
+
+    entitle_file=${PD}/entitlements/$(basename $file).xml
+
+    if [[ -e $entitle_file ]]; then
+	sign_macho_binary $file $entitle_file
+    else
+	sign_macho_binary $file
+    fi
+
+done
+
+# Create symlinks to the build scripts
+
+for p in blas crlibm crmath hdf5 lapack lapack95 pgplot se xblas odepack; do
+    ln -sf ${p}_link ${DEST_ROOT}/bin/mesasdk_${p}_link
+done
+
+for p in lapack95 odepack; do
+    ln -sf ${p}_modpath ${DEST_ROOT}/bin/mesasdk_${p}_modpath
+done
+
+ln -sf madsdk_version ${DEST_ROOT}/bin/mesasdk_version
+

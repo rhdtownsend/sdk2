@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# Pre-installation script for Mad SDK
+
+export MADSDK_ROOT=/Applications/madsdk
+
+# Clean up any existing installation
+
+rm -rf $MADSDK_ROOT

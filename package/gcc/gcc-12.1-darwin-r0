@@ -3,7 +3,7 @@
 # Set package-specific variables
 
 PACKAGE_NAME=gcc
-SRC_FILE=gcc-11.1.0.tar.gz
+SRC_FILE=gcc-12.1-darwin-r0.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${PACKAGE_NAME}-build
