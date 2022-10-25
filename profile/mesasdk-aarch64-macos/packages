@@ -8,8 +8,6 @@ gcc/gcc-12.1-darwin-r0
 gmp/gmp-6.2.1
 mpfr/mpfr-4.1.0-r1
 mpc/mpc-1.2.1
-# #gdb/gdb-8.3.50.20190312
-# #gdb/gdb-9.2
 makedepf90/makedepf90-2.8.8
 xz/xz-5.2.5
 tar/tar-1.32
@@ -39,5 +37,6 @@ x264/x264-master-20220525
 ffmpeg/ffmpeg-5.0.1
 ndiff/ndiff-2.00
 fpx3/fpx3
+fypp/fypp
 ar_wrapper/ar_wrapper
 init_scripts/init_scripts
