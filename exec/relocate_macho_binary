@@ -51,10 +51,18 @@ if [ -f $FILE ]; then
 		install_name_tool -add_rpath @loader_path/`relpath $BASE $FD` $FILE
 	    fi
 	    
-	    # If the file is a library, set id
-	
+	    # If the file is a library, strip rpaths and set id
+
 	    if `file $FILE | grep -q 'shared library'`; then
+
+		rpaths=`otool -l $FILE | awk 'c&&!--c;/cmd LC_RPATH/{c=2}' | awk '{print $2}'`
+
+		for rpath in $rpaths; do
+		    install_name_tool -delete_rpath $rpath $FILE
+		done
+
 		install_name_tool -id @rpath/`relpath $FD $BASE`/$FN $FILE
+
 	    fi
 
 	fi
