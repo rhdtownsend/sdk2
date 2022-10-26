@@ -6,7 +6,7 @@ PACKAGE_NAME=crmath_odepack
 SRC_FILES=(odepack-omp.tar.gz crmath_odepack.tar.gz)
 
 SRC_DIR=$PACKAGE_NAME
-BUILD_DIR=${SRC_DIR}/SRC
+BUILD_DIR=${SRC_DIR}
 
 # Functions
 
@@ -35,6 +35,10 @@ unpack () {
     cd $SD
 
     ./fix_crmath_odepack.sh
+
+    # Move other files into place
+
+    cp ${PD}/crmath_odepack/Makefile ${SD}/Makefile
 
 }
 
@@ -69,16 +73,6 @@ install () {
 
     cp -av libodepack.a ${DEST_ROOT}/math-slots/crmath/lib/
     cp -av odepack.mod ${DEST_ROOT}/math-slots/crmath/include/
-
-    # Create the shared library
-
-#    export ${PROFILE_PREFIX}_MATH_SLOT=crmath
-
-#    create_shared_lib \
-#        -c gfortran \
-#	-L ${DEST_ROOT}/lib -lcrmath \
-#        -L ${DEST_ROOT}/math-slots/crmath/lib -lblas \
-#        ${DEST_ROOT}/math-slots/crmath/lib/libodepack.a
 
     # Create the link script
 
