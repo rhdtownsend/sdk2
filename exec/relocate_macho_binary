@@ -1,72 +1,217 @@
-#!/bin/bash
+#!/usr/bin/env python3
 #
-# Script to relocate an OSX Mach-O binary so that all internal paths
-# are relative to a given base directory
+# Script to fix up load commands in Mach-O binaries, so that they
+# are relocatable
 
-FILE=$1
-BASE=$2
+import subprocess as sp
+import re
+import os
+import os.path as op
+import sys
 
-# Check arguments
+# Get a list of loader commands
 
-if [[ -z $FILE ]]; then
-    echo "No FILE specified"
-    exit 1
-fi
+def get_load_cmds(file):
 
-if [[ -z $BASE ]]; then
-    echo "No BASE specified"
-    exit 1
-fi
+    cp = sp.run(f'otool -l {file}', text=True, shell=True, capture_output=True)
 
-# Check if FILE is a file (this weeds out symlinks etc)
+    cmd_list = []
 
-if [ -f $FILE ]; then
+    for line in cp.stdout.splitlines():
 
-    # Check if the file is Mach-O format
+        mo = re.match(r'Load command (\d+)', line)
 
-    if `file $FILE | grep -q 'Mach-O'`; then
+        if mo:
+            cmd_list += [{}]
+            cmd_list[-1]['cmd_num'] = int(mo.group(1))
+            continue
 
-	# Check that the file is not a stub
+        mo = re.match(r'\s+cmd\s+(\S+)', line)
 
-	if `file $FILE | grep -q -v 'shared library stub'`; then
+        if mo:
+            cmd_list[-1]['cmd_name'] = mo.group(1)
+            continue
 
-	    FN=`basename $FILE`
-	    FD=`dirname $FILE`
+        mo = re.match(r'\s+name\s+(\S+)', line)
 
-	    # Get a list of library dependencies
+        if mo:
+            cmd_list[-1]['name'] = mo.group(1)
+            continue
 
-	    deps=`otool -L $FILE | awk -v pattern="^$BASE/?" 'NR > 1 && $1 ~ pattern { print $1 }'`
+        mo = re.match(r'\s+path\s+(\S+)', line)
 
-	    # Fix rpaths for the dependencies
-	    
-	    for dep in $deps; do
-		DN=`basename $dep`
-		DD=`dirname $dep`
-		install_name_tool -change $dep @rpath/`relpath $DD $BASE`/$DN $FILE
-	    done
+        if mo:
+            cmd_list[-1]['path'] = mo.group(1)
+            continue
 
-	    # If the file is an executable, add rpath
+    return cmd_list
 
-	    if `file $FILE | grep -q 'executable'`; then
-		install_name_tool -add_rpath @loader_path/`relpath $BASE $FD` $FILE
-	    fi
-	    
-	    # If the file is a library, strip rpaths and set id
 
-	    if `file $FILE | grep -q 'shared library'`; then
+# Get the list of rpaths
 
-		rpaths=`otool -l $FILE | awk 'c&&!--c;/cmd LC_RPATH/{c=2}' | awk '{print $2}'`
+def get_rpaths(file, cmd_list):
 
-		for rpath in $rpaths; do
-		    install_name_tool -delete_rpath $rpath $FILE
-		done
+    rpath_list = []
 
-		install_name_tool -id @rpath/`relpath $FD $BASE`/$FN $FILE
+    for cmd in cmd_list:
+        if cmd['cmd_name'] == 'LC_RPATH':
 
-	    fi
+            mo = re.match(r'@loader_path(.*)', cmd['path'])
 
-	fi
+            if mo:
+                rpath_list += [{'path': cmd['path'],
+                                'expanded_path': op.dirname(op.abspath(file))+mo.group(1)}]
+            else:
+                rpath_list += [{'path': cmd['path'],
+                                'expanded_path': cmd['path']}]
 
-    fi
-    
-fi
+    return rpath_list
+
+
+# Resolve @rpath names
+
+def resolve_names(cmd_list, rpath_list):
+
+    for cmd in cmd_list:
+
+        if cmd['cmd_name'] == 'LC_LOAD_DYLIB':
+
+            mo = re.match(r'@rpath(.*)', cmd['name'])
+
+            resolved_name = None
+
+            if mo:
+
+                for rpath in rpath_list:
+                    test_name = op.normpath(f'{rpath["expanded_path"]}{mo.group(1)}')
+                    if op.exists(test_name):
+                        resolved_name = test_name
+
+            else:
+
+                if (re.match(r'/usr/lib', cmd['name']) or
+                    op.exists(cmd['name'])):
+                        resolved_name = cmd['name']
+
+            if resolved_name is None:
+                raise Exception(f'Could not resolve path {cmd["name"]}')
+
+            cmd['resolved_name'] = resolved_name
+
+            
+# Relocate names to be relative to base_dir
+
+def relocate_names(cmd_list, base_dir):
+
+    for cmd in cmd_list:
+
+        if cmd['cmd_name'] == 'LC_LOAD_DYLIB':
+
+            mo = re.match(f'{base_dir}(.*)', cmd['resolved_name'])
+
+            if mo:
+                cmd['relocated_name'] = f'@rpath{mo.group(1)}'
+            else:
+                cmd['relocated_name'] = cmd['resolved_name']
+
+            
+# Determine Mach-O file type
+
+def macho_type(file):
+
+    if op.exists(file) and not op.islink(file):
+
+        # Check if the file is Mach-O format
+
+        cp = sp.run(f'file {file}', text=True, shell=True, capture_output=True)
+
+        if re.search('Mach-O', cp.stdout):
+
+            if re.search('shared library stub', cp.stdout):
+
+                type = 'stub'
+
+            elif re.search('executable', cp.stdout):
+
+                type = 'exec'
+
+            else:
+
+                type = 'lib'
+
+        else:
+
+            type = 'other'
+
+    else:
+
+        type = None
+
+    return type
+
+
+# Run install_name_tool
+
+def run_tool(file, args):
+
+    os.system(f'install_name_tool {args} {file}')
+    #print(f'install_name_tool {args} {file}')
+
+#
+
+if __name__ == '__main__':
+
+    # Get arguments
+
+    file = sys.argv[1]
+    base_dir = sys.argv[2]
+
+    # Check the file is real
+
+    # Check the file type
+
+    type = macho_type(file)
+
+    if type == 'exec' or type == 'lib':
+
+        print(f'Processing {file}')
+
+        # Get the load command list
+
+        cmd_list = get_load_cmds(file)
+
+        # Get the rpath list
+
+        rpath_list = get_rpaths(file, cmd_list)
+
+        # Resolve and relocated names
+
+        resolve_names(cmd_list, rpath_list)
+        relocate_names(cmd_list, base_dir)
+
+        # Take actions
+
+        # Strip all existing rpaths
+
+        for rpath in rpath_list:
+            run_tool(file, f'-delete_rpath {rpath["path"]}')
+
+        # Set the rpath of executables
+
+        if type == 'exec':
+            run_tool(file, f'-add_rpath @loader_path/'+op.relpath(base_dir, op.dirname(file)))
+
+        # Relocate names
+
+        for cmd in cmd_list:
+            if cmd['cmd_name'] == 'LC_LOAD_DYLIB':
+                if cmd['name'] != cmd['relocated_name']:
+                    run_tool(file, f'-change {cmd["name"]} {cmd["relocated_name"]}')
+
+        # Set the install name of libraries
+
+        if type == 'lib':
+
+            mo = re.match(f'{base_dir}(.*)', op.abspath(file))
+
+            run_tool(file, f'-id @rpath{mo.group(1)}')
