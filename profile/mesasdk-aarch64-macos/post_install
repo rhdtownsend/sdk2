@@ -1,5 +1,26 @@
 # SDK2 post-install commands
 
+# Install gcc wrapper scripts
+
+for exec in c++ cpp g++ gcc; do
+    if `file $exec | grep -v Mach-O`; then
+        mv -v ${DEST_ROOT}/bin/$exec ${DEST_ROOT}/bin/$exec.exec
+    	ln -sfv gcc.wrapper ${DEST_ROOT}/bin/$exec
+    fi
+done
+
+for exec in gfortran; do
+    if `file $exec | grep -v Mach-O`; then
+	mv -v ${DEST_ROOT}/bin/$exec ${DEST_ROOT}/bin/$exec.exec
+	ln -sfv gfortran.wrapper ${DEST_ROOT}/bin/$exec
+    fi
+done
+
+for file in gcc.wrapper gfortran.wrapper; do
+    cp ${PD}/gcc/${file} ${DEST_ROOT}/bin/${file}
+    chmod a+x ${DEST_ROOT}/bin/${file}
+done
+
 # Relocate Mach-O binaries
 
 for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
