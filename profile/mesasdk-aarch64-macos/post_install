@@ -5,7 +5,7 @@
 for exec in c++ cpp g++ gcc; do
     if `file $exec | grep -v Mach-O`; then
         mv -v ${DEST_ROOT}/bin/$exec ${DEST_ROOT}/bin/$exec.exec
-    	ln -sfv gcc.wrapper ${DEST_ROOT}/bin/$exec
+	ln -sfv gcc.wrapper ${DEST_ROOT}/bin/$exec
     fi
 done
 
