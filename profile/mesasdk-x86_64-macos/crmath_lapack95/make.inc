@@ -1,6 +1,6 @@
 FC	    = gfortran -ffree-form
 FC1         = gfortran -ffixed-form
-OPTS0       = -O2 -fPIC
+OPTS0       = -O2 -ffp-contract=off -fPIC
 MODLIB      = -I./../lapack95_modules -I${DEST_ROOT}/include/
 OPTS1       = -c $(OPTS0)
 OPTS3       = $(OPTS1) $(MODLIB)
@@ -10,7 +10,7 @@ LAPACK_PATH = ../../lib
 LAPACK95    = ../lapack95.a
 LAPACK77    = $(LAPACK_PATH)/liblapack.a
 TMG77       = $(LAPACK_PATH)/libtmg.a
-BLAS        = $(LAPACK_PATH)/libxblas.a
+BLAS        = $(LAPACK_PATH)/libblas.a
 LIBS        = $(LAPACK95) $(TMG77) $(LAPACK77) $(BLAS)
 SUF         = f90
 
