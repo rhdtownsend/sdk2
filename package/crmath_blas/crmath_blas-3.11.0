@@ -38,7 +38,7 @@ unpack () {
 
     # Copy other files into place
 
-    cp ${PD}/crmath_blas/make.inc ${SD}/
+    cp ${PD}/crmath_blas/make.inc-3.11.0 ${SD}/make.inc
 
 }
 
