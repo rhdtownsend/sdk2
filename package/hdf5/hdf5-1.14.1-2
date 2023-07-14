@@ -10,6 +10,30 @@ BUILD_DIR=$SRC_DIR
 
 # Functions
 
+unpack () {
+
+    echo "Unpacking package $PACKAGE into $SD"
+
+    # Create the source directory
+
+    rm -rf $SD
+    mkdir $SD
+
+    # Unpack the tarballs
+
+    for src_file in $SF; do
+
+	tar xf $src_file -C $SD --strip-components 2
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for package $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+}
+
 build () {
 
     echo "Building $PACKAGE_NAME in $BD"
