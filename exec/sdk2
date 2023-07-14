@@ -73,6 +73,8 @@ export SDK2_PLATFORM_ISA=`uname -m`
 if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
     if `uname -a | grep -q Ubuntu`; then
 	export SDK2_PLATFORM_DISTRO='Ubuntu'
+    elif cat /etc/redhat-release 2>/dev/null | grep -q 'CentOS'; then
+	export SDK2_PLATFORM_DISTRO='CentOS'
     else
 	export SDK2_PLATFORM_DISTRO='Generic'
     fi

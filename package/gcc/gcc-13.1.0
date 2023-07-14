@@ -48,12 +48,18 @@ build () {
 	fi
     fi
 
+    # Workaround for linker issues on old CentOS systems
+
+    if [[ $SDK2_PLATFORM_NAME = 'Linux' && $SDK2_PLATFORM_DISTRO = 'CentOS' ]] ; then
+       export LDFLAGS='-Wl,--no-eh-frame-hdr'
+    fi
+
     # Create sysroot link for OSX
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
 	ln -sf ${SDK2_BUILD_ROOT}/xcode ${DEST_ROOT}/sysroot
     fi
-	
+
     # Set extra configuration options
 
     EXTRA_CONFIG_OPTS=
