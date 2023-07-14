@@ -22,9 +22,9 @@ export SDK2_DOCKER_ROOT=${SDK2_ROOT}/docker
 
 ### ACTIONS ###
 
-# Build the image
+# Create the dockerfile
 
 sed -e "s/@USER_ID@/$(id -u)/g" \
     -e "s/@GROUP_ID@/$(id -g)/g" ${SDK2_DOCKER_ROOT}/Dockerfile.tmpl | \
-    docker build -t sdk2_build -
+    docker buildx build -t sdk2_build -
 

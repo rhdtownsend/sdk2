@@ -13,14 +13,21 @@ RUN useradd --uid @USER_ID@ --gid @GROUP_ID@ -m user
 
 # Get yum working again
 
+# Set mirrors
+
 RUN sed -i -e 's/^#baseurl=/baseurl=/' \
            -e 's/^mirrorlist=/#mirrorlist=/' \
-           -e 's!http://mirror.centos.org/centos/$releasever/!http://vault.centos.org/5.11/!' \
-           /etc/yum.repos.d/*.repo && \
-    sed -i -e 's/enabled=1/enabled=0/' \
-           /etc/yum.repos.d/libselinux.repo /etc/yum/pluginconf.d/fastestmirror.conf && \
-    rpm -ivh --nodeps http://vault.centos.org/5.11/os/x86_64/CentOS/libselinux-python-1.33.4-5.7.el5.`uname -m`.rpm && \
-    yum -y clean all
+           -e 's!http://mirror.centos.org/centos/$releasever/!http://mirror.nsc.liu.se/centos-store/5.11/!' \
+           /etc/yum.repos.d/*.repo
+
+# Disable auto mirror selection
+
+RUN sed -i -e 's/enabled=1/enabled=0/' /etc/yum.repos.d/libselinux.repo /etc/yum/pluginconf.d/fastestmirror.conf
+
+# Upgrade selinux-python
+
+RUN rpm -ivh --nodeps http://mirror.nsc.liu.se/centos-store/5.11/os/x86_64/CentOS/libselinux-python-1.33.4-5.7.el5.x86_64.rpm 
+RUN yum -y clean all
 
 # Tell yum not to install 32-bit packages
 
@@ -29,7 +36,38 @@ RUN echo "multilib_policy=best" >> /etc/yum.conf
 # Install basic developer tools
 
 RUN yum -y install \
-    curl make patch m4 bzip2 \
-    gcc gcc-c++ gdb texinfo \
+    curl make patch m4 bzip2 texinfo \
+    binutils glibc-devel \
     perl libX11-devel autoconf file \
-    zlib-devel nano
+    zlib-devel nano tcsh which
+
+# Install bootstrap tools
+
+RUN mkdir /opt/bootstrap
+WORKDIR /opt/bootstrap
+
+RUN curl http://user.astro.wisc.edu/~townsend/resource/download/mesasdk/mesasdk-x86_64-linux-22.6.1.tar.gz -O
+RUN tar xf mesasdk-x86_64-linux-22.6.1.tar.gz
+ENV MESASDK_ROOT=/opt/bootstrap/mesasdk
+RUN . ${MESASDK_ROOT}/bin/mesasdk_init.sh
+RUN rm mesasdk-x86_64-linux-22.6.1.tar.gz
+
+RUN curl http://ftp.gnu.org/gnu/binutils/binutils-2.40.tar.bz2 -O
+RUN tar xf binutils-2.40.tar.bz2
+ENV PATH="${MESASDK_ROOT}/bin:${PATH}"
+RUN cd binutils-2.40 && \
+    ./configure --prefix=$MESASDK_ROOT --disable-gprofng && \
+    make -j && make install
+RUN rm -r binutils-2.40.tar.bz2 binutils-2.40
+
+RUN curl http://user.astro.wisc.edu/~townsend/resource/download/sdk2/src/patchelf-0.9.tar.gz -O
+RUN tar xf patchelf-0.9.tar.gz
+ENV PATH="${MESASDK_ROOT}/bin:${PATH}"
+RUN cd patchelf-0.9 && \
+    ./configure --prefix=$MESASDK_ROOT && \
+    make && make install
+RUN rm -r patchelf-0.9.tar.gz patchelf-0.9
+
+# Set the root password
+
+RUN echo 'root:Docker!' | chpasswd
