@@ -1,0 +1,49 @@
+# SDK2 package definition for mpfr
+
+# Set package-specific variables
+
+PACKAGE_NAME=mpfr
+SRC_FILE=mpfr-4.2.0.tar.bz2
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    if [[ -e ${DEST_ROOT}/bin/gcc ]]; then
+       EXTRA_CONFIG_OPTS=--enable-float128
+    fi
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--with-gmp=$DEST_ROOT \
+	$EXTRA_CONFIG_OPTS
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
