@@ -60,14 +60,6 @@ RUN cd binutils-2.40 && \
     make -j && make install
 RUN rm -r binutils-2.40.tar.bz2 binutils-2.40
 
-RUN curl http://user.astro.wisc.edu/~townsend/resource/download/sdk2/src/patchelf-0.9.tar.gz -O
-RUN tar xf patchelf-0.9.tar.gz
-ENV PATH="${MESASDK_ROOT}/bin:${PATH}"
-RUN cd patchelf-0.9 && \
-    ./configure --prefix=$MESASDK_ROOT && \
-    make && make install
-RUN rm -r patchelf-0.9.tar.gz patchelf-0.9
-
 # Set the root password
 
 RUN echo 'root:Docker!' | chpasswd
