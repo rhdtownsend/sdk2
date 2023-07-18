@@ -119,6 +119,39 @@ install () {
     mkdir -pv ${DEST_ROOT}/share/doc/gcc
     cp -av COPYING* INSTALL LAST_UPDATED MAINTAINERS NEWS README ${DEST_ROOT}/share/doc/gcc
 
+    # Install the wrapper scripts
+
+    for exec in c++ cpp g++ gcc; do
+	mv -v ${DEST_ROOT}/bin/$exec ${DEST_ROOT}/bin/$exec.exec
+	ln -sfv gcc.wrapper ${DEST_ROOT}/bin/$exec
+    done
+
+    for exec in gfortran; do
+	mv -v ${DEST_ROOT}/bin/$exec ${DEST_ROOT}/bin/$exec.exec
+	ln -sfv gfortran.wrapper ${DEST_ROOT}/bin/$exec
+    done
+
+    case $SDK2_PLATFORM_NAME in
+	Linux)
+	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-`uname -m`-linux
+	    ;;
+	Darwin)
+	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-osx
+	    ;;
+	*)
+	    echo "Unable to determine which wrapper scripts to use"
+	    exit 1
+    esac
+
+    for file in gcc.wrapper gfortran.wrapper; do
+
+	sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \
+	    ${script_dir}/${file} > ${DEST_ROOT}/bin/${file}
+	chmod a+x ${DEST_ROOT}/bin/${file}
+
+    done
+
     # On OSX, replace stub libraries by links to the full
     # library. This is necessary because the install names of stub
     # libraries can't be changed using install_name_tool (nor can they
