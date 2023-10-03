@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Wrapper for gfortran (osx)
+# Wrapper for gfortran (macos)
 
 # Examine arguments to decide whether we're actually compiling
 

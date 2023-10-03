@@ -26,9 +26,6 @@ for p in blas crlibm crmath hdf5 lapack lapack95 pgplot se xblas odepack; do
     ln -sf ${p}_link ${DEST_ROOT}/bin/mesasdk_${p}_link
 done
 
-for p in lapack95 odepack; do
+for p in lapack95; do
     ln -sf ${p}_modpath ${DEST_ROOT}/bin/mesasdk_${p}_modpath
 done
-
-ln -sf madsdk_version ${DEST_ROOT}/bin/mesasdk_version
-

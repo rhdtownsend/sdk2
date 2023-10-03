@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Wrapper for gcc (macos)
+# Wrapper for gfortran (macos)
 
 # Examine arguments to decide whether we're actually compiling
 
@@ -20,10 +20,10 @@ fi
 
 # Determine the math slot path
 
-if [ -n "$MESASDK_MATH_SLOT" ]; then
-    MATH_SLOT_PATH=$MESASDK_ROOT/math-slots/$MESASDK_MATH_SLOT
+if [ -n "$MADSDK_MATH_SLOT" ]; then
+    MATH_SLOT_PATH=$MADSDK_ROOT/math-slots/$MADSDK_MATH_SLOT
 else
-    MATH_SLOT_PATH=$MESASDK_ROOT/math-slots/default
+    MATH_SLOT_PATH=$MADSDK_ROOT/math-slots/default
 fi
 
 # Set up compilation flags
@@ -32,13 +32,21 @@ FLAGS=$SDK2_GCC_FLAGS
 
 if [[ $COMPILING == "y" ]]; then
 
+    # Set flags to suppress FPE summary notices
+
+    FLAGS="${FLAGS} -ffpe-summary=none"
+
+    # Add SDK directories to the module search path
+
+    FLAGS="${FLAGS} -I$MADSDK_ROOT/include -I${MATH_SLOT_PATH}/include"
+
     # Set up system paths
 
-    FLAGS="${FLAGS} -isystem $MESASDK_ROOT/include"
+    FLAGS="${FLAGS} -isystem $MADSDK_ROOT/include"
 
     # Add linker flags to set rpath
 
-    FLAGS="${FLAGS} -Xlinker -rpath -Xlinker $MESASDK_ROOT"
+    FLAGS="${FLAGS} -Xlinker -rpath -Xlinker $MADSDK_ROOT"
 
 fi
 
@@ -47,7 +55,7 @@ fi
 
 export PATH=/usr/bin:${PATH}
 
-# Launch gcc
+# Launch gfortran
 
 eval $0.exec ${FLAGS} $(printf '%q ' "$@")
 exit $?

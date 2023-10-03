@@ -20,10 +20,10 @@ fi
 
 # Determine the math slot path
 
-if [ -n "$MESASDK_MATH_SLOT" ]; then
-    MATH_SLOT_PATH=$MESASDK_ROOT/math-slots/$MESASDK_MATH_SLOT
+if [ -n "$MADSDK_MATH_SLOT" ]; then
+    MATH_SLOT_PATH=$MADSDK_ROOT/math-slots/$MADSDK_MATH_SLOT
 else
-    MATH_SLOT_PATH=$MESASDK_ROOT/math-slots/default
+    MATH_SLOT_PATH=$MADSDK_ROOT/math-slots/default
 fi
 
 # Set up compilation flags
@@ -34,11 +34,11 @@ if [[ $COMPILING == "y" ]]; then
 
     # Set up system paths
 
-    FLAGS="${FLAGS} -isystem $MESASDK_ROOT/include"
+    FLAGS="${FLAGS} -isystem $MADSDK_ROOT/include"
 
     # Add linker flags to set rpath
 
-    FLAGS="${FLAGS} -Xlinker -rpath -Xlinker $MESASDK_ROOT"
+    FLAGS="${FLAGS} -Xlinker -rpath -Xlinker $MADSDK_ROOT"
 
 fi
 
