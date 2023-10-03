@@ -48,11 +48,6 @@ if [[ $COMPILING == "y" ]]; then
 
     FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@"
 
-    # Add linker flags to force classic behavior
-    # (incl. no complaints about duplicate libraries)
-
-    FLAGS="${FLAGS} -Wl,-ld_classic"
-
 fi
 
 # Prepend /usr/bin to PATH, to ensure that the system as/ld are found
