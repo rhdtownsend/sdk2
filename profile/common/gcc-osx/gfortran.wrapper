@@ -46,7 +46,12 @@ if [[ $COMPILING == "y" ]]; then
 
     # Add linker flags to set rpath
 
-    FLAGS="${FLAGS} -Xlinker -rpath -Xlinker @SDK_ROOT@"
+    FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@"
+
+    # Add linker flags to force classic behavior
+    # (incl. no complaints about duplicate libraries)
+
+    FLAGS="${FLAGS} -Wl,-ld_classic"
 
 fi
 
