@@ -136,7 +136,7 @@ install () {
 	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-`uname -m`-linux
 	    ;;
 	Darwin)
-	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-osx
+	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-macos
 	    ;;
 	*)
 	    echo "Unable to determine which wrapper scripts to use"

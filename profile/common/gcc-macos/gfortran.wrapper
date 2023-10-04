@@ -46,7 +46,7 @@ if [[ $COMPILING == "y" ]]; then
 
     # Add linker flags to set rpath
 
-    FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@"
+    FLAGS="${FLAGS} -Xlinker -rpath -Xlinker @SDK_ROOT@"
 
 fi
 

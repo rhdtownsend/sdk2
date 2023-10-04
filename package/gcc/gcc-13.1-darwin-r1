@@ -3,8 +3,8 @@
 # Set package-specific variables
 
 PACKAGE_NAME=gcc
-SRC_FILE=gcc-9.2.0.tar.gz
-PATCH_FILES=(gcc-fix-sysroot.diff gcc-9-fix-warray.diff)
+SRC_FILE=gcc-13.1-darwin-r0.tar.gz
+PATCH_FILES=gcc-macosx-version-warning.diff
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${PACKAGE_NAME}-build
@@ -54,21 +54,23 @@ build () {
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
 	ln -sf ${SDK2_BUILD_ROOT}/xcode ${DEST_ROOT}/sysroot
     fi
-	
+
     # Set extra configuration options
 
     EXTRA_CONFIG_OPTS=
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
-	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot"
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot --without-build-config"
     elif [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --enable-clocale=generic"
-    fi	
+    fi
 
     # Configure
 
-    ${SD}/configure CC="$CC_TOOLS" \
+    ${SD}/configure CC="$CC_TOOLS" CXX="$CXX_TOOLS" \
         --build=$BUILD_SPEC \
+        --host=$BUILD_SPEC \
+        --target=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
 	--with-gmp=$DEST_ROOT \
 	--with-mpfr=$DEST_ROOT \
@@ -129,7 +131,7 @@ install () {
 	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-`uname -m`-linux
 	    ;;
 	Darwin)
-	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-macos
+	    script_dir=${SDK2_PROFILE_ROOT}/common/gcc-osx
 	    ;;
 	*)
 	    echo "Unable to determine which wrapper scripts to use"
@@ -139,7 +141,7 @@ install () {
     for file in gcc.wrapper gfortran.wrapper; do
 
 	sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-    	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \
+	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \
 	    ${script_dir}/${file} > ${DEST_ROOT}/bin/${file}
 	chmod a+x ${DEST_ROOT}/bin/${file}
 
