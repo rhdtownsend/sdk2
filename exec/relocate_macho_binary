@@ -184,9 +184,12 @@ if __name__ == '__main__':
 
         rpath_list = get_rpaths(file, cmd_list)
 
-        # Resolve and relocated names
+        # Resolve and relocated names. Note that we add base_dir to
+        # the rpath list for the resolution step, because all
+        # executables created by the SDK, and hence all libraries
+        # loaded, will have this rpath set
 
-        resolve_names(cmd_list, rpath_list)
+        resolve_names(cmd_list, rpath_list+[{'expanded_path': base_dir}])
         relocate_names(cmd_list, base_dir)
 
         # Take actions
