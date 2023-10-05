@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Launch an SDK2 docker container
 
@@ -6,11 +6,11 @@
 
 # Store and validate arguments
 
-CMD=$1
-shift
-
-if [[ -z $CMD ]]; then
+if [[ -z $1 ]]; then
     CMD=bash
+else
+    CMD=$1
+    shift
 fi
 
 ### VALIDATION ###
@@ -58,11 +58,12 @@ fi
 C_SDK2_ROOT=/home/user/sdk2
 C_SDK2_TMP=/home/user/sdk2-tmp
 
-docker run -it --rm \
+docker run --interactive --tty --rm \
+       --env BOOT_ROOT=/opt/bootstrap/mesasdk \
        --env SDK2_ROOT=$C_SDK2_ROOT \
        --env SDK2_TMP=$C_SDK2_TMP \
        --env SDK2_PROFILE --env SDK2_RELEASE \
-       --user=user -w=/home/user \
+       --user=user --workdir=/home/user \
        --mount type=bind,readonly,source=$SDK2_ROOT,target=$C_SDK2_ROOT \
        --mount type=bind,source=$SDK2_TMP,target=$C_SDK2_TMP \
-       sdk2_build $CMD "$@"
+       sdk2_build bash -c "export PATH=\$SDK2_ROOT/exec:\$PATH; $CMD $@"
