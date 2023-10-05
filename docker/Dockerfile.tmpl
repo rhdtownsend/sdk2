@@ -8,7 +8,7 @@ MAINTAINER NAME townsend@astro.wisc.edu
 
 # Add user
 
-RUN groupadd --gid @GROUP_ID@ user
+RUN grep -q :@GROUP_ID@: /etc/group || groupadd --gid @GROUP_ID@ user
 RUN useradd --uid @USER_ID@ --gid @GROUP_ID@ -m user
 
 # Get yum working again
@@ -63,3 +63,7 @@ RUN rm -r binutils-2.40.tar.bz2 binutils-2.40
 # Set the root password
 
 RUN echo 'root:Docker!' | chpasswd
+
+# Reset WORKDIR
+
+WORKDIR /home/user
