@@ -5,10 +5,17 @@
 FILE=$1
 ENTITLE_FILE=$2
 
-# Check SDK2_CERT is set
+# Check SDK2_CDS_CERT_NAME is set
 
-if [[ -z $SDK2_CERT ]]; then
-    echo "Environment variable SDK2_CERT is not set"
+if [[ -z $SDK2_CDS_CERT_NAME ]]; then
+    echo "Environment variable SDK2_CDS_CERT_NAME is not set"
+    exit 1
+fi
+
+# Check SDK2_CDS_CERT_PATH is set
+
+if [[ -z $SDK2_CDS_CERT_PATH ]]; then
+    echo "Environment variable SDK2_CDS_CERT_PATH is not set"
     exit 1
 fi
 
@@ -28,12 +35,16 @@ if [ -f $FILE ]; then
 
 	    if [[ -n $ENTITLE_FILE ]]; then
 		codesign --force --options runtime --timestamp \
-			 --entitlements $ENTITLE_FILE --deep --sign "$SDK2_CERT" \
-			 $FILE
+		    --entitlements $ENTITLE_FILE --deep \
+		    --keychain "$SDK2_CDS_CERT_PATH" \
+		    --sign "$SDK2_CDS_CERT_NAME" \
+		    $FILE
 	    else
 		codesign --force --options runtime --timestamp \
-			 --deep --sign "$SDK2_CERT" \
-			 $FILE
+		    --deep \
+		    --keychain "$SDK2_CDS_CERT_PATH" \
+		    --sign "$SDK2_CDS_CERT_NAME" \
+		    $FILE
 	    fi
 
 	fi
