@@ -778,9 +778,9 @@
 			<key>CERTIFICATE</key>
 			<dict>
 				<key>NAME</key>
-				<string>Developer ID Installer: Richard Townsend (678AURSYSX)</string>
+				<string>@PKG_CERT_NAME@</string>
 				<key>PATH</key>
-				<string>/Users/townsend/Library/Keychains/login.keychain</string>
+				<string>@PKG_CERT_PATH@</string>
 			</dict>
 			<key>EXCLUDED_FILES</key>
 			<array>

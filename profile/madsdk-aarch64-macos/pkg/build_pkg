@@ -21,6 +21,20 @@ if [[ -z $SDK2_RELEASE ]]; then
     exit 1
 fi
 
+# Check SDK2_PKG_CERT_NAME is set
+
+if [[ -z $SDK2_PKG_CERT_NAME ]]; then
+    echo "Environment variable SDK2_PKG_CERT_NAME is not set"
+    exit 1
+fi
+
+# Check SDK2_PKG_CERT_PATH is set
+
+if [[ -z $SDK2_PKG_CERT_PATH ]]; then
+    echo "Environment variable SDK2_PKG_CERT_PATH is not set"
+    exit 1
+fi
+
 ### VARIABLES ###
 
 # Define standard directories
@@ -42,7 +56,9 @@ pkgproj_file=$(mktemp ${SDK2_PKG_ROOT}/madsdk.XXXXXX)
 
 sed -e "s|@RELEASE@|$SDK2_RELEASE|g" \
     -e "s|@PKG_ROOT@|$SDK2_PKG_ROOT|g" \
-    -e "s|@DEST_ROOT@|$DEST_ROOT|g" template.pkgproj > $pkgproj_file
+    -e "s|@DEST_ROOT@|$DEST_ROOT|g" \
+    -e "s|@PKG_CERT_NAME@|$SDK2_PKG_CERT_NAME|g" \
+    -e "s|@PKG_CERT_PATH@|$SDK2_PKG_CERT_PATH|g" template.pkgproj > $pkgproj_file
 
 # Copy pre/post install files into place
 
