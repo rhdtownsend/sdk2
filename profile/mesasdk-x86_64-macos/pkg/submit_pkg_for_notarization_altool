@@ -40,10 +40,8 @@ export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
 
 pkg_file=${SDK2_PKG_ROOT}/mesasdk-x86_64-macos-$SDK2_RELEASE.pkg
 
-xcrun notarytool submit $pkg_file \
-      --apple-id "$SDK2_NUSER" \
-      --team-id "$SDK2_NTEAM" \
-      --keychain-profile notarization \
-      --wait
-
-stapler staple $pkg_file
+xcrun altool --notarize-app \
+             --primary-bundle-id "edu.wisc.astro.pkg.madsdk" \
+             --username "$SDK2_NUSER" \
+             --password "$SDK2_NPASS" \
+             --file $pkg_file
