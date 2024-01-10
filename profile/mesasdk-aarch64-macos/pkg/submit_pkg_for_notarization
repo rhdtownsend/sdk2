@@ -14,6 +14,13 @@ if [[ ! -d $SDK2_TMP ]]; then
     exit 1
 fi
 
+# Check SDK2_PROFILE is set
+
+if [[ -z $SDK2_PROFILE ]]; then
+    echo "Environment variable SDK2_PROFILE is not set"
+    exit 1
+fi
+
 # Check SDK2_RELEASE is set
 
 if [[ -z $SDK2_RELEASE ]]; then
@@ -28,6 +35,13 @@ if [[ -z $SDK2_NUSER ]]; then
     exit 1
 fi
 
+# Check SDK2_NTEAM is set
+
+if [[ -z $SDK2_NTEAM ]]; then
+    echo "Environment variable SDK2_NTEAM is not set"
+    exit 1
+fi
+
 ### VARIABLES ###
 
 # Define standard directories
@@ -38,7 +52,7 @@ export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
 
 # Submit for notarization
 
-pkg_file=${SDK2_PKG_ROOT}/mesasdk-aarch64-macos-$SDK2_RELEASE.pkg
+pkg_file=${SDK2_PKG_ROOT}/${SDK2_PROFILE}-$SDK2_RELEASE.pkg
 
 xcrun notarytool submit $pkg_file \
       --apple-id "$SDK2_NUSER" \
