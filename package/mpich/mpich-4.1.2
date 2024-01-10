@@ -1,0 +1,70 @@
+# SDK2 package definition for mpich
+
+# Set package-specific variables
+
+PACKAGE_NAME=mpich
+SRC_FILE=mpich-4.1.2.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    export F77=gfortran
+    export FC=gfortran
+    export FFLAGS="-w -fallow-argument-mismatch -O2" 
+
+    ./configure \
+         --build=$BUILD_SPEC \
+         --prefix=$DEST_ROOT \
+	 --with-pm=gforker \
+	 --disable-multi-aliases
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Fix the wrapper scripts
+
+    for f in mpicc mpicxx mpifort; do
+	file=${DEST_ROOT}/bin/$f
+	if [[ -e $file ]]; then
+	    sed -i.bak -e "s|$DEST_ROOT|\${${PROFILE_PREFIX}_ROOT}|g" $file && rm -f ${file}.bak
+	fi
+    done    
+
+}
