@@ -1,6 +1,6 @@
 # Base system
 
-FROM centos:5.11
+FROM centos:6.10
 
 # Metadata
 
@@ -13,20 +13,20 @@ RUN useradd --uid @USER_ID@ --gid @GROUP_ID@ -m user
 
 # Get yum working again
 
-# Set mirrors
+# Set path to the centos vault
 
 RUN sed -i -e 's/^#baseurl=/baseurl=/' \
            -e 's/^mirrorlist=/#mirrorlist=/' \
-           -e 's!http://mirror.centos.org/centos/$releasever/!http://mirror.nsc.liu.se/centos-store/5.11/!' \
+           -e 's!http://mirror.centos.org/centos/$releasever/!http://vault.centos.org/6.10/!' \
            /etc/yum.repos.d/*.repo
 
 # Disable auto mirror selection
 
-RUN sed -i -e 's/enabled=1/enabled=0/' /etc/yum.repos.d/libselinux.repo /etc/yum/pluginconf.d/fastestmirror.conf
+RUN sed -i -e 's/enabled=1/enabled=0/' /etc/yum/pluginconf.d/fastestmirror.conf
 
 # Upgrade selinux-python
 
-RUN rpm -ivh --nodeps http://mirror.nsc.liu.se/centos-store/5.11/os/x86_64/CentOS/libselinux-python-1.33.4-5.7.el5.x86_64.rpm 
+RUN rpm -ivh --nodeps http://vault.centos.org/6.10/os/x86_64/Packages/libselinux-python-2.0.94-7.el6.x86_64.rpm
 RUN yum -y clean all
 
 # Tell yum not to install 32-bit packages
@@ -37,7 +37,7 @@ RUN echo "multilib_policy=best" >> /etc/yum.conf
 
 RUN yum -y install \
     curl make patch m4 bzip2 texinfo \
-    binutils glibc-devel \
+    binutils glibc-devel glibc-static \
     perl libX11-devel autoconf file \
     zlib-devel nano tcsh which
 
