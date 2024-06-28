@@ -1,0 +1,91 @@
+# SDK2 package definition for crmath-slot blas
+
+# Set package-specific variables
+
+PACKAGE_NAME=crmath_blas
+SRC_FILES=(blas-3.12.0.tgz crmath_blas.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarballs
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+	
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources
+
+    cd $SD
+
+    ./fix_crmath_blas.sh
+
+    # Copy other files into place
+
+    cp ${PD}/crmath_blas/make.inc-3.12.0 ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static library
+
+    cd $BD
+
+    cp -a libblas.a ${DEST_ROOT}/math-slots/crmath/lib/
+
+    # Create the shared library
+
+    export ${PROFILE_PREFIX}_MATH_SLOT=crmath
+
+    create_shared_lib \
+    	-c gfortran \
+	-L ${DEST_ROOT}/lib -lcrmath \
+	${DEST_ROOT}/math-slots/crmath/lib/libblas.a
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/crmath_blas/blas_link > ${DEST_ROOT}/math-slots/crmath/bin/blas_link
+    chmod a+x ${DEST_ROOT}/math-slots/crmath/bin/blas_link
+
+}
