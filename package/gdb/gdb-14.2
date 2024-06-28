@@ -1,0 +1,56 @@
+# SDK2 package definition for gdb
+
+# Set package-specific variables
+
+PACKAGE_NAME=gdb
+SRC_FILE=gdb-14.2.tar.xz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=${PACKAGE_NAME}-build
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Create the build dir
+
+    rm -rf $BD
+    mkdir $BD
+
+    cd $BD
+
+    # Set up CFLAGS for Linux, to ensure that the 
+    # SDK ncurses is found
+
+    if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
+	export CFLAGS=-L${DEST_ROOT}/lib
+	export LDFLAGS=-lrt
+    fi
+
+    # Configure
+
+    ${SD}/configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--with-gmp=$DEST_ROOT \
+	--with-mpc=$DEST_ROOT \
+	--with-mpfr=$DEST_ROOT \
+	--disable-werror
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
