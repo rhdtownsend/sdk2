@@ -2,7 +2,7 @@
 
 # Relocate ELF binaries
 
-export PATH=$SDK2_BUILD_ROOT/patchelf/bin:${PATH}
+export PATH=${SDK2_BUILD_ROOT}/patchelf/bin:${PATH}
 
 for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/lib64 ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots -type f`; do
     relocate_elf_binary $file $DEST_ROOT
