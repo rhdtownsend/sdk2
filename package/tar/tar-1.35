@@ -4,6 +4,7 @@
 
 PACKAGE_NAME=tar
 SRC_FILE=tar-1.35.tar.gz
+PATCH_FILES=tar-1.35-liconv.diff
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -22,7 +23,7 @@ build () {
 
     # Configure
 
-    FORCE_UNSAFE_CONFIGURE=1 CFLAGS='-gdwarf-2 -gstrict-dwarf' ./configure \
+    FORCE_UNSAFE_CONFIGURE=1 CFLAGS='-gdwarf-2 -gstrict-dwarf' LDFLAGS=$LDFLAGS ./configure \
 	--prefix=$DEST_ROOT \
 	--without-selinux
 
@@ -34,10 +35,10 @@ build () {
     # On OSX, kludge config.h to set HAVE_FUTIMENS=0 and HAVE_UTIMENSAT=0,
     # because the corresponding symbols are absent prior to OSX 10.13
 
-    if [[ $SDK_PLATFORM_NAME = 'Darwin' ]]; then
-	echo "#define HAVE_FUTIMENS 0" >> config.h
-	echo "#define HAVE_UTIMENSAT 0" >> config.h
-    fi
+    #if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
+    #echo "#define HAVE_FUTIMENS 0" >> config.h
+    #echo "#define HAVE_UTIMENSAT 0" >> config.h
+    #fi
 
     # Build
 

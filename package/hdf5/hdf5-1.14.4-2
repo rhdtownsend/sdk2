@@ -3,7 +3,7 @@
 # Set package-specific variables
 
 PACKAGE_NAME=hdf5
-SRC_FILE=hdf5-1.14.4-2.tar.bz2
+SRC_FILE=hdf5-1.14.4-2.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
