@@ -1,0 +1,57 @@
+# SDK2 package definition for x264
+
+# Set package-specific variables
+
+PACKAGE_NAME=x264
+SRC_FILE=x264-master-20240628.tar.bz2
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Set extra configuration options
+
+    EXTRA_CONFIG_OPTS=
+
+    if [[ $SDK2_PLATFORM_ISA = 'x86_64' ]]; then
+
+	# For portability?
+	
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-asm"
+
+    fi
+	
+    # Configure
+
+    ./configure \
+	--host=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--enable-shared \
+	$EXTRA_CONFIG_OPTS
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
