@@ -1,0 +1,50 @@
+#!/bin/bash
+#
+# Script to strip symbols
+
+FILE=$1
+STRIP_CMD=$2
+
+# Check arguments
+
+if [[ -z $FILE ]]; then
+    echo "No FILE specified"
+    exit 1
+fi
+
+if [[ -z $STRIP_CMD ]]; then
+    STRIP_CMD=strip
+fi
+
+# Check if FILE is a file (this weeds out symlinks etc)
+
+if [ -f $FILE ]; then
+
+    # Take action based on the file type
+
+    type=`file $FILE`
+
+    if `echo $type | grep -q 'ELF'`; then
+
+	if `echo $type | grep -q 'executable'`; then
+
+	    # ELF exeutable
+	    
+	    $STRIP_CMD --strip-debug --strip-unneeded $FILE
+
+	else
+
+	    # ELF other
+	    
+	    $STRIP_CMD --strip-debug $FILE
+	fi
+
+    elif `echo $type | grep -q 'ar archive'`; then
+
+	# Archive
+
+	$STRIP_CMD --strip-debug $FILE
+
+    fi
+    
+fi
