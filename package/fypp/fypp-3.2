@@ -1,0 +1,37 @@
+# SDK2 package definition for fypp
+
+# Set package-specific variables
+
+PACKAGE_NAME=fypp
+SRC_FILE=fypp-3.2.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    # Empty function, as there is no build action
+
+    true
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the fypp script
+
+    cd $BD
+
+    mkdir -p ${DEST_ROOT}/lib/python
+
+    cp -av fypp ${DEST_ROOT}/lib/python/fypp.py
+
+    # Create the exetutable symlink
+
+    ln -sf ../lib/python/fypp.py ${DEST_ROOT}/bin/fypp
+
+}
