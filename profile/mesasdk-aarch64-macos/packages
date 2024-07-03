@@ -33,8 +33,8 @@ png_pgplot/png_pgplot-1.5.30
 pgplot/pgplot-5.2-r1
 hdf5/hdf5-1.14.4-2
 se/se-1.2.1
-x264/x264-master-20220525
-ffmpeg/ffmpeg-5.0.1
+x264/x264-master-20240628
+ffmpeg/ffmpeg-7.0.1
 ndiff/ndiff-2.00
 fpx3/fpx3
 fypp/fypp
