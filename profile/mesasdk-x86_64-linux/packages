@@ -10,8 +10,8 @@ gmp/gmp-6.3.0
 mpfr/mpfr-4.2.1
 mpc/mpc-1.3.1
 ncurses/ncurses-6.3
-gdb/gdb-13.2
-valgrind/valgrind-3.13.0
+gdb/gdb-14.2
+valgrind/valgrind-3.23.0
 makedepf90/makedepf90-2.8.8
 xz/xz-5.6.2
 tar/tar-1.35
@@ -36,9 +36,9 @@ png_pgplot/png_pgplot-1.5.13
 pgplot/pgplot-5.2
 hdf5/hdf5-1.14.4-2
 se/se-1.2.1
-x264/x264-master-20220525
+x264/x264-master-20240628
 nasm_ffmpeg/nasm_ffmpeg-2.15.03
-ffmpeg/ffmpeg-5.0.1
+ffmpeg/ffmpeg-7.0.1
 ndiff/ndiff-2.00
 fpx3/fpx3
 fypp/fypp
