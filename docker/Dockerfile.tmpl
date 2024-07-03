@@ -38,27 +38,35 @@ RUN echo "multilib_policy=best" >> /etc/yum.conf
 RUN yum -y install \
     curl make patch m4 bzip2 texinfo \
     binutils glibc-devel glibc-static \
-    perl libX11-devel autoconf file \
+    perl libX11-devel file \
     zlib-devel nano tcsh which
+
+# Install newer automake & autoconfig (needed to compile tar)
+
+RUN curl http://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz -O
+RUN tar xf autoconf-2.72.tar.gz
+RUN cd autoconf-2.72 && \
+    ./configure --prefix=/usr/local && \
+    make -j && make install
+RUN rm -r autoconf-2.72.tar.gz autoconf-2.72
+
+RUN curl http://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz -O
+RUN tar xf automake-1.16.5.tar.gz
+RUN cd automake-1.16.5 && \
+    ./configure --prefix=/usr/local && \
+    make -j && make install
+RUN rm -r automake-1.16.5.tar.gz automake-1.16.5
 
 # Install bootstrap tools
 
 RUN mkdir /opt/bootstrap
 WORKDIR /opt/bootstrap
 
-RUN curl http://user.astro.wisc.edu/~townsend/resource/download/mesasdk/mesasdk-x86_64-linux-22.6.1.tar.gz -O
-RUN tar xf mesasdk-x86_64-linux-22.6.1.tar.gz
+RUN curl http://user.astro.wisc.edu/~townsend/resource/download/mesasdk/mesasdk-x86_64-linux-23.7.3.tar.gz -O
+RUN tar xf mesasdk-x86_64-linux-23.7.3.tar.gz
 ENV MESASDK_ROOT=/opt/bootstrap/mesasdk
 RUN . ${MESASDK_ROOT}/bin/mesasdk_init.sh
-RUN rm mesasdk-x86_64-linux-22.6.1.tar.gz
-
-RUN curl http://ftp.gnu.org/gnu/binutils/binutils-2.40.tar.bz2 -O
-RUN tar xf binutils-2.40.tar.bz2
-ENV PATH="${MESASDK_ROOT}/bin:${PATH}"
-RUN cd binutils-2.40 && \
-    ./configure --prefix=$MESASDK_ROOT --disable-gprofng && \
-    make -j && make install
-RUN rm -r binutils-2.40.tar.bz2 binutils-2.40
+RUN rm mesasdk-x86_64-linux-23.7.3.tar.gz
 
 # Set the root password
 
