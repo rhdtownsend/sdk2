@@ -55,12 +55,8 @@ build () {
     ./configure \
 	--host-os=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
-	--extra-cflags="-I$DEST_ROOT/include" \
-	--enable-shared \
 	--enable-gpl \
 	--enable-libx264 \
-	--extra-cflags=-I${DEST_ROOT}/include \
-	--extra-ldflags=-L${DEST_ROOT}/lib \
 	--extra-cflags=-Dstatic_assert=_Static_assert \
 	$EXTRA_CONFIG_OPTS
 
