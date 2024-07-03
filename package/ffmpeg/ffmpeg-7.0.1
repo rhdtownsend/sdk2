@@ -50,6 +50,8 @@ build () {
     
     # Configure
 
+    export PKG_CONFIG_PATH="${DEST_ROOT}/lib/pkgconfig"
+
     ./configure \
 	--host-os=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
