@@ -1,0 +1,12 @@
+SHELL     = /bin/sh
+PLAT      = _GFORTRAN
+FORTRAN   = gfortran
+OPTS      = -O1 -fPIC
+DRVOPTS   = -O1
+NOOPT     = -fPIC
+LOADER    = gfortran
+LOADOPTS  =
+ARCH      = ar
+ARCHFLAGS = cr
+RANLIB    = ranlib
+BLASLIB   = libblas.a
