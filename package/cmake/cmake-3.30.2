@@ -23,7 +23,9 @@ build () {
     # Configure
 
     CC=gcc ./configure \
-	--prefix=$DEST_ROOT
+	--prefix=$DEST_ROOT \
+	-- \
+	-DCMAKE_USE_OPENSSL=OFF
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in configure for $PACKAGE_NAME"
