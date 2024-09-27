@@ -1,9 +1,9 @@
-# SDK2 package definition for cmake
+# SDK2 package definition for swig
 
 # Set package-specific variables
 
-PACKAGE_NAME=cmake
-SRC_FILE=cmake-3.30.2.tar.gz
+PACKAGE_NAME=swig
+SRC_FILE=swig-4.2.1.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -18,16 +18,13 @@ build () {
 
     cd $BD
 
-    make distclean
+    make clean
 
     # Configure
 
-    CC=gcc ./configure \
-	--prefix=$DEST_ROOT \
-	--docdir=share/doc/cmake \
-	--mandir=share/man \
-	-- \
-	-DCMAKE_USE_OPENSSL=OFF
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in configure for $PACKAGE_NAME"
@@ -37,7 +34,7 @@ build () {
     # Build
 
     make -j$NCORES
-
+    
     if [ $? -ne 0 ]; then
 	echo "FAILED in make for $PACKAGE_NAME"
 	exit 1
@@ -55,11 +52,9 @@ install () {
 
     make install
 
-    # Move docs
+    # Copy docs
 
-    
-
-    #mkdir -pv ${DEST_ROOT}/share/doc/make/
-    #cp -av AUTHORS COPYING.LESSER INSTALL NEWS README TODO ${DEST_ROOT}/share/doc/mpc/
+    mkdir -pv ${DEST_ROOT}/share/doc/swig
+    cp -av Doc/* ${DEST_ROOT}/share/doc/swig/
 
 }

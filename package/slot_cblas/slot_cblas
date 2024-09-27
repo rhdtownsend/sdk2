@@ -1,0 +1,33 @@
+# SDK2 package definition for slotted cblas
+
+# Set package-specific variables
+
+PACKAGE_NAME=slot_cblas
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+}    
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Create the compiler support scripts
+
+    for file in cblas_link; do
+
+	sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+    	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \
+	    ${SDK2_PROFILE_ROOT}/common/slot_cblas/${file} > ${DEST_ROOT}/bin/${file}
+	chmod a+x ${DEST_ROOT}/bin/${file}
+
+    done
+
+}

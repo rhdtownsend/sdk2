@@ -1,0 +1,89 @@
+# SDK2 package definition for default-slot lapack
+
+# Set package-specific variables
+
+PACKAGE_NAME=default_cblas
+SRC_FILE=lapack-3.12.0.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    tar xf $SF -C $SD --strip-components 1
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in tar for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Move other files into place
+
+    cp ${PD}/default_lapack/make.inc-3.12.0 ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+    rm -f *.a
+
+    # Build
+
+    echo "GOOOO MAKEEE"
+
+    make -j$NCORES cblaslib
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static libraries
+
+    cd $BD
+
+    cp -av CBLAS/src/libcblas.a ${DEST_ROOT}/math-slots/default/lib/
+
+    # Create the shared libraries
+
+    export ${PROFILE_PREFIX}_MATH_SLOT=default
+
+    create_shared_lib \
+        -c gcc \
+        -L ${DEST_ROOT}/math-slots/default/lib -lblas \
+	${DEST_ROOT}/math-slots/default/lib/libcblas.a
+
+    # Copy header files
+
+    mkdir -pv ${DEST_ROOT}/math-slots/default/include
+    cp -av CBLAS/include/*.h ${DEST_ROOT}/math-slots/default/include/
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/default_cblas/cblas_link > ${DEST_ROOT}/math-slots/default/bin/cblas_link
+    chmod a+x ${DEST_ROOT}/math-slots/default/bin/cblas_link
+
+}

@@ -77,7 +77,7 @@ XBLASLIB = ${DEST_ROOT}/lib/libxblas.a
 #  possible.)
 #
 BLASLIB      = 
-CBLASLIB     = 
+CBLASLIB     = libcblas.a
 LAPACKLIB    = liblapack.a
 TMGLIB       = libtmg.a
 LAPACKELIB   = 
