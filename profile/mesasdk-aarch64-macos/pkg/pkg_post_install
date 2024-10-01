@@ -29,7 +29,7 @@ case $major in
 	esac
 	;;
 
-    11|12|13|14)
+    11|12|13|14|15)
 
 	sysroot='/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk'
 	;;
