@@ -387,7 +387,7 @@ fetch () {
 
 	    echo "  `basename $fetch_file`"
 
-	    curl $url -s -o $fetch_file
+	    curl $url -s -o -f $fetch_file
 	    
 	    if [ $? -ne 0 ]; then
 		echo "FAILED in fetch for package $PACKAGE (file $fetch_file, url $url)"
