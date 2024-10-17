@@ -6,10 +6,10 @@ FROM centos:6.10
 
 MAINTAINER NAME townsend@astro.wisc.edu
 
-# Add user
+# If necessary, add a user
 
 RUN grep -q :@GROUP_ID@: /etc/group || groupadd --gid @GROUP_ID@ user
-RUN useradd --uid @USER_ID@ --gid @GROUP_ID@ -m user
+RUN grep -q :@USER_ID@: /etc/passwd || useradd --uid @USER_ID@ --gid @GROUP_ID@ -m user
 
 # Get yum working again
 
@@ -38,7 +38,7 @@ RUN echo "multilib_policy=best" >> /etc/yum.conf
 RUN yum -y install \
     curl make patch m4 bzip2 texinfo \
     binutils glibc-devel glibc-static \
-    perl libX11-devel file \
+    perl-core libX11-devel file \
     zlib-devel nano tcsh which
 
 # Install newer automake & autoconfig (needed to compile tar)
@@ -68,10 +68,31 @@ ENV MESASDK_ROOT=/opt/bootstrap/mesasdk
 RUN . ${MESASDK_ROOT}/bin/mesasdk_init.sh
 RUN rm mesasdk-x86_64-linux-23.7.3.tar.gz
 
+# Use these tools to build openssl and python
+
+ENV PATH=${MESASDK_ROOT}/bin:${PATH}
+
+RUN curl -L https://github.com/openssl/openssl/releases/download/openssl-3.2.3/openssl-3.2.3.tar.gz -O
+RUN tar xf openssl-3.2.3.tar.gz
+RUN cd openssl-3.2.3 && \
+    ./Configure && \
+    make -j && \
+    make install
+RUN printf "/usr/local/lib\n/usr/local/lib64\n" > /etc/ld.so.conf.d/usr-local.conf
+RUN ldconfig
+
+RUN curl https://www.python.org/ftp/python/3.7.17/Python-3.7.17.tgz -O
+RUN tar xf Python-3.7.17.tgz
+RUN cd Python-3.7.17 && \
+    CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib64" ./configure && \
+    make -j && \
+    make install
+
+# Install python packages
+
+RUN python3 -m pip install meson
+RUN python3 -m pip install ninja
+
 # Set the root password
 
 RUN echo 'root:Docker!' | chpasswd
-
-# Reset WORKDIR
-
-WORKDIR /home/user

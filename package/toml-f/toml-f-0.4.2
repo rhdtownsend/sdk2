@@ -1,0 +1,60 @@
+# SDK2 package definition for toml-f
+
+# Set package-specific variables
+
+PACKAGE_NAME=toml-f
+SRC_FILE=toml-f-0.4.2.tar.xz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    #make clean
+    #rm -f *.a
+
+    # Configure
+
+    meson setup _build --prefix=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in meson setup for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    meson compile -C _build
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in meson compile for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    meson install -C _build
+
+    # Create the link script
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${SDK2_PROFILE_ROOT}/common/toml-f/toml-f_link > ${DEST_ROOT}/bin/toml-f_link
+    chmod a+x ${DEST_ROOT}/bin/toml-f_link
+
+}
