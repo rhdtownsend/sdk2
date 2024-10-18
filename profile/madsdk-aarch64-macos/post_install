@@ -38,3 +38,12 @@ done
 for p in lapack95; do
     ln -sf ${p}_modpath ${DEST_ROOT}/bin/mesasdk_${p}_modpath
 done
+
+# Make the etc directory
+
+rm -rf ${DEST_ROOT}/etc
+mkdir -pv ${DEST_ROOT}/etc
+
+# Store package list
+
+cp ${PD}/packages ${DEST_ROOT}/etc
