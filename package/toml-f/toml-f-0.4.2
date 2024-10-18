@@ -18,12 +18,11 @@ build () {
 
     cd $BD
 
-    #make clean
-    #rm -f *.a
+    rm -rf _build
 
     # Configure
 
-    meson setup _build --prefix=$DEST_ROOT
+    meson setup _build --prefix=$DEST_ROOT --libdir=lib
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in meson setup for $PACKAGE_NAME"
@@ -50,6 +49,11 @@ install () {
     cd $BD
 
     meson install -C _build
+
+    # Move module files
+
+    mv ${DEST_ROOT}/include/toml-f/modules/* ${DEST_ROOT}/include
+    rm -rf ${DEST_ROOT}/include/toml-f
 
     # Create the link script
 
