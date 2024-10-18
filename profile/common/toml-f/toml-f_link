@@ -1,5 +1,5 @@
 #!/bin/sh
 #
-# Link script for hdf5
+# Link script for toml-f
 
 echo -L@SDK_ROOT@/lib -ltoml-f
