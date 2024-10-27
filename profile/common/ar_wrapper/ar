@@ -2,8 +2,16 @@
 #
 # Wrapper for ar
 
+if [[ -x /usr/bin/xcrun ]] ; then
+  exec /usr/bin/xcrun ar "${@}"
+elif [[ -x /usr/bin/ar ]] ; then
+  exec /usr/bin/ar "${@}"
+else
+  exec ar "${@}"
+fi
+
 # Run ar, stripping out any warnings about empty symbols
 
-/usr/bin/ar "$@" 2>&1 | grep -v 'has no symbols$'
+#/usr/bin/ar "$@" 2>&1 | grep -v 'has no symbols$'
 
-exit ${PIPESTATUS[0]}
+#exit ${PIPESTATUS[0]}
