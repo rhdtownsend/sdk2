@@ -1,0 +1,37 @@
+# SDK2 package definition for sysroot libraries/headers
+
+# Set package-specific variables
+
+PACKAGE_NAME=sysroot
+SRC_FILE=MacOSX11.1.sdk.tar.xz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    # Nothing to do
+
+    true
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE from $BD"
+
+    # Clean up existing sysroot
+
+    rm -rf ${DEST_ROOT}/sysroot
+
+    # Copy directories to sysroot
+
+    mkdir -p ${DEST_ROOT}/sysroot/usr
+
+    for dir in lib include; do
+        cp -a ${SD}/usr/${dir} ${DEST_ROOT}/sysroot/usr/
+    done
+
+}

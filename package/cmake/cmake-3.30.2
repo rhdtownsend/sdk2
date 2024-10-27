@@ -4,6 +4,7 @@
 
 PACKAGE_NAME=cmake
 SRC_FILE=cmake-3.30.2.tar.gz
+PATCH_FILES=cmake-darwin.diff
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -22,12 +23,13 @@ build () {
 
     # Configure
 
-    CC=gcc ./configure \
+    ./configure \
 	--prefix=$DEST_ROOT \
 	--docdir=share/doc/cmake \
 	--mandir=share/man \
 	-- \
-	-DCMAKE_USE_OPENSSL=OFF
+	-DCMAKE_USE_OPENSSL=OFF \
+	-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in configure for $PACKAGE_NAME"

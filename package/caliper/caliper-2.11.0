@@ -1,0 +1,56 @@
+# SDK2 package definition for caliper
+
+# Set package-specific variables
+
+PACKAGE_NAME=caliper
+SRC_FILE=Caliper-2.11.0.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    rm -rf build
+
+    # Configure
+
+    mkdir build
+    cd build
+
+    CC=gcc CXX=g++ cmake \
+	   -DWITH_FORTRAN=On \
+	   -DCMAKE_INSTALL_PREFIX:PATH=${DEST_ROOT} \
+	   -DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET} \
+	   -DCMAKE_OSX_SYSROOT=${DEST_ROOT}/sysroot \
+	   ..
+
+    # Build
+
+    make -j$NCORES
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD/build
+
+    make install
+
+}
