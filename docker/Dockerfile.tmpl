@@ -68,7 +68,7 @@ ENV MESASDK_ROOT=/opt/bootstrap/mesasdk
 RUN . ${MESASDK_ROOT}/bin/mesasdk_init.sh
 RUN rm mesasdk-x86_64-linux-23.7.3.tar.gz
 
-# Use these tools to build openssl and python
+# Use these tools to build openssl, cmake and python
 
 ENV PATH=${MESASDK_ROOT}/bin:${PATH}
 
@@ -80,6 +80,13 @@ RUN cd openssl-3.2.3 && \
     make install
 RUN printf "/usr/local/lib\n/usr/local/lib64\n" > /etc/ld.so.conf.d/usr-local.conf
 RUN ldconfig
+
+RUN curl -L https://github.com/Kitware/CMake/releases/download/v3.30.5/cmake-3.30.5.tar.gz -O
+RUN tar xf cmake-3.30.5.tar.gz
+RUN cd cmake-3.30.5 && \
+    ./configure && \
+    make -j && \
+    make install
 
 RUN curl https://www.python.org/ftp/python/3.7.17/Python-3.7.17.tgz -O
 RUN tar xf Python-3.7.17.tgz
