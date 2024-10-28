@@ -377,7 +377,7 @@ clean () {
 
 fetch () {
 
-    echo "Fetching sources into ${SDK2_SRC_ROOT}"
+    echo "Fetching sources for package $PACKAGE"
 
     for fetch_file in $SF $PF; do
 
@@ -387,7 +387,7 @@ fetch () {
 
 	    echo "  `basename $fetch_file`"
 
-	    curl $url -s -o -f $fetch_file
+	    curl $url -s -f -o $fetch_file
 	    
 	    if [ $? -ne 0 ]; then
 		echo "FAILED in fetch for package $PACKAGE (file $fetch_file, url $url)"
