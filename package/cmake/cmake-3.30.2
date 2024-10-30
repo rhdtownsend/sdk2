@@ -4,7 +4,6 @@
 
 PACKAGE_NAME=cmake
 SRC_FILE=cmake-3.30.2.tar.gz
-PATCH_FILES=cmake-darwin.diff
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -27,6 +26,7 @@ build () {
 	--prefix=$DEST_ROOT \
 	--docdir=share/doc/cmake \
 	--mandir=share/man \
+	--no-system-curl \
 	-- \
 	-DCMAKE_USE_OPENSSL=OFF \
 	-DCMAKE_OSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET}
