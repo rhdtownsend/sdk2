@@ -93,8 +93,11 @@ def resolve_names(cmd_list, rpath_list):
                     op.exists(cmd['name'])):
                         resolved_name = cmd['name']
 
-            if resolved_name is None:
-                raise Exception(f'Could not resolve path {cmd["name"]}')
+            # If we're unable to resolve a name, its likely due to a library
+            # being in the shared libary cache; so just leave it as none
+
+            #if resolved_name is None:
+            #    raise Exception(f'Could not resolve path {cmd["name"]}')
 
             cmd['resolved_name'] = resolved_name
 
@@ -107,12 +110,18 @@ def relocate_names(cmd_list, base_dir):
 
         if cmd['cmd_name'] == 'LC_LOAD_DYLIB':
 
-            mo = re.match(f'{base_dir}(.*)', cmd['resolved_name'])
+            if cmd['resolved_name'] is not None:
 
-            if mo:
-                cmd['relocated_name'] = f'@rpath{mo.group(1)}'
+                mo = re.match(f'{base_dir}(.*)', cmd['resolved_name'])
+
+                if mo:
+                    cmd['relocated_name'] = f'@rpath{mo.group(1)}'
+                else:
+                    cmd['relocated_name'] = None
+
             else:
-                cmd['relocated_name'] = cmd['resolved_name']
+
+                cmd['relocated_name'] = None
 
             
 # Determine Mach-O file type
@@ -184,7 +193,7 @@ if __name__ == '__main__':
 
         rpath_list = get_rpaths(file, cmd_list)
 
-        # Resolve and relocated names. Note that we add base_dir to
+        # Resolve and relocate names. Note that we add base_dir to
         # the rpath list for the resolution step, because all
         # executables created by the SDK, and hence all libraries
         # loaded, will have this rpath set
@@ -208,7 +217,7 @@ if __name__ == '__main__':
 
         for cmd in cmd_list:
             if cmd['cmd_name'] == 'LC_LOAD_DYLIB':
-                if cmd['name'] != cmd['relocated_name']:
+                if cmd['relocated_name'] is not None and cmd['name'] != cmd['relocated_name']:
                     run_tool(file, f'-change {cmd["name"]} {cmd["relocated_name"]}')
 
         # Set the install name of libraries
