@@ -62,5 +62,4 @@ setenv VALGRIND_LIB "${MADSDK_ROOT}/lib/valgrind"
 
 # Set other environment variables
 
-setenv MESASDK_ROOT $MADSDK_ROOT
-setenv MESASDK_VERSION `${MADSDK_ROOT}/bin/madsdk_version`
+setenv MADSDK_VERSION `${MADSDK_ROOT}/bin/madsdk_version`

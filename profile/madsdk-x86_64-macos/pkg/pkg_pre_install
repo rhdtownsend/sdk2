@@ -1,9 +1,1 @@
-#!/usr/bin/env bash
-#
-# Pre-installation script for Mad SDK
-
-export MADSDK_ROOT=/Applications/madsdk
-
-# Clean up any existing installation
-
-rm -rf $MADSDK_ROOT
+../../madsdk-aarch64-macos/pkg/pkg_pre_install
