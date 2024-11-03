@@ -475,11 +475,11 @@
 				<key>FOLLOW_SYMBOLIC_LINKS</key>
 				<false/>
 				<key>IDENTIFIER</key>
-				<string>edu.wisc.astro.pkg.mesasdk</string>
+				<string>edu.wisc.astro.pkg.fourdsdk</string>
 				<key>LOCATION</key>
 				<integer>0</integer>
 				<key>NAME</key>
-				<string>mesasdk</string>
+				<string>fourdsdk</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>PAYLOAD_SIZE</key>
@@ -615,7 +615,7 @@
 						<key>LANGUAGE</key>
 						<string>English</string>
 						<key>VALUE</key>
-						<string>MESA SDK</string>
+						<string>FourD SDK</string>
 					</dict>
 				</array>
 			</dict>
@@ -922,7 +922,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>mesasdk-aarch64-macos-@RELEASE@</string>
+			<string>fourdsdk-aarch64-macos-@RELEASE@</string>
 			<key>PAYLOAD_ONLY</key>
 			<false/>
 			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>

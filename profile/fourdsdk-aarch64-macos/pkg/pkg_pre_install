@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Pre-installation script for MESA SDK
+# Pre-installation script for FourD SDK
 
-export MESASDK_ROOT=/Applications/mesasdk
+export FOURDSDK_ROOT=/Applications/fourdsdk
 
 # Clean up any existing installation
 
-rm -rf $MESASDK_ROOT
+rm -rf $FOURDSDK_ROOT

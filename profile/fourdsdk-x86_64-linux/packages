@@ -1,4 +1,4 @@
-# Packages list for MESA SDK
+# Packages list for FourD SDK
 
 binutils/binutils-2.42
 gmp/gmp-6.3.0
@@ -37,9 +37,9 @@ crmath_blas/crmath_blas-3.12.0
 crmath_lapack/crmath_lapack-3.12.0
 crmath_lapack95/crmath_lapack95
 crmath_odepack/crmath_odepack
-png_pgplot/png_pgplot-1.5.13
-pgplot/pgplot-5.2
-hdf5/hdf5-1.14.4-2-r1
+png_pgplot/png_pgplot-1.5.30
+pgplot/pgplot-5.2-r1
+hdf5/hdf5-1.14.4-2-s2
 se/se-1.2.1
 x264/x264-master-20240628
 nasm_ffmpeg/nasm_ffmpeg-2.15.03

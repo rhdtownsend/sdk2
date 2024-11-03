@@ -42,7 +42,7 @@ fi
 export SDK2_BUILD_ROOT=${SDK2_TMP}/build
 export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
 
-export DEST_ROOT=${SDK2_TMP}/mesasdk
+export DEST_ROOT=${SDK2_TMP}/fourdsdk
 
 ### ACTION ###
 
@@ -52,7 +52,7 @@ mkdir -p $SDK2_PKG_ROOT
 
 # Customize the template pkproj file
 
-pkgproj_file=$(mktemp ${SDK2_PKG_ROOT}/mesasdk.XXXXXX)
+pkgproj_file=$(mktemp ${SDK2_PKG_ROOT}/fourdsdk.XXXXXX)
 
 sed -e "s|@RELEASE@|$SDK2_RELEASE|g" \
     -e "s|@PKG_ROOT@|$SDK2_PKG_ROOT|g" \

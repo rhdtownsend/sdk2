@@ -19,4 +19,3 @@ for slot in default crmath; do
         mkdir -pv ${DEST_ROOT}/math-slots/${slot}/${dir}
     done
 done
-

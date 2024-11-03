@@ -1,23 +1,23 @@
-# mesasdk_init.csh
+# init.csh
 
-# Check that MESASDK_ROOT is set
+# Check that FOURDSDK_ROOT is set
 
-if ( ! ${?MESASDK_ROOT} ) then
-    echo "mesasdk_init.csh: you need to set the MESASDK_ROOT environment variable"
+if ( ! ${?FOURDSDK_ROOT} ) then
+    echo "init.csh: you need to set the FOURDSDK_ROOT environment variable"
     exit 1
 endif
 
 # Set paths
 
-setenv PATH "${MESASDK_ROOT}/bin:${PATH}"
+setenv PATH "${FOURDSDK_ROOT}/bin:${PATH}"
 if ( ${?MANPATH} ) then
-    setenv MANPATH "${MESASDK_ROOT}/share/man:${MANPATH}"
+    setenv MANPATH "${FOURDSDK_ROOT}/share/man:${MANPATH}"
 else
-    setenv MANPATH "${MESASDK_ROOT}/share/man"
+    setenv MANPATH "${FOURDSDK_ROOT}/share/man"
 endif
 
-setenv PGPLOT_DIR "${MESASDK_ROOT}/lib/pgplot"
+setenv PGPLOT_DIR "${FOURDSDK_ROOT}/lib/pgplot"
 
 # Set other environment variables
 
-setenv MESASDK_VERSION `${MESASDK_ROOT}/bin/mesasdk_version`
+setenv FOURDSDK_VERSION `${FOURDSDK_ROOT}/bin/fourdsdk_version`

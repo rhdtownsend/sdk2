@@ -1,25 +1,29 @@
-# Packages list for MESA SDK
+# Packages list for FourD SDK
 
 gmp/gmp-6.3.0
 mpfr/mpfr-4.2.1
 mpc/mpc-1.3.1
-xcode/xcode
-gcc/gcc-13.3-darwin
+sysroot/sysroot-11.1
+gcc/gcc-13.3-darwin-r2-pre
 gmp/gmp-6.3.0
 mpfr/mpfr-4.2.1
 mpc/mpc-1.3.1
-makedepf90/makedepf90-2.8.8
 cmake/cmake-3.30.2
+pcre2/pcre2-10.44
+swig/swig-4.2.1
+makedepf90/makedepf90-2.8.8
 xz/xz-5.6.2
 tar/tar-1.35
 time/time-1.9
 slot_blas/slot_blas
 slot_xblas/slot_xblas
+slot_cblas/slot_cblas
 slot_lapack/slot_lapack
 slot_lapack95/slot_lapack95
 slot_odepack/slot_odepack
 default_blas/default_blas-3.12.0
 default_xblas/default_xblas
+default_cblas/default_cblas-3.12.0
 default_lapack/default_lapack-3.12.0
 default_lapack95/default_lapack95
 default_odepack/default_odepack
@@ -32,7 +36,7 @@ crmath_odepack/crmath_odepack
 corehash/corehash-8.32
 png_pgplot/png_pgplot-1.5.30
 pgplot/pgplot-5.2-r1
-hdf5/hdf5-1.14.4-2-r1
+hdf5/hdf5-1.14.4-2-s2
 se/se-1.2.1
 x264/x264-master-20240628
 ffmpeg/ffmpeg-7.0.1
