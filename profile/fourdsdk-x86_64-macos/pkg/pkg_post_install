@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# Post-installation script for FourD SDK
+
+export FOURDSDK_ROOT=/Applications/fourdsdk
+
+exit 0

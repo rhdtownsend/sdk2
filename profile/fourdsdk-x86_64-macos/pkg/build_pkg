@@ -1,0 +1,74 @@
+#!/bin/bash
+
+### VALIDATION ###
+
+# Check SDK2_TMP is set and valid
+
+if [[ -z $SDK2_TMP ]]; then
+    echo "Environment variable SDK2_TMP is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_TMP ]]; then
+    echo "Temporary directory '$SDK2_TMP' is missing"
+    exit 1
+fi
+
+# Check SDK2_RELEASE is set
+
+if [[ -z $SDK2_RELEASE ]]; then
+    echo "Environment variable SDK2_RELEASE is not set"
+    exit 1
+fi
+
+# Check SDK2_PKG_CERT_NAME is set
+
+if [[ -z $SDK2_PKG_CERT_NAME ]]; then
+    echo "Environment variable SDK2_PKG_CERT_NAME is not set"
+    exit 1
+fi
+
+# Check SDK2_PKG_CERT_PATH is set
+
+if [[ -z $SDK2_PKG_CERT_PATH ]]; then
+    echo "Environment variable SDK2_PKG_CERT_PATH is not set"
+    exit 1
+fi
+
+### VARIABLES ###
+
+# Define standard directories
+
+export SDK2_BUILD_ROOT=${SDK2_TMP}/build
+export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
+
+export DEST_ROOT=${SDK2_TMP}/fourdsdk
+
+### ACTION ###
+
+# Create any missing directories
+
+mkdir -p $SDK2_PKG_ROOT
+
+# Customize the template pkproj file
+
+pkgproj_file=$(mktemp ${SDK2_PKG_ROOT}/fourdsdk.XXXXXX)
+
+sed -e "s|@RELEASE@|$SDK2_RELEASE|g" \
+    -e "s|@PKG_ROOT@|$SDK2_PKG_ROOT|g" \
+    -e "s|@DEST_ROOT@|$DEST_ROOT|g" \
+    -e "s|@PKG_CERT_NAME@|$SDK2_PKG_CERT_NAME|g" \
+    -e "s|@PKG_CERT_PATH@|$SDK2_PKG_CERT_PATH|g" template.pkgproj > $pkgproj_file
+
+# Copy pre/post install files into place
+
+cp pkg_pre_install $SDK2_PKG_ROOT/
+cp pkg_post_install $SDK2_PKG_ROOT/
+
+# Build the project
+
+/usr/local/bin/packagesbuild --verbose $pkgproj_file
+
+# Finish
+
+rm $pkgproj_file

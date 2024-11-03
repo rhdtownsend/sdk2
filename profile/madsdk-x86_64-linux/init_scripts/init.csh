@@ -47,7 +47,7 @@ if ( ! -f "${MADSDK_ROOT}/etc/check_preq.done" ) then
     if ( "$missing" != "" ) then
 	echo "madsdk_init.csh: missing prerequisites:"
 	echo $missing | awk '{print "  "$0}'
-	echo "Please visit http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Prerequisites and review the prerequisites required for use of the Mad SDK"
+	echo "Please visit http://user.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Prerequisites and review the prerequisites required for use of the Mad SDK"
 	popd > /dev/null
 	exit 1
     endif

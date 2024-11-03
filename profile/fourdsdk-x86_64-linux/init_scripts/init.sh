@@ -43,7 +43,7 @@ if [ ! -f "${FOURDSDK_ROOT}/etc/check_preq.done" ]; then
     if [ -n "$missing" ]; then
 	echo "fourdsdk_init.sh: missing prerequisites:"
 	echo $missing | awk '{print "  "$0}'
-	echo "Please visit http://www.astro.wisc.edu/~townsend/static.php?ref=fourdsdk#Prerequisites_2 and review the prerequisites required for use of the FOURD SDK"
+	echo "Please visit http://user.astro.wisc.edu/~townsend/static.php?ref=fourdsdk#Prerequisites_2 and review the prerequisites required for use of the SDK"
 	popd > /dev/null
 	return 1
     fi

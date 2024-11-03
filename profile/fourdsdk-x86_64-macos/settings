@@ -1,15 +1,15 @@
-# Profile-specific sewttings
+# Profile-specific settings
 
 # Set the profile name and architecture string (these
 # are used in naming scripts and versioning)
 
-export PROFILE_NAME=madsdk
+export PROFILE_NAME=fourdsdk
 export PROFILE_ARCH=x86_64-macos
 
 # Set the profile prefix (this is used generate the names of
 # environment variables associated with the profile)
 
-export PROFILE_PREFIX=MADSDK
+export PROFILE_PREFIX=FOURDSDK
 
 # Set the profile source URL
 
@@ -25,19 +25,15 @@ export NCORES=`sysctl hw.ncpu | awk '{print $2}'`
 
 # Set the build spec (for tools)
 
-export BUILD_SPEC="x86_64-apple-darwin14" # MacOS 10.10
+export BUILD_SPEC="x86_64-apple-darwin20"
 
 # Set the extension for library files
 
 export LIB_EXT=dylib
 
-# Set the XCode version
-
-export XCODE_SDK_VERSION=10.10
-
 # Set the deployment target
 
-export MACOSX_DEPLOYMENT_TARGET=10.10
+export MACOSX_DEPLOYMENT_TARGET=11.0
 
 # Set tool flags
 
@@ -48,7 +44,7 @@ fi
 
 # Set extra gcc flags
 
-export SDK2_GCC_FLAGS="--sysroot ${SDK2_BUILD_ROOT}/xcode"
+export SDK2_GCC_FLAGS="--sysroot ${DEST_ROOT}/sysroot"
 
 # Reset paths
 
