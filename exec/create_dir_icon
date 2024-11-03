@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# Create a directory icon from a PNG file
+
+PNG=$1
+ICON=$2
+
+# Check arguments
+
+if [[ -z $PNG ]]; then
+    echo "No PNG filespecified"
+    exit 1
+fi
+
+if [[ ! -f $PNG ]]; then
+    echo "File '$PNG' is missing"
+    exit 1
+fi
+
+if [[ -z $ICON ]]; then
+    echo "No ICON file specified"
+    exit 1
+fi
+
+if `file $PNG | grep -q -v 'PNG image data, 1024 x 1024'`; then
+    echo "File '$PNG' is not a PNG file with dimensions 1024 x 1024"
+    exit 1
+fi
+
+# Create a temporary working directory 
+
+WORKDIR=`mktemp -d add_dir_icon.XXXXXX` || exit 1
+
+# Make the icon (see https://apple.stackexchange.com/questions/402621/convert-png-image-icon-to-icns-file-macos)
+
+mkdir $WORKDIR/MyIcon.iconset
+sips -z 16 16     $PNG --out $WORKDIR/MyIcon.iconset/icon_16x16.png
+sips -z 32 32     $PNG --out $WORKDIR/MyIcon.iconset/icon_16x16@2x.png
+sips -z 32 32     $PNG --out $WORKDIR/MyIcon.iconset/icon_32x32.png
+sips -z 64 64     $PNG --out $WORKDIR/MyIcon.iconset/icon_32x32@2x.png
+sips -z 128 128   $PNG --out $WORKDIR/MyIcon.iconset/icon_128x128.png
+sips -z 256 256   $PNG --out $WORKDIR/MyIcon.iconset/icon_128x128@2x.png
+sips -z 256 256   $PNG --out $WORKDIR/MyIcon.iconset/icon_256x256.png
+sips -z 512 512   $PNG --out $WORKDIR/MyIcon.iconset/icon_256x256@2x.png
+sips -z 512 512   $PNG --out $WORKDIR/MyIcon.iconset/icon_512x512.png
+cp $PNG $WORKDIR/MyIcon.iconset/icon_512x512@2x.png
+
+pushd $WORKDIR > /dev/null
+iconutil -c icns MyIcon.iconset
+popd > /dev/null
+
+cp $WORKDIR/MyIcon.icns $ICON
+
+# Clean up
+
+rm -r $WORKDIR

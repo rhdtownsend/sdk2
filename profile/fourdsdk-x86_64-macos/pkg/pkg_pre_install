@@ -1,9 +1,1 @@
-#!/usr/bin/env bash
-#
-# Pre-installation script for FourD SDK
-
-export FOURDSDK_ROOT=/Applications/fourdsdk
-
-# Clean up any existing installation
-
-rm -rf $FOURDSDK_ROOT
+../../fourdsdk-aarch64-macos/pkg/pkg_pre_install
