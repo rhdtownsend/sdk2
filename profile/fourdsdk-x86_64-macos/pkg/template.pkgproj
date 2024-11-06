@@ -922,7 +922,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>fourdsdk-aarch64-macos-@RELEASE@</string>
+			<string>fourdsdk-x86_64-macos-@RELEASE@</string>
 			<key>PAYLOAD_ONLY</key>
 			<false/>
 			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>
