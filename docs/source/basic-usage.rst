@@ -31,7 +31,7 @@ will be built, and for what platform. Current choices include:
 ``mesasdk-x86_64-linux``
   MESA SDK running on Intel 64-bit Linux
 
-``mesasdk-x86_64-linux``
+``mesasdk-aarch64-linux``
   MESA SDK running on ARM 64-bit Linux
 
 ``madsdk-x86_64-macos``
