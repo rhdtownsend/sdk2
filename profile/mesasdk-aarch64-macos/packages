@@ -4,7 +4,7 @@ gmp/gmp-6.3.0
 mpfr/mpfr-4.2.1
 mpc/mpc-1.3.1
 sysroot/sysroot-11.1
-gcc/gcc-13.3-darwin-r2-pre
+gcc/gcc-14.2-darwin-r2
 gmp/gmp-6.3.0
 mpfr/mpfr-4.2.1
 mpc/mpc-1.3.1
@@ -30,12 +30,12 @@ crmath_lapack95/crmath_lapack95
 crmath_odepack/crmath_odepack
 corehash/corehash-8.32
 png_pgplot/png_pgplot-1.5.30
-pgplot/pgplot-5.2-r1
+pgplot/pgplot-5.2-s2
 hdf5/hdf5-1.14.4-2
 se/se-1.2.1
 x264/x264-master-20240628
 ffmpeg/ffmpeg-7.0.1
-ndiff/ndiff-2.00
+ndiff/ndiff-2.00-s1
 fpx3/fpx3
 fypp/fypp-3.2
 ar_wrapper/ar_wrapper
