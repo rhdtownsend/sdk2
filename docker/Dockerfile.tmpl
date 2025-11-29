@@ -95,6 +95,13 @@ RUN cd Python-3.7.17 && \
     make -j && \
     make install
 
+RUN curl -L https://ftpmirror.gnu.org/libtool/libtool-2.5.4.tar.gz -O
+RUN tar -xf libtool-2.5.4.tar.gz
+RUN cd libtool-2.5.4 && \
+    ./configure --prefix=/usr/local && \
+    make -j && make install
+RUN rm -r libtool-2.5.4.tar.gz libtool-2.5.4
+
 # Install python packages
 
 RUN python3 -m pip install meson

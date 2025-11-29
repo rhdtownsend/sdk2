@@ -21,3 +21,4 @@ setenv PGPLOT_DIR "${MESASDK_ROOT}/lib/pgplot"
 # Set other environment variables
 
 setenv MESASDK_VERSION `${MESASDK_ROOT}/bin/mesasdk_version`
+setenv PKG_CONFIG_PATH "${MESASDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"

@@ -21,3 +21,4 @@ setenv PGPLOT_DIR "${FOURDSDK_ROOT}/lib/pgplot"
 # Set other environment variables
 
 setenv FOURDSDK_VERSION `${FOURDSDK_ROOT}/bin/fourdsdk_version`
+setenv PKG_CONFIG_PATH "${FOURDSDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"

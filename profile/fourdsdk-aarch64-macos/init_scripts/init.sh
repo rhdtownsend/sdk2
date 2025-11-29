@@ -17,3 +17,4 @@ export PGPLOT_DIR="${FOURDSDK_ROOT}/lib/pgplot"
 # Set other environment variables
 
 export FOURDSDK_VERSION=`${FOURDSDK_ROOT}/bin/fourdsdk_version`
+export PKG_CONFIG_PATH="${FOURDSDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"

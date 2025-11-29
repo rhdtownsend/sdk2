@@ -59,3 +59,4 @@ export VALGRIND_LIB="${FOURDSDK_ROOT}/lib/valgrind"
 # Set other environment variables
 
 export FOURDSDK_VERSION=`${FOURDSDK_ROOT}/bin/fourdsdk_version`
+export PKG_CONFIG_PATH="${FOURDSDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"
