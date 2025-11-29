@@ -164,4 +164,7 @@ install () {
 	${DEST_ROOT}/bin/pgplot_link
     chmod a+x ${DEST_ROOT}/bin/pgplot_link
 
+    # Copy pkgconfig
+
+    cp -a ${SDK2_ROOT}/package/pgplot/pgplot.pc ${DEST_ROOT}/lib/pkgconfig
 }

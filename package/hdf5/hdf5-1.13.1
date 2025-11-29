@@ -3,7 +3,8 @@
 # Set package-specific variables
 
 PACKAGE_NAME=hdf5
-SRC_FILE=hdf5-1.13.1.tar.bz2
+VERSION=1.13.1
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -73,4 +74,7 @@ install () {
 	${DEST_ROOT}/bin/hdf5_link
     chmod a+x ${DEST_ROOT}/bin/hdf5_link
 
+    # Create pkg-config file
+
+    sed -e s/@VERSION@/$VERSION/g ${SDK2_ROOT}/package/hdf5/hdf5_fortran.pc > ${DEST_ROOT}/lib/pkgconfig/hdf5_fortran.pc
 }
