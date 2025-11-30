@@ -3,12 +3,37 @@
 # Set package-specific variables
 
 PACKAGE_NAME=hdf5
-SRC_FILE=hdf5-1.13.1.tar.bz2
+VERSION=1.14.4-2
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
 
 # Functions
+
+unpack () {
+
+    echo "Unpacking package $PACKAGE into $SD"
+
+    # Create the source directory
+
+    rm -rf $SD
+    mkdir $SD
+
+    # Unpack the tarballs
+
+    for src_file in $SF; do
+
+	tar xf $src_file -C $SD --strip-components 2
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for package $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+}
 
 build () {
 
@@ -22,9 +47,9 @@ build () {
 
     # Configure
 
-    CC=gcc FC=gfortran CFLAGS=-std=gnu99 ./configure \
+    CC=gcc.exec CXX=g++.exec FC=gfortran.exec CFLAGS=-std=gnu99 ./configure \
       --build=$BUILD_SPEC \
-      --prefix=$DEST_ROOT --enable-fortran --enable-fortran2003
+      --prefix=$DEST_ROOT --enable-fortran --enable-fortran2003 --enable-cxx
       # --enable-using-memchecker    
 
     if [ $? -ne 0 ]; then
@@ -73,4 +98,7 @@ install () {
 	${DEST_ROOT}/bin/hdf5_link
     chmod a+x ${DEST_ROOT}/bin/hdf5_link
 
+    # Create pkg-config file
+
+    sed -e s/@VERSION@/$VERSION/g ${SDK2_ROOT}/package/hdf5/hdf5_fortran.pc > ${DEST_ROOT}/lib/pkgconfig/hdf5_fortran.pc
 }

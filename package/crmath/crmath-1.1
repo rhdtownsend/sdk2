@@ -3,8 +3,7 @@
 # Set package-specific variables
 
 PACKAGE_NAME=crmath
-VERSION=1.1
-SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.gz
+SRC_FILE=crmath-1.1.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -57,7 +56,4 @@ install () {
 	${SDK2_PROFILE_ROOT}/common/crmath/crmath_link > ${DEST_ROOT}/bin/crmath_link
     chmod a+x ${DEST_ROOT}/bin/crmath_link
 
-    # Create pkg-config file
-
-    sed -e s/@VERSION@/$VERSION/g ${SDK2_ROOT}/package/crmath/crlibm_fortran.pc > ${DEST_ROOT}/lib/pkgconfig/crlibm_fortran.pc
 }

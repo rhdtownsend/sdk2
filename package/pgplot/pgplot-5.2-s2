@@ -4,7 +4,7 @@
 
 PACKAGE_NAME=pgplot
 SRC_FILE=pgplot5.2.tar.gz
-PATCH_FILES=pgplot5.2-png-1.5.diff
+PATCH_FILES=(pgplot5.2-png-1.5.diff pgplot-add-headers.diff)
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${PACKAGE_NAME}-build
@@ -88,7 +88,7 @@ build () {
 
     # Build (doesn't play well with multi-core)
 
-    make all cpg
+    LC_ALL=C make all cpg
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in make for $PACKAGE_NAME"

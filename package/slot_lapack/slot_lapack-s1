@@ -1,8 +1,8 @@
-# SDK2 package definition for slotted lapack95
+# SDK2 package definition for slotted lapack
 
 # Set package-specific variables
 
-PACKAGE_NAME=slot_lapack95
+PACKAGE_NAME=slot_lapack
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -21,13 +21,15 @@ install () {
 
     # Create the compiler support scripts
 
-    for file in lapack95_link; do
+    for file in lapack_link; do
 
 	sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
     	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g \
-	    ${SDK2_PROFILE_ROOT}/common/slot_lapack95/${file} > ${DEST_ROOT}/bin/${file}
+	    ${SDK2_PROFILE_ROOT}/common/slot_lapack/${file} > ${DEST_ROOT}/bin/${file}
 	chmod a+x ${DEST_ROOT}/bin/${file}
 
     done
+
+    cp -a ${SDK2_ROOT}/package/slot_lapack/lapack.pc ${DEST_ROOT}/lib/pkgconfig
 
 }

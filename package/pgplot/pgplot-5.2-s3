@@ -4,7 +4,7 @@
 
 PACKAGE_NAME=pgplot
 SRC_FILE=pgplot5.2.tar.gz
-PATCH_FILES=pgplot5.2-png-1.5.diff
+PATCH_FILES=(pgplot5.2-png-1.5.diff pgplot-add-headers.diff)
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${PACKAGE_NAME}-build
@@ -88,7 +88,7 @@ build () {
 
     # Build (doesn't play well with multi-core)
 
-    make all cpg
+    LC_ALL=C make all cpg
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in make for $PACKAGE_NAME"
@@ -163,5 +163,9 @@ install () {
     sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/pgplot/pgplot_link > \
 	${DEST_ROOT}/bin/pgplot_link
     chmod a+x ${DEST_ROOT}/bin/pgplot_link
+
+    # Copy pkgconfig
+
+    cp -a ${SDK2_ROOT}/package/pgplot/pgplot.pc ${DEST_ROOT}/lib/pkgconfig
 
 }
