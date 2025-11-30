@@ -21,3 +21,4 @@ setenv PGPLOT_DIR "${MADSDK_ROOT}/lib/pgplot"
 # Set other environment variables
 
 setenv MADSDK_VERSION `${MADSDK_ROOT}/bin/madsdk_version`
+setenv PKG_CONFIG_PATH "${MADSDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"

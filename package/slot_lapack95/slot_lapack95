@@ -30,4 +30,5 @@ install () {
 
     done
 
+    cp -a ${SDK2_ROOT}/package/slot_lapack95/lapack95.pc ${DEST_ROOT}/lib/pkgconfig
 }

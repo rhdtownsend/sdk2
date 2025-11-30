@@ -38,3 +38,4 @@ fpx3/fpx3
 ar_wrapper/ar_wrapper
 patchelf/patchelf-0.9
 init_scripts/init_scripts
+pkgconf/pkgconf-2.5.1

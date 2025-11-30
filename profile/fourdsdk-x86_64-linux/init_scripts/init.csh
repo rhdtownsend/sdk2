@@ -63,3 +63,4 @@ setenv VALGRIND_LIB "${FOURDSDK_ROOT}/lib/valgrind"
 # Set other environment variables
 
 setenv FOURDSDK_VERSION `${FOURDSDK_ROOT}/bin/fourdsdk_version`
+setenv PKG_CONFIG_PATH "${FOURDSDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"

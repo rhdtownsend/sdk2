@@ -59,3 +59,4 @@ export VALGRIND_LIB="${MESASDK_ROOT}/lib/valgrind"
 # Set other environment variables
 
 export MESASDK_VERSION=`${MESASDK_ROOT}/bin/mesasdk_version`
+export PKG_CONFIG_PATH="${MESASDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"
