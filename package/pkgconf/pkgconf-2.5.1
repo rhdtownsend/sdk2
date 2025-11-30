@@ -1,3 +1,5 @@
+# SDK2 package definition for pkgconf
+
 # Set package-specific variables
 
 PACKAGE_NAME=pkgconf
@@ -17,8 +19,6 @@ build () {
     cd $BD
 
     # Configure
-
-    ./autogen.sh
 
     ./configure --prefix=$DEST_ROOT --with-system-libdir=/lib:/usr/lib --with-system-includedir=/usr/include
 
