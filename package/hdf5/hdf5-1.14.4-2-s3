@@ -101,4 +101,5 @@ install () {
     # Create pkg-config file
 
     sed -e s/@VERSION@/$VERSION/g ${SDK2_ROOT}/package/hdf5/hdf5_fortran.pc > ${DEST_ROOT}/lib/pkgconfig/hdf5_fortran.pc
+
 }
