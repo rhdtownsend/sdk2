@@ -1,0 +1,67 @@
+# SDK2 package definition for ndiff
+
+# Set package-specific variables
+
+PACKAGE_NAME=ndiff
+SRC_FILE=ndiff-2.00.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    CFLAGS='-std=c89' ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Fix the man path
+
+    sed -i.bak \
+    	-e 's|man/man|share/man/man|g' \
+	-e 's|man/cat|share/man/cat|g' Makefile && rm -f Makefile.bak
+
+    # Build
+
+    make -j$NCORES
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make all check install
+
+    # Copy docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/ndiff
+    cp -avf COPYING ${DEST_ROOT}/share/doc/ndiff/
+    cp -av INSTALL README* ${DEST_ROOT}/share/doc/ndiff/
+
+}
