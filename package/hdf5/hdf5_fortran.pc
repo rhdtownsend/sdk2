@@ -1,4 +1,5 @@
 Name: hdf5_fortran
 Version: @VERSION@
 Description: HDF5 (Hierarchical Data Format 5) Software Library bindings for Fortran
+Cflags: -I${pcfiledir}/../../include
 Libs: -L${pcfiledir}/.. -lhdf5_fortran
