@@ -24,7 +24,7 @@ default_lapack/default_lapack-3.12.0
 default_lapack95/default_lapack95
 default_odepack/default_odepack
 crlibm/crlibm-1.0beta4
-crmath/crmath-1.2
+crmath/crmath-1.2-s1
 crmath_blas/crmath_blas-3.12.0
 crmath_lapack/crmath_lapack-3.12.0
 crmath_lapack95/crmath_lapack95
