@@ -25,7 +25,7 @@ export NCORES=`sysctl hw.ncpu | awk '{print $2}'`
 
 # Set the build spec (for tools)
 
-export BUILD_SPEC="aarch64-apple-darwin20"
+export BUILD_SPEC="aarch64-apple-darwin25"
 
 # Set the extension for library files
 
@@ -33,7 +33,7 @@ export LIB_EXT=dylib
 
 # Set the deployment target
 
-export MACOSX_DEPLOYMENT_TARGET=11.0
+#export MACOSX_DEPLOYMENT_TARGET=11.0
 
 # Set tool flags
 
