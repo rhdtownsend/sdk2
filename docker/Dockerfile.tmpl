@@ -107,6 +107,15 @@ RUN rm -r libtool-2.5.4.tar.gz libtool-2.5.4
 RUN python3 -m pip install meson
 RUN python3 -m pip install ninja
 
+# Install new(er) texinfo (required by gcc-15)
+
+RUN curl -L https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.gz -O
+RUN tar -xf texinfo-7.2.tar.gz
+RUN cd texinfo-7.2 && \
+    ./configure --prefix=/usr/local && \
+    make -j && make install
+RUN rm -r texinfo-7.2.tar.gz texinfo-7.2
+
 # Set the root password
 
 RUN echo 'root:Docker!' | chpasswd
