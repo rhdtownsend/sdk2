@@ -82,15 +82,15 @@ install () {
 
     create_shared_lib \
         -c gfortran \
-	${DEST_ROOT}/math-slots/default/lib/libblas.a
+	${DEST_ROOT}/math-slots/crmath/lib/libblas.a
     create_shared_lib \
         -c gfortran \
-        -L ${DEST_ROOT}/math-slots/default/lib -lblas \
-	${DEST_ROOT}/math-slots/default/lib/liblapack.a
+        -L ${DEST_ROOT}/math-slots/crmath/lib -lblas \
+	${DEST_ROOT}/math-slots/crmath/lib/liblapack.a
     create_shared_lib \
         -c gfortran  \
-        -L ${DEST_ROOT}/math-slots/default/lib -lblas -llapack \
-	${DEST_ROOT}/math-slots/default/lib/libtmg.a
+        -L ${DEST_ROOT}/math-slots/crmath/lib -lblas -llapack \
+	${DEST_ROOT}/math-slots/crmath/lib/libtmg.a
 
     # Create pkgconf files
 
