@@ -2,9 +2,9 @@ prefix=${pcfiledir}/../..
 libdir=${prefix}/lib
 includedir=${prefix}/include
 
-Name: lapack
-Description: Linear Algebra PACKage
-URL: https://www.netlib.org/lapack/
+Name: cblas
+Description: Basic Linar Algebra Subprograms (C interface)
+URL: https://www.netlib.org/blas/
 Version: @VERSION@
 Requires.private: blas = @VERSION@
-Libs: -L${libdir} -llapack -ltmg
+Libs: -L${libdir} -lcblas

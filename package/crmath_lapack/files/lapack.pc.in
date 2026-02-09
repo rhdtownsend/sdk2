@@ -6,5 +6,5 @@ Name: lapack
 Description: Linear Algebra PACKage
 URL: https://www.netlib.org/lapack/
 Version: @VERSION@
-Requires.private: crmath blas
-Libs: -L${libdir} -llapack -ltmg
+Requires.private: crmath blas = @VERSION@
+Libs: -L${libdir} -llapack

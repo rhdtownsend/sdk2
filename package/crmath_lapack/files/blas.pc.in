@@ -1,0 +1,10 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: blas
+Description: Basic Linar Algebra Subprograms
+URL: https://www.netlib.org/blas/
+Version: @VERSION@
+Requires.private: crmath
+Libs: -L${libdir} -lblas
