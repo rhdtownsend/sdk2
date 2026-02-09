@@ -23,7 +23,7 @@ build () {
 
     # Configure
 
-    ./configure \
+    CC='gcc -std=gnu17' ./configure \
 	--build=$BUILD_SPEC \
 	--prefix=$DEST_ROOT
 
