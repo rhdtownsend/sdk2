@@ -1,0 +1,11 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: lapack95
+Description: Fortran95 interface to LAPACK
+URL: https://www.netlib.org/lapack95/
+Version: @VERSION@
+Requires.private: lapack
+Cflags: -I${includedir}
+Libs: -L${libdir} -llapack95

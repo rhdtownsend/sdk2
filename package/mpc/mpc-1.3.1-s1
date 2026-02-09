@@ -1,0 +1,75 @@
+# SDK2 package definition for mpc
+
+# Set package-specific variables
+
+PACKAGE_NAME=mpc
+VERSION=1.3.1
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+	--prefix=$DEST_ROOT \
+	--with-gmp=$DEST_ROOT \
+	--with-mpfr=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Copy docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/mpc/
+    cp -av AUTHORS COPYING.LESSER INSTALL NEWS README TODO ${DEST_ROOT}/share/doc/mpc/
+
+    # This is to make sure we can overwrite docs during a bootstrap 2nd-stage install
+
+    chmod a+rw ${DEST_ROOT}/share/doc/mpc/*
+
+    # Create pkgconf files
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
+
+}

@@ -1,0 +1,102 @@
+# SDK2 package definition for crmath-slot lapack
+
+# Set package-specific variables
+
+PACKAGE_NAME=crmath_lapack
+VERSION=3.12.0
+SRC_FILES=(lapack-${VERSION}.tar.gz crmath_lapack.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarballs
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+	
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources
+
+    cd $SD
+
+    ./fix_crmath_lapack.sh
+
+    # Move other files into place
+
+    cp ${PD}/crmath_lapack/make.inc-3.12.0 ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+    rm -f *.a
+
+    # Build
+
+    make -j$NCORES lib
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static libraries
+
+    cd $BD
+
+    cp -av SRC/liblapack.a ${DEST_ROOT}/math-slots/crmath/lib/
+    cp -av TESTING/MATGEN/libtmg.a ${DEST_ROOT}/math-slots/crmath/lib/
+
+    # Create the shared libraries
+
+    export ${PROFILE_PREFIX}_MATH_SLOT=crmath
+
+    create_shared_lib \
+        -c gfortran \
+	-L ${DEST_ROOT}/lib -lcrmath \
+        -L ${DEST_ROOT}/math-slots/crmath/lib -lblas \
+	${DEST_ROOT}/math-slots/crmath/lib/liblapack.a
+    create_shared_lib \
+        -c gfortran  \
+	-L ${DEST_ROOT}/lib -lcrmath \
+        -L ${DEST_ROOT}/math-slots/crmath/lib -llapack -lblas \
+	${DEST_ROOT}/math-slots/crmath/lib/libtmg.a
+
+    # Create pkgconf files
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/math-slots/crmath/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
+
+}

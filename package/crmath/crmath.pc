@@ -1,5 +1,0 @@
-Name: crmath
-Version: @VERSION@
-Description: FORTRAN interface to crlibm
-Cflags: -I${pcfiledir}/../../include
-Libs: -L${pcfiledir}/.. -lcrmath

@@ -1,0 +1,67 @@
+# SDK2 package definition for toml-f
+
+# Set package-specific variables
+
+PACKAGE_NAME=toml-f
+VERSION=0.4.3
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.xz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    rm -rf _build
+
+    # Configure
+
+    meson setup _build --prefix=$DEST_ROOT --libdir=lib
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in meson setup for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    meson compile -C _build
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in meson compile for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    meson install -C _build
+
+    # Move module files
+
+    mv ${DEST_ROOT}/include/toml-f/modules/* ${DEST_ROOT}/include
+    rm -rf ${DEST_ROOT}/include/toml-f
+
+    # Create pkgconf files (overwrites installed file)
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
+
+}

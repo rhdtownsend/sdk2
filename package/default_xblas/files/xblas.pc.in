@@ -1,0 +1,9 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: xblas
+Description: Extra Precise Basic Linear Algebra Subroutines
+URL: https://www.netlib.org/xblas/
+Version: @VERSION@
+Libs: -L${libdir} -lxblas

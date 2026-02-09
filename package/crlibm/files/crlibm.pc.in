@@ -1,0 +1,10 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: crlibm
+Description: Correctly-rounded math library
+URL: https://ens-lyon.hal.science/ensl-01529804
+Version: @VERSION@
+Cflags: -I${includedir}
+Libs: -L${libdir} -lcrlibm

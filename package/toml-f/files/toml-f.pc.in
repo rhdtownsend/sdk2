@@ -1,0 +1,10 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: toml-f
+Description: A TOML parser implementation for data serialization and deserialization in Fortran
+URL: https://github.com/toml-f/toml-f
+Version: 0.4.3
+Cflags: -I${includedir}
+Libs: -L${libdir} -ltoml-f

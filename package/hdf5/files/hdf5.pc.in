@@ -1,0 +1,11 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: hdf5
+Description: HDF5 (Hierarchical Data Format 5) Software Library
+URL: https://www.hdfgroup.org/
+Version: @VERSION@
+Cflags: -I${includedir}
+Libs: -L${libdir} -lhdf5
+Libs.private: -lz

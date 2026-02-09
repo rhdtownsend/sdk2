@@ -1,0 +1,9 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: pgplot
+Description: PGPLOT Graphics Subroutine Library
+URL: http://www.astro.caltech.edu/~tjp/pgplot/
+Version: @VERSION@
+Libs: -L${libdir} -lpgplot

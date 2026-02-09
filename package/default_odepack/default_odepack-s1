@@ -1,0 +1,53 @@
+# SDK2 package definition for default-slot odepack
+
+# Set package-specific variables
+
+PACKAGE_NAME=odepack
+SRC_FILE=odepack-omp.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static library and module file
+
+    cd $BD
+
+    cp -av libodepack.a ${DEST_ROOT}/math-slots/default/lib/
+    cp -av odepack.mod ${DEST_ROOT}/math-slots/default/include/
+
+    # Create pkgconf files
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/math-slots/default/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
+
+}

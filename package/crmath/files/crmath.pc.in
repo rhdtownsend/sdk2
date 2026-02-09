@@ -1,0 +1,11 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: crmath
+Description: Fortran interface to crlibm
+URL: https://github.com/rhdtownsend/crmath
+Version: @VERSION@
+Requires.private: crlibm = 1.0beta4
+Cflags: -I${includedir}
+Libs: -L${libdir} -lcrmath

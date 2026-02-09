@@ -1,0 +1,11 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: hdf5_fortran
+Description: HDF5 (Hierarchical Data Format 5) Software Library, Fortran bindings
+URL: https://www.hdfgroup.org/
+Version: @VERSION@
+Requires.private: hdf5 = @VERSION@
+Cflags: -I${includedir}
+Libs: -L${libdir} -lhdf5_fortran

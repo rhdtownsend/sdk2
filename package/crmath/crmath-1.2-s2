@@ -1,0 +1,88 @@
+# SDK2 package definition for crmath
+
+# Set package-specific variables
+
+PACKAGE_NAME=crmath
+VERSION=1.2
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarballs
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Move other files into place
+
+    cp ${PD}/crmath/Make.inc ${SD}/Make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    cp libcrmath.a ${DEST_ROOT}/lib/
+
+    cp *.mod *.smod ${DEST_ROOT}/include/
+
+    # Create the shared library
+
+    create_shared_lib \
+    	-c gfortran \
+	-L ${DEST_ROOT}/lib -lcrlibm \
+	${DEST_ROOT}/lib/libcrmath.a
+
+    # Create pkgconf files
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
+
+}

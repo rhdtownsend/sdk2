@@ -1,0 +1,10 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: odepack
+Description: Systematized Collection of ODE Solvers
+URL: https://www.netlib.org/odepack/
+Version: @VERSION@
+Requires.private: crmath
+Libs: -L${libdir} -lodepack
