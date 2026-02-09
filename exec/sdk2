@@ -309,6 +309,8 @@ packages_install () {
 	    SD=${SDK2_BUILD_ROOT}/${SRC_DIR}
 	    BD=${SDK2_BUILD_ROOT}/${BUILD_DIR}
 
+	    FD=${SDK2_PACKAGE_ROOT}/${PACKAGE_NAME}/files
+
 	    PD=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
 
 	    # Take action
