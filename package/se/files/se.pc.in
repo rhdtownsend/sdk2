@@ -1,0 +1,9 @@
+prefix=${pcfiledir}/../..
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: se
+Description: SE (stellar evolution) file format library
+URL: https://github.com/NuGrid/NuSE
+Version: @VERSION@
+Libs: -L${libdir} -lpgplot

@@ -1,0 +1,75 @@
+# SDK2 package definition for se
+
+# Set package-specific variables
+
+PACKAGE_NAME=se
+VERSION=1.2.1
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make distclean
+
+    # If necessary, modify the BUILD_SPEC
+
+    BUILD_SPEC=${BUILD_SPEC/apple/unknown}
+
+    # Configure
+
+    ./configure \
+	--build=$BUILD_SPEC \
+        --prefix=$DEST_ROOT \
+	F77=gfortran \
+	--with-hdf5=$DEST_ROOT
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in configure for $PACKAGE_NAME"
+	exit 1
+    fi
+
+    # Build
+
+    make -j$NCORES
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    # Copy docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/se
+    cp -av COPYING INSTALL README ${DEST_ROOT}/share/doc/se
+
+    # Create pkgconf files
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
+
+}
