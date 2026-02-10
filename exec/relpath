@@ -1,16 +1,16 @@
-#!/usr/bin/perl
+#!/usr/bin/env python3
 #
 # Convert absolute paths to relative
 
-use File::Spec;
+import os.path as op
+import sys
 
-@abspaths = split(':', $ARGV[0]);
-$base = $ARGV[1];
+abs_paths = sys.argv[1].split(':')
+base_path = sys.argv[2]
 
-@relpaths = ();
+rel_paths = []
 
-foreach $abspath (@abspaths) {
-        push @relpaths, File::Spec->abs2rel($abspath, $base);
-}
+for abs_path in abs_paths:
+    rel_paths += [op.relpath(abs_path, base_path)]
 
-print join(':', @relpaths)."\n";
+print(':'.join(rel_paths))
