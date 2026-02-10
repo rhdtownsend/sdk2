@@ -25,7 +25,7 @@ crmath_odepack/crmath_odepack-s1
 png_pgplot/png_pgplot-1.5.30
 pgplot/pgplot-5.2-s4
 hdf5/hdf5-1.14.6-s1
-se/se-1.2.1
+se/se-1.2.1-s1
 x264/x264-master-20240628
 nasm_ffmpeg/nasm_ffmpeg-2.15.03
 ffmpeg/ffmpeg-7.0.1-s3
@@ -35,4 +35,5 @@ fypp/fypp-3.2
 toml-f/toml-f-0.4.3-s1
 ar_wrapper/ar_wrapper
 patchelf/patchelf-0.9-r2
+link_scripts/link_scripts
 init_scripts/init_scripts

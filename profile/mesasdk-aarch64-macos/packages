@@ -25,7 +25,7 @@ corehash/corehash-8.32
 png_pgplot/png_pgplot-1.5.30
 pgplot/pgplot-5.2-s4
 hdf5/hdf5-1.14.6-s1
-se/se-1.2.1
+se/se-1.2.1-s1
 x264/x264-master-20240628
 ffmpeg/ffmpeg-7.0.1-s3
 ndiff/ndiff-2.00-s1
@@ -33,4 +33,5 @@ fpx3/fpx3
 fypp/fypp-3.2
 toml-f/toml-f-0.4.3-s1
 ar_wrapper/ar_wrapper
+link_scripts/link_scripts
 init_scripts/init_scripts

@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Legacy link script for hdf5
+
+pkgconf --static --libs hdf5_fortran

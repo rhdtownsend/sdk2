@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Legacy link script for odepack
+
+if [ -n "@SDK_MATH_SLOT@" ]; then
+    path=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@
+else
+    path=@SDK_ROOT@/math-slots/default
+fi
+
+pkgconf --with-path $path/lib/pkgconfig --static --libs odepack

@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Legacy link script for crlibm
+
+pkgconf --static --libs crlibm

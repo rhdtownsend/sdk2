@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Legacy link script for crmath
+
+pkgconf --static --libs crmath

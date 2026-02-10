@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Legacy link script for pgplot
+
+pkgconf --static --libs pgplot

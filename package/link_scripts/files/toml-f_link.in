@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Legacy link script for toml-f
+
+pkgconf --static --libs toml-f

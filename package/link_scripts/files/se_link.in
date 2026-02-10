@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Legacy link script for se
+
+pkgconf --static --libs se
