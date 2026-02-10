@@ -4,7 +4,7 @@
 
 PACKAGE_NAME=crmath_lapack
 VERSION=3.12.0
-SRC_FILES=(lapack-${VERSION}.tar.gz crmath_lapack.tar.gz)
+SRC_FILE=lapack-${VERSION}.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -31,11 +31,31 @@ unpack () {
 
     done
 
-    # Modify the sources
+    # Modify the sources, by inserting "use, crmath" clauses
+    # at the beginning of routines
 
     cd $SD
 
-    ./fix_crmath_lapack.sh
+    if `awk --version | grep -q GNU`; then
+	AWK='awk --posix'
+    else
+	AWK='awk'
+    fi
+
+    SIN_PATTERN="[sdcz]get3[78]\.f$"
+
+    for file in `find ./ -name '*.f'`; do
+
+	REMAP_LIST=
+
+	if [[ "$file" =~ $SIN_PATTERN ]]; then
+	    REMAP_LIST="$REMAP_LIST, sin_ => sin"
+	fi
+
+	${AWK} -f ${FD}/fix_crmath_lapack.awk -v remap_list="$REMAP_LIST" $file > $file.tmp
+	mv $file.tmp $file
+
+    done
 
     # Move other files into place
 
@@ -57,7 +77,6 @@ build () {
     # Build
 
     make -j$NCORES
-    make -j$NCORES -C CBLAS
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in make for $PACKAGE_NAME"
@@ -82,13 +101,16 @@ install () {
 
     create_shared_lib \
         -c gfortran \
+	-L ${DEST_ROOT}/lib -lcrmath \
 	${DEST_ROOT}/math-slots/crmath/lib/libblas.a
     create_shared_lib \
         -c gfortran \
+        -L ${DEST_ROOT}/lib -lcrmath \
         -L ${DEST_ROOT}/math-slots/crmath/lib -lblas \
 	${DEST_ROOT}/math-slots/crmath/lib/liblapack.a
     create_shared_lib \
         -c gfortran  \
+        -L ${DEST_ROOT}/lib -lcrmath \
         -L ${DEST_ROOT}/math-slots/crmath/lib -lblas -llapack \
 	${DEST_ROOT}/math-slots/crmath/lib/libtmg.a
 

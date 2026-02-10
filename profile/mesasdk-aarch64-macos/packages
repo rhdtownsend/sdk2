@@ -13,12 +13,12 @@ makedepf90/makedepf90-2.8.8-s2
 xz/xz-5.8.2
 tar/tar-1.35
 time/time-1.9-s1
-default_lapack/default_lapack-3.12.0-s1
+default_lapack/default_lapack-3.12.0-s2
 default_lapack95/default_lapack95-s1
 default_odepack/default_odepack-s1
 crlibm/crlibm-1.0beta4-s1
 crmath/crmath-1.2-s2
-crmath_lapack/crmath_lapack-3.12.0-s1
+crmath_lapack/crmath_lapack-3.12.0-s2
 crmath_lapack95/crmath_lapack95-s1
 crmath_odepack/crmath_odepack-s1
 corehash/corehash-8.32

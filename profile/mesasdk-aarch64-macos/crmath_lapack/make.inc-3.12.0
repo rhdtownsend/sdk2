@@ -24,7 +24,7 @@ FFLAGS_NOOPT = -O0 -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
 
 #  Define LDFLAGS to the desired linker options for your machine.
 #
-LDFLAGS =
+LDFLAGS = `pkgconf --libs crmath`
 
 #  The archiver and the flag(s) to use when building an archive
 #  (library).  If your system has no ranlib, set RANLIB = echo.
