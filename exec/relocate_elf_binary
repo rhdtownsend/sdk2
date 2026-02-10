@@ -35,8 +35,20 @@ if [ -f $FILE ]; then
 
 	    # Fix the rpath
 	    
-	    rpath_old=`patchelf --print-rpath $FILE | sed -e "s|\\$ORIGIN|$FD|g"`
-            rpath_new=`relpath $rpath_old $FD | sed -e "s|^|\\$ORIGIN/|" -e "s|:|:\\$ORIGIN/|g"`
+	    rpath_old=`patchelf --print-rpath $FILE | awk -v repl=$FD '{
+  gsub(/\\$ORIGIN/, repl); print
+}'`
+
+            rpath_new=`relpath $rpath_old $FD | awk -F: '{
+  for (i = 1; i <= NF; i++) {
+    if ($i == ".")
+      $i = "$ORIGIN"
+          else
+      $i = "$ORIGIN/" $i
+  }
+  OFS=":"
+  print
+}'`
 
             patchelf --set-rpath $rpath_new $FILE --shrink-rpath
 
