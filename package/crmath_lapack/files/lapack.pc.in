@@ -7,4 +7,4 @@ Description: Linear Algebra PACKage
 URL: https://www.netlib.org/lapack/
 Version: @VERSION@
 Requires.private: crmath blas = @VERSION@
-Libs: -L${libdir} -llapack
+Libs: -Wl,-rpath,${libdir} -L${libdir} -llapack

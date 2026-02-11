@@ -7,4 +7,4 @@ Description: Linear Algebra PACKage
 URL: https://www.netlib.org/lapack/
 Version: @VERSION@
 Requires.private: blas = @VERSION@
-Libs: -L${libdir} -llapack -ltmg
+Libs: -Wl,-rpath,${libdir} -L${libdir} -llapack

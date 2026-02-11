@@ -7,4 +7,4 @@ Description: Linear Algebra PACKage (testing routines)
 URL: https://www.netlib.org/lapack/
 Version: @VERSION@
 Requires.private: blas = @VERSION@ lapack = @VERSION@
-Libs: -L${libdir} -ltmg
+Libs:  -Wl,-rpath,${libdir} -L${libdir} -ltmg
