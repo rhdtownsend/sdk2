@@ -8,6 +8,15 @@ for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/lib64 ${DEST_RO
     relocate_elf_binary $file $DEST_ROOT
 done
 
+# Fix up paths in pkgconf files
+
+for file in `find ${DEST_ROOT} -name '*.pc'`; do
+
+    awk -v path="$MESASDK_ROOT" -v repl='${pcfiledir}/../..' \
+	'{ gsub(path, repl); print }' $file > $file.tmp && mv $file.tmp $file
+
+done
+
 # Strip symbols
 
 STRIP_CMD=$SDK2_BUILD_ROOT/binutils/binutils/strip-new
