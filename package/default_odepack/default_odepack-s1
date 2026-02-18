@@ -2,7 +2,7 @@
 
 # Set package-specific variables
 
-PACKAGE_NAME=odepack
+PACKAGE_NAME=default_odepack
 SRC_FILE=odepack-omp.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
