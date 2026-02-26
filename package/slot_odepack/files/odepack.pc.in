@@ -1,0 +1,9 @@
+prefix=${pcfiledir}/../../math-slots/${math_slot}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: odepack
+Description: Systematized Collection of ODE Solvers
+URL: https://www.netlib.org/odepack/
+Version:
+Libs: -L${libdir} -lodepack

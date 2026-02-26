@@ -1,0 +1,31 @@
+# SDK2 package definition for slotted lapack
+
+# Set package-specific variables
+
+PACKAGE_NAME=slot_lapack
+VERSION=3.12.0
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+}    
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Create pkgconf files
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
+
+}

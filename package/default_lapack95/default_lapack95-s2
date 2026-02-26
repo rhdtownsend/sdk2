@@ -1,0 +1,78 @@
+# SDK2 package definition for default-slot lapack95
+
+# Set package-specific variables
+
+PACKAGE_NAME=default_lapack95
+SRC_FILE=lapack95.tgz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=${SRC_DIR}/SRC
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    tar xf $SF -C $SD --strip-components 1
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in tar for $PACKAGE_NAME (file $SF)"
+	exit 1
+    fi
+
+    # Move other files into place
+
+    cp ${PD}/default_lapack95/make.inc ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Build
+
+    cd $BD
+
+    make clean
+    make single_double_complex_dcomplex
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $SD"
+
+    # Copy the static library and module files
+
+    cd $SD
+
+    cp -av lapack95.a ${DEST_ROOT}/math-slots/default/lib/liblapack95.a
+    cp -av lapack95_modules/*.mod ${DEST_ROOT}/math-slots/default/include/
+
+    # Create the shared libraries
+
+    export ${PROFILE_PREFIX}_MATH_SLOT=default
+
+    create_shared_lib \
+        -c gfortran \
+        -L ${DEST_ROOT}/math-slots/default/lib -llapack -ltmg -lxblas -lblas \
+        ${DEST_ROOT}/math-slots/default/lib/liblapack95.a
+
+    # Copy docs
+
+    mkdir -pv ${DEST_ROOT}/share/doc/lapack95
+    cp -av README ${DEST_ROOT}/share/doc/lapack95/
+
+}

@@ -33,13 +33,14 @@ export LIB_EXT=dylib
 
 # Set the deployment target
 
-export MACOSX_DEPLOYMENT_TARGET=11.0
+#export MACOSX_DEPLOYMENT_TARGET=11.0
 
 # Set tool flags
 
 if [[ ! -e ${DEST_ROOT}/bin/gcc ]]; then
    CC_TOOLS=clang
    CXX_TOOLS=clang++
+   LDFLAGS_TOOLS=-Wl,-headerpad_max_install_names
 fi
 
 # Set extra gcc flags

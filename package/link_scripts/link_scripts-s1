@@ -1,0 +1,33 @@
+# SDK2 package definition for legacy link scripts
+
+# Set package-specific variables
+
+PACKAGE_NAME=link_scripts
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+   return
+
+}    
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Create the link script
+
+    for f in ${FD}/*_link.in; do
+	g=`basename $f .in`
+        sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+    	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g $f > ${DEST_ROOT}/bin/$g
+	chmod a+x ${DEST_ROOT}/bin/$g
+	ln -s $g ${DEST_ROOT}/bin/$(echo ${PROFILE_PREFIX} | tr '[:upper:]' '[:lower:]')_${g}
+	echo "Created legacy link script $g"
+    done
+
+}

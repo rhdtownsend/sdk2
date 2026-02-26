@@ -1,0 +1,84 @@
+# SDK2 package definition for crmath-slot lapack95
+
+# Set package-specific variables
+
+PACKAGE_NAME=crmath_lapack95
+SRC_FILES=(lapack95.tgz crmath_lapack95.tar.gz)
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=${SRC_DIR}/SRC
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarball
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE_NAME (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources
+
+    cd $SD
+
+    ./fix_crmath_lapack95.sh
+
+    # Move other files into place
+
+    cp ${PD}/crmath_lapack95/make.inc ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Build
+
+    cd $BD
+
+    make clean
+    make single_double_complex_dcomplex
+    
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $SD"
+
+    # Copy the static library and module files
+
+    cd $SD
+
+    cp -av lapack95.a ${DEST_ROOT}/math-slots/crmath/lib/liblapack95.a
+    cp -av lapack95_modules/*.mod ${DEST_ROOT}/math-slots/crmath/include/
+
+    # Create the shared libraries
+
+    export ${PROFILE_PREFIX}_MATH_SLOT=crmath
+
+    create_shared_lib \
+        -c gfortran \
+	-L ${DEST_ROOT}/lib -lcrmath \
+        -L ${DEST_ROOT}/math-slots/crmath/lib -llapack -ltmg -lblas \
+        ${DEST_ROOT}/math-slots/crmath/lib/liblapack95.a
+
+}

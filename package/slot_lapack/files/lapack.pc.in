@@ -1,0 +1,10 @@
+prefix=${pcfiledir}/../../math-slots/${math_slot}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: lapack
+Description: Linear Algebra PACKage
+URL: https://www.netlib.org/lapack/
+Version: @VERSION@
+Requires.private: blas = @VERSION@
+Libs: -L${libdir} -llapack

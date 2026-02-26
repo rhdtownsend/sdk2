@@ -1,0 +1,10 @@
+prefix=${pcfiledir}/../../math-slots/${math_slot}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: cblas
+Description: Basic Linar Algebra Subprograms (C interface)
+URL: https://www.netlib.org/blas/
+Version: @VERSION@
+Requires.private: blas = @VERSION@
+Libs: -L${libdir} -lcblas

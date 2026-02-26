@@ -1,0 +1,9 @@
+prefix=${pcfiledir}/../../math-slots/${math_slot}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: blas
+Description: Basic Linar Algebra Subprograms
+URL: https://www.netlib.org/blas/
+Version: @VERSION@
+Libs: -L${libdir} -lblas

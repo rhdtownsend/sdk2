@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+# Wrapper for gfortran (aarch64-macos)
+
+# Examine arguments to decide whether we're actually compiling
+
+COMPILING="n"
+
+while getopts ":cSEo:" opt; do
+    case $opt in
+	c|S|E|o)
+	    COMPILING="y"
+	    ;;
+    esac
+done
+
+if [ "$OPTIND" -le "$#" ]; then
+   COMPILING="y"
+fi
+
+# Set up compilation flags
+
+FLAGS=$SDK2_GCC_FLAGS
+
+if [[ $COMPILING == "y" ]]; then
+
+    # Add SDK directories to the fortran module search path
+
+    FLAGS="${FLAGS} -I@SDK_ROOT@/include"
+
+    if [ -n "@SDK_MATH_SLOT@" ]; then
+	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include"
+    else
+	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/default/include"
+    fi
+
+    # Set up system paths
+
+    FLAGS="${FLAGS} -isystem @SDK_ROOT@/include"
+
+fi
+
+# Prepend /usr/bin to PATH, to ensure that the system as/ld are found
+# (this is to work around the macports ones being used)
+
+export PATH=/usr/bin:${PATH}
+
+# Launch gfortran
+
+eval $0.exec ${FLAGS} $(printf '%q ' "$@")
+exit $?

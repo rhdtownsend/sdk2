@@ -3,9 +3,9 @@
 # Legacy link script for blas
 
 if [ -n "@SDK_MATH_SLOT@" ]; then
-    path=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@
+    math_slot=@SDK_MATH_SLOT@
 else
-    path=@SDK_ROOT@/math-slots/default
+    math_slot=default
 fi
 
-pkgconf --with-path $path/lib/pkgconfig --static --libs blas
+pkgconf --define-variable=math_slot=${math_slot} --static --libs blas

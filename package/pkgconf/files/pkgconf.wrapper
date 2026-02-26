@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Wrapper for pkgconf
+
+export PKG_CONFIG_LIBDIR=@SDK_ROOT@/lib/pkgconfig
+
+eval $0.exec $(printf '%q ' "$@")
+exit $?

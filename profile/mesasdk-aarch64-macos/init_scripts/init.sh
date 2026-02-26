@@ -17,4 +17,3 @@ export PGPLOT_DIR="${MESASDK_ROOT}/lib/pgplot"
 # Set other environment variables
 
 export MESASDK_VERSION=`${MESASDK_ROOT}/bin/mesasdk_version`
-export PKG_CONFIG_PATH="${MESASDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"

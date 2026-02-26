@@ -1,0 +1,58 @@
+# SDK2 package definition for pkgconf
+
+# Set package-specific variables
+
+PACKAGE_NAME=pkgconf
+SRC_FILE=pkgconf-2.5.1.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    # Configure
+
+    ./configure --prefix=$DEST_ROOT --with-system-libdir=/lib:/usr/lib --with-system-includedir=/usr/include
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Install
+
+    cd $BD
+
+    make install
+
+    ln -sf pkgconf $DEST_ROOT/bin/pkg-config
+
+    # Install the wrapper script (necessary to override the default
+    # search path)
+
+    mv -v ${DEST_ROOT}/bin/pkgconf ${DEST_ROOT}/bin/pkgconf.exec
+    ln -sfv pkgconf.wrapper ${DEST_ROOT}/bin/pkgconf
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${FD}/pkgconf.wrapper > ${DEST_ROOT}/bin/pkgconf.wrapper
+    chmod a+x ${DEST_ROOT}/bin/pkgconf.wrapper
+
+}

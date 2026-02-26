@@ -40,6 +40,7 @@ export LIB_EXT=dylib
 if [[ ! -e ${DEST_ROOT}/bin/gcc ]]; then
    CC_TOOLS=clang
    CXX_TOOLS=clang++
+   LDFLAGS_TOOLS=-Wl,-headerpad_max_install_names
 fi
 
 # Set extra gcc flags

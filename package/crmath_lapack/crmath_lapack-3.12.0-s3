@@ -1,0 +1,117 @@
+# SDK2 package definition for crmath-slot lapack
+
+# Set package-specific variables
+
+PACKAGE_NAME=crmath_lapack
+VERSION=3.12.0
+SRC_FILE=lapack-${VERSION}.tar.gz
+
+SRC_DIR=$PACKAGE_NAME
+BUILD_DIR=$SRC_DIR
+
+# Functions
+
+unpack () {
+
+    echo "Unpacking $PACKAGE_NAME into $SD"
+
+    # Unpack the tarballs
+
+    rm -rf $SD
+    mkdir $SD
+
+    for src_file in $SF; do
+	
+	tar xf $src_file -C $SD --strip-components 1
+
+	if [ $? -ne 0 ]; then
+	    echo "FAILED in tar for $PACKAGE (file $src_file)"
+	    exit 1
+	fi
+
+    done
+
+    # Modify the sources, by inserting "use, crmath" clauses
+    # at the beginning of routines
+
+    cd $SD
+
+    if `awk --version | grep -q GNU`; then
+	AWK='awk --posix'
+    else
+	AWK='awk'
+    fi
+
+    SIN_PATTERN="[sdcz]get3[78]\.f$"
+
+    for file in `find ./ -name '*.f'`; do
+
+	REMAP_LIST=
+
+	if [[ "$file" =~ $SIN_PATTERN ]]; then
+	    REMAP_LIST="$REMAP_LIST, sin_ => sin"
+	fi
+
+	${AWK} -f ${FD}/fix_crmath_lapack.awk -v remap_list="$REMAP_LIST" $file > $file.tmp
+	mv $file.tmp $file
+
+    done
+
+    # Move other files into place
+
+    cp ${PD}/crmath_lapack/make.inc-3.12.0 ${SD}/make.inc
+
+}
+
+build () {
+
+    echo "Building $PACKAGE_NAME in $BD"
+
+    # Clean up
+
+    cd $BD
+
+    make clean
+    rm -f *.a
+
+    # Build
+
+    make -j$NCORES
+
+    if [ $? -ne 0 ]; then
+	echo "FAILED in make for $PACKAGE_NAME"
+	exit 1
+    fi
+
+}
+
+install () {
+
+    echo "Installing $PACKAGE_NAME from $BD"
+
+    # Copy the static libraries
+
+    cd $BD
+
+    cp -av librefblas.a ${DEST_ROOT}/math-slots/crmath/lib/libblas.a
+    cp -av liblapack.a ${DEST_ROOT}/math-slots/crmath/lib/liblapack.a
+    cp -av libtmglib.a ${DEST_ROOT}/math-slots/crmath/lib/libtmg.a
+
+    # Create the shared libraries
+
+    create_shared_lib \
+        -c gfortran \
+	-L ${DEST_ROOT}/lib -lcrmath \
+	${DEST_ROOT}/math-slots/crmath/lib/libblas.a
+    create_shared_lib \
+        -c gfortran \
+        -L ${DEST_ROOT}/lib -lcrmath \
+        -L ${DEST_ROOT}/math-slots/crmath/lib -lblas \
+	${DEST_ROOT}/math-slots/crmath/lib/liblapack.a
+    create_shared_lib \
+        -c gfortran  \
+        -L ${DEST_ROOT}/lib -lcrmath \
+        -L ${DEST_ROOT}/math-slots/crmath/lib -lblas -llapack \
+	${DEST_ROOT}/math-slots/crmath/lib/libtmg.a
+
+}

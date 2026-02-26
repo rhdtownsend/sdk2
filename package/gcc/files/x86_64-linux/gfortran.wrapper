@@ -1,0 +1,62 @@
+#!/bin/bash
+#
+# Wrapper for gfortran (x86_64-linux)
+
+# Examine arguments to decide whether we're actually compiling
+
+COMPILING="n"
+
+while getopts ":cSEo:" opt; do
+    case $opt in
+	c|S|E|o)
+	    COMPILING="y"
+	    ;;
+    esac
+done
+
+if [ "$OPTIND" -le "$#" ]; then
+   COMPILING="y"
+fi
+
+# Set up compilation flags
+
+FLAGS=$SDK2_GCC_FLAGS
+
+if [[ $COMPILING == "y" ]]; then
+
+    # Add SDK directories to the libary run path
+
+    FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/lib ${FLAGS} -Wl,-rpath,@SDK_ROOT@/lib64"
+
+    if [ -n "@SDK_MATH_SLOT@" ]; then
+	FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib"
+    else
+	FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/math-slots/default/lib"
+    fi
+
+    # Add SDK directories to the fortran module search path
+
+    FLAGS="${FLAGS} -I@SDK_ROOT@/include"
+
+    if [ -n "@SDK_MATH_SLOT@" ]; then
+	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include"
+    else
+	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/default/include"
+    fi
+
+    # Deal with multiarch
+
+    if [ -d /usr/lib/x86_64-linux-gnu ]; then
+        export LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LIBRARY_PATH}"
+    fi
+
+    if [ -d /usr/include/x86_64-linux-gnu ]; then
+        FLAGS="${FLAGS} -I/usr/include/x86_64-linux-gnu"
+    fi
+
+fi
+
+# Launch gfortran
+
+eval $0.exec ${FLAGS} $(printf '%q ' "$@")
+exit $?
