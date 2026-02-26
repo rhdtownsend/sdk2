@@ -38,6 +38,10 @@ if [[ $COMPILING == "y" ]]; then
 
     FLAGS="${FLAGS} -isystem @SDK_ROOT@/include"
 
+    # Add linker flags to set rpath
+
+    FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@"
+
 fi
 
 # Prepend /usr/bin to PATH, to ensure that the system as/ld are found
