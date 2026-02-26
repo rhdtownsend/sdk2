@@ -4,5 +4,5 @@
 
 export PKG_CONFIG_LIBDIR=@SDK_ROOT@/lib/pkgconfig
 
-eval $0.exec $(printf '%q ' "$@")
+eval pkgconf.exec $(printf '%q ' "$@")
 exit $?
