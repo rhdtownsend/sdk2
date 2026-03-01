@@ -12,7 +12,7 @@ pkgconf/pkgconf-2.5.1
 makedepf90/makedepf90-2.8.8
 xz/xz-5.8.2
 tar/tar-1.35
-time/time-1.9-s1
+time/time-1.9
 slot_lapack/slot_lapack-3.12.0
 slot_lapack95/slot_lapack95
 slot_odepack/slot_odepack
