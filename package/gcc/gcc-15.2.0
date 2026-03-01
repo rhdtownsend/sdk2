@@ -116,7 +116,7 @@ install () {
 
     files_dir=${FD}/${SDK2_PLATFORM_NAME}/${SDK2_PLATFORM_ISA}
 
-    if [[ ! -d $files_dir ]];
+    if [[ ! -d $files_dir ]]; then
        echo "Unable to determine which files directory to use"
        exit 1
     fi
