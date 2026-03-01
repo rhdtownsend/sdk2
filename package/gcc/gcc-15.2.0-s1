@@ -41,7 +41,7 @@ build () {
     EXTRA_CONFIG_OPTS=
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
-	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot"
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot --disable-libsanitizer"
     elif [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --enable-clocale=generic"
 	if [[ $SDK2_PLATFORM_DISTRO = 'CentOS' ]] ; then
@@ -70,6 +70,11 @@ build () {
     fi
 
     # Build
+
+    if [[ -z $NCORES ]]; then
+	echo "need to set ncores"
+	exit 1
+    fi
 
     make -j$NCORES
 
