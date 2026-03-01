@@ -23,7 +23,7 @@ build () {
 
     # Configure
 
-    ./configure \
+    CFLAGS='-std=gnu17' ./configure \
 	--build=$BUILD_SPEC \
 	--prefix=$DEST_ROOT \
 	--mandir=${DEST_ROOT}/share/man

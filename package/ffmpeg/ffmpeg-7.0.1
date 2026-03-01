@@ -39,15 +39,12 @@ build () {
 
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-audiotoolbox --disable-videotoolbox"
 
-	# This is to deal with the fact that the Apple texi2html doesn't work properly
-	# with the ffmpeg doc system
-
-	if [[ -x /usr/bin/texi2html ]]; then
-            EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-htmlpages"
-	fi
-
     fi
     
+    # Disable HTML docs
+
+    EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --disable-htmlpages"
+
     # Configure
 
     export PKG_CONFIG_PATH="${DEST_ROOT}/lib/pkgconfig"
@@ -57,6 +54,12 @@ build () {
 	--prefix=$DEST_ROOT \
 	--enable-gpl \
 	--enable-libx264 \
+	--disable-xlib \
+	--disable-bzlib \
+	--disable-libxcb \
+	--disable-libxcb-shm \
+	--disable-libxcb-xfixes \
+	--disable-libxcb-shape \
 	--extra-cflags=-Dstatic_assert=_Static_assert \
 	$EXTRA_CONFIG_OPTS
 
@@ -89,7 +92,7 @@ install () {
     # Create the images_to_move script
 
     sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-	${SDK2_PROFILE_ROOT}/common/ffmpeg/images_to_movie > ${DEST_ROOT}/bin/images_to_movie
+	${FD}/images_to_movie > ${DEST_ROOT}/bin/images_to_movie
     chmod a+x ${DEST_ROOT}/bin/images_to_movie
  
 }

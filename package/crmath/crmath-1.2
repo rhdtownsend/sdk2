@@ -3,7 +3,8 @@
 # Set package-specific variables
 
 PACKAGE_NAME=crmath
-SRC_FILE=crmath-1.2.tar.gz
+VERSION=1.2
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -32,7 +33,7 @@ unpack () {
 
     # Move other files into place
 
-    cp ${PD}/crmath/Make.inc ${SD}/Make.inc
+    cp ${FD}/Make.inc ${SD}/Make.inc
 
 }
 
@@ -76,10 +77,12 @@ install () {
 	-L ${DEST_ROOT}/lib -lcrlibm \
 	${DEST_ROOT}/lib/libcrmath.a
 
-    # Create the link script
+    # Create pkgconf files
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-	${SDK2_PROFILE_ROOT}/common/crmath/crmath_link > ${DEST_ROOT}/bin/crmath_link
-    chmod a+x ${DEST_ROOT}/bin/crmath_link
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
 
 }

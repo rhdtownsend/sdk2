@@ -3,7 +3,7 @@
 # Set package-specific variables
 
 PACKAGE_NAME=gcc
-SRC_FILE=gcc-15.2.0.tar.gz
+SRC_FILE=gcc-15.2-darwin-pre-0.tar.gz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${PACKAGE_NAME}-build
@@ -30,23 +30,14 @@ build () {
     rm -fv ${DEST_ROOT}/bin/gcc.wrapper
     rm -fv ${DEST_ROOT}/bin/gfortran.wrapper
 
-    # Workaround for linker issues on old CentOS systems
-
-    if [[ $SDK2_PLATFORM_DISTRO = 'CentOS' ]] ; then
-       export LDFLAGS='-Wl,--no-eh-frame-hdr'
-    fi
-
     # Set extra configuration options
 
     EXTRA_CONFIG_OPTS=
 
     if [[ $SDK2_PLATFORM_NAME = 'Darwin' ]]; then
-	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot --disable-libsanitizer"
+	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --with-sysroot=${DEST_ROOT}/sysroot"
     elif [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
 	EXTRA_CONFIG_OPTS="$EXTRA_CONFIG_OPTS --enable-clocale=generic"
-	if [[ $SDK2_PLATFORM_DISTRO = 'CentOS' ]] ; then
-	    LDFLAGS_TOOLS="$LDFLAGS_TOOLS -Wl,--no-eh-frame-hdr"
-	fi
     fi
 
     # Configure
@@ -62,7 +53,9 @@ build () {
 	--enable-languages=c,c++,fortran \
 	--disable-multilib \
 	--disable-nls \
-	$EXTRA_CONFIG_OPTS
+        --disable-libsanitizer \
+        --with-system-zlib \
+	--with-sysroot=${DEST_ROOT}/sysroot
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in configure for $PACKAGE_NAME"
@@ -70,11 +63,6 @@ build () {
     fi
 
     # Build
-
-    if [[ -z $NCORES ]]; then
-	echo "need to set ncores"
-	exit 1
-    fi
 
     make -j$NCORES
 
@@ -128,6 +116,21 @@ install () {
 	    ${files_dir}/${file} > ${DEST_ROOT}/bin/${file}
 	chmod a+x ${DEST_ROOT}/bin/${file}
 
+    done
+
+    # On MacOS, replace stub libraries by links to the full
+    # library. This is necessary because the install names of stub
+    # libraries can't be changed using install_name_tool (nor can they
+    # be codesigned without creating extended attributes)
+
+    for lib in ${DEST_ROOT}/lib/*.dylib; do
+        if [ -f $lib ]; then
+	    if `file $lib | grep -q 'Mach-O .* shared library stub'`; then
+                full_lib_name=`otool -D $lib | awk 'NR == 2' | xargs basename`
+                rm $lib
+                ln -sfv $full_lib_name $lib
+	    fi
+        fi
     done
 
 }

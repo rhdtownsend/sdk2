@@ -18,7 +18,7 @@ unpack () {
     rm -rf $SD
     mkdir $SD
 
-    cp ${SDK2_PROFILE_ROOT}/common/init_scripts/preq_check.ac ${SD}/
+    cp ${FD}/preq_check.ac ${SD}/
 
 }
 
@@ -47,20 +47,27 @@ install () {
 
     cd $BD
 
-    cp -av ${PD}/init_scripts/init.sh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.sh
-    cp -av ${PD}/init_scripts/init.csh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.csh
+    files_dir=${FD}/${SDK2_PLATFORM_NAME}/${SDK2_PLATFORM_ISA}
+
+    if [[ ! -d $files_dir ]];
+       echo "Unable to determine which files directory to use"
+       exit 1
+    fi
+
+    cp -av ${files_dir}/init.sh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.sh
+    cp -av ${files_dir}/init.csh ${DEST_ROOT}/bin/${PROFILE_NAME}_init.csh
 
     if [[ $SDK2_PLATFORM_NAME = 'Linux' ]]; then
-        cp -av ${PD}/init_scripts/arch_check ${DEST_ROOT}/bin/${PROFILE_NAME}_arch_check
+        cp -av ${files_dir}/arch_check ${DEST_ROOT}/bin/${PROFILE_NAME}_arch_check
     	cp -av preq_check ${DEST_ROOT}/bin/${PROFILE_NAME}_preq_check
     fi
 
     # Create the version script
 
-    version_string="${PROFILE_ARCH}-${SDK2_RELEASE}"
+    version_string="${PROFILE_ARCH}-${PROFILE_RELEASE}"
 
     sed -e s/@VERSION_STRING@/${version_string}/g \
-	${SDK2_PROFILE_ROOT}/common/init_scripts/version > ${DEST_ROOT}/bin/${PROFILE_NAME}_version
+	${FD}/version > ${DEST_ROOT}/bin/${PROFILE_NAME}_version
     chmod a+x ${DEST_ROOT}/bin/${PROFILE_NAME}_version
 
 }

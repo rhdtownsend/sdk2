@@ -2,6 +2,18 @@
 
 ### VALIDATION ###
 
+# Check SDK2_ROOT is set and valid
+
+if [[ -z $SDK2_ROOT ]]; then
+    echo "Environment variable SDK2_ROOT is not set"
+    exit 1
+fi
+
+if [[ ! -d $SDK2_ROOT ]]; then
+    echo "Root directory '$SDK2_ROOT' is missing"
+    exit 1
+fi
+
 # Check SDK2_TMP is set and valid
 
 if [[ -z $SDK2_TMP ]]; then
@@ -11,13 +23,6 @@ fi
 
 if [[ ! -d $SDK2_TMP ]]; then
     echo "Temporary directory '$SDK2_TMP' is missing"
-    exit 1
-fi
-
-# Check SDK2_RELEASE is set
-
-if [[ -z $SDK2_RELEASE ]]; then
-    echo "Environment variable SDK2_RELEASE is not set"
     exit 1
 fi
 
@@ -39,10 +44,23 @@ fi
 
 # Define standard directories
 
+export SDK2_PACKAGE_ROOT=${SDK2_ROOT}/package
+export SDK2_PROFILE_ROOT=${SDK2_ROOT}/profile
+
 export SDK2_BUILD_ROOT=${SDK2_TMP}/build
+
 export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
 
-export DEST_ROOT=${SDK2_TMP}/mesasdk
+# Include profile settings
+
+export profile_dir=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
+
+if [[ ! -d $profile_dir ]]; then
+    echo "Directory '$profile_dir' is missing"
+    exit 1
+fi
+
+. ${profile_dir}/settings
 
 ### ACTION ###
 
@@ -54,7 +72,7 @@ mkdir -p $SDK2_PKG_ROOT
 
 pkgproj_file=$(mktemp ${SDK2_PKG_ROOT}/mesasdk.XXXXXX)
 
-sed -e "s|@RELEASE@|$SDK2_RELEASE|g" \
+sed -e "s|@RELEASE@|$PROFILE_RELEASE|g" \
     -e "s|@PKG_ROOT@|$SDK2_PKG_ROOT|g" \
     -e "s|@DEST_ROOT@|$DEST_ROOT|g" \
     -e "s|@PKG_CERT_NAME@|$SDK2_PKG_CERT_NAME|g" \

@@ -26,6 +26,7 @@ install () {
         sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
     	    -e s/@SDK_MATH_SLOT@/\${${PROFILE_PREFIX}_MATH_SLOT}/g $f > ${DEST_ROOT}/bin/$g
 	chmod a+x ${DEST_ROOT}/bin/$g
+	ln -sf $g ${DEST_ROOT}/bin/$(echo ${PROFILE_PREFIX} | tr '[:upper:]' '[:lower:]')_${g}
 	echo "Created legacy link script $g"
     done
 

@@ -3,7 +3,7 @@
 # Set package-specific variables
 
 PACKAGE_NAME=crmath_lapack95
-SRC_FILES=(lapack95.tgz crmath_lapack95.tar.gz)
+SRC_FILES=lapack95.tgz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=${SRC_DIR}/SRC
@@ -30,15 +30,27 @@ unpack () {
 
     done
 
-    # Modify the sources
+    # Modify the sources, by inserting "use, crmath" clauses
+    # at the beginning of routines
 
     cd $SD
 
-    ./fix_crmath_lapack95.sh
+    if `awk --version | grep -q GNU`; then
+	AWK='awk --posix'
+    else
+	AWK='awk'
+    fi
+
+    for file in `find ./ -name '*.f90'`; do
+
+	${AWK} -f ${FD}/fix_crmath_lapack95.awk $file > $file.tmp
+	mv $file.tmp $file
+
+    done
 
     # Move other files into place
 
-    cp ${PD}/crmath_lapack95/make.inc ${SD}/make.inc
+    cp ${FD}/make.inc ${SD}/make.inc
 
 }
 
@@ -80,11 +92,5 @@ install () {
 	-L ${DEST_ROOT}/lib -lcrmath \
         -L ${DEST_ROOT}/math-slots/crmath/lib -llapack -ltmg -lblas \
         ${DEST_ROOT}/math-slots/crmath/lib/liblapack95.a
-
-     # Create the link script
-
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-	${SDK2_PROFILE_ROOT}/common/crmath_lapack95/lapack95_link > ${DEST_ROOT}/math-slots/crmath/bin/lapack95_link
-    chmod a+x ${DEST_ROOT}/math-slots/crmath/bin/lapack95_link
 
 }

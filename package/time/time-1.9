@@ -22,7 +22,7 @@ build () {
 
     # Configure
 
-    ./configure \
+    CFLAGS='-std=gnu17' ./configure \
 	--prefix=$DEST_ROOT
 
     if [ $? -ne 0 ]; then

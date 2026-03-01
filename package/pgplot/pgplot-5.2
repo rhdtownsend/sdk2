@@ -3,7 +3,8 @@
 # Set package-specific variables
 
 PACKAGE_NAME=pgplot
-SRC_FILE=pgplot5.2.tar.gz
+VERSION=5.2
+SRC_FILE=pgplot${VERSION}.tar.gz
 PATCH_FILES=pgplot5.2-png-1.5.diff
 
 SRC_DIR=$PACKAGE_NAME
@@ -44,7 +45,14 @@ unpack () {
 
     mkdir ${SD}/sys_sdk2
 
-    cp ${PD}/pgplot/gfortran.conf ${SD}/sys_sdk2/gfortran.conf
+    files_dir=${FD}/${SDK2_PLATFORM_NAME}/${SDK2_PLATFORM_ISA}
+
+    if [[ ! -d $files_dir ]];
+       echo "Unable to determine which files directory to use"
+       exit 1
+    fi
+
+    cp ${files_dir}/gfortran.conf ${SD}/sys_sdk2/gfortran.conf
 
     # Create the build dir
 
@@ -88,7 +96,7 @@ build () {
 
     # Build (doesn't play well with multi-core)
 
-    make all cpg
+    LC_ALL=C make all cpg
 
     if [ $? -ne 0 ]; then
 	echo "FAILED in make for $PACKAGE_NAME"
@@ -158,10 +166,12 @@ install () {
     mkdir -pv ${DEST_ROOT}/share/doc/pgplot
     cp -av aaaread.me copyright.notice install* ${DEST_ROOT}/share/doc/pgplot/
 
-    # Create the link script
+    # Create pkgconf files
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g ${SDK2_PROFILE_ROOT}/common/pgplot/pgplot_link > \
-	${DEST_ROOT}/bin/pgplot_link
-    chmod a+x ${DEST_ROOT}/bin/pgplot_link
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
 
 }

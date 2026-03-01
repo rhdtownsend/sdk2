@@ -3,7 +3,8 @@
 # Set package-specific variables
 
 PACKAGE_NAME=toml-f
-SRC_FILE=toml-f-0.4.3.tar.xz
+VERSION=0.4.3
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.xz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -55,10 +56,12 @@ install () {
     mv ${DEST_ROOT}/include/toml-f/modules/* ${DEST_ROOT}/include
     rm -rf ${DEST_ROOT}/include/toml-f
 
-    # Create the link script
+    # Create pkgconf files (overwrites installed file)
 
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-	${SDK2_PROFILE_ROOT}/common/toml-f/toml-f_link > ${DEST_ROOT}/bin/toml-f_link
-    chmod a+x ${DEST_ROOT}/bin/toml-f_link
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
 
 }

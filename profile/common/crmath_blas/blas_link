@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Link script for crmath-slot blas
-
-echo -L@SDK_ROOT@/math-slots/crmath/lib -lblas

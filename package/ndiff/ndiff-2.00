@@ -22,7 +22,7 @@ build () {
 
     # Configure
 
-    ./configure \
+    CFLAGS='-std=c89' ./configure \
 	--build=$BUILD_SPEC \
 	--prefix=$DEST_ROOT
 

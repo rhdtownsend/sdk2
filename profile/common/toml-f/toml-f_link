@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Link script for toml-f
-
-echo -L@SDK_ROOT@/lib -ltoml-f

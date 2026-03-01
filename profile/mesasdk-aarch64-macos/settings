@@ -1,10 +1,10 @@
 # Profile-specific settings
 
-# Set the profile name and architecture string (these
-# are used in naming scripts and versioning)
+# Set the profile name, architecture string and release number
 
 export PROFILE_NAME=mesasdk
 export PROFILE_ARCH=aarch64-macos
+export PROFILE_RELEASE=26.3.1
 
 # Set the profile prefix (this is used generate the names of
 # environment variables associated with the profile)
@@ -31,10 +31,6 @@ export BUILD_SPEC="aarch64-apple-darwin25"
 
 export LIB_EXT=dylib
 
-# Set the deployment target
-
-#export MACOSX_DEPLOYMENT_TARGET=11.0
-
 # Set tool flags
 
 if [[ ! -e ${DEST_ROOT}/bin/gcc ]]; then
@@ -49,4 +45,4 @@ export SDK2_GCC_FLAGS="--sysroot ${DEST_ROOT}/sysroot"
 
 # Reset paths
 
-export PATH=${DEST_ROOT}/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+export PATH=${DEST_ROOT}/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11/bin

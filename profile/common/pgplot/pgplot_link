@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Link script for pgplot
-
-echo -L@SDK_ROOT@/lib -lpgplot

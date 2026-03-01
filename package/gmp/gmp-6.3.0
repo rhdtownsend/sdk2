@@ -3,7 +3,8 @@
 # Set package-specific variables
 
 PACKAGE_NAME=gmp
-SRC_FILE=gmp-6.3.0.tar.xz
+VERSION=6.3.0
+SRC_FILE=${PACKAGE_NAME}-${VERSION}.tar.xz
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
@@ -22,7 +23,7 @@ build () {
 
     # Configure
 
-    ./configure \
+    CC='gcc -std=gnu17' ./configure \
 	--build=$BUILD_SPEC \
 	--prefix=$DEST_ROOT
 
@@ -56,5 +57,13 @@ install () {
 
     mkdir -pv ${DEST_ROOT}/share/doc/${PACKAGE_NAME}
     cp -av AUTHORS COPYING* INSTALL* NEWS README ${DEST_ROOT}/share/doc/${PACKAGE_NAME}
+
+    # Create pkgconf files (overwrites installed file)
+
+    for f in ${FD}/*.pc.in; do
+	g=`basename $f .in`
+        sed -e s/@VERSION@/$VERSION/g $f > ${DEST_ROOT}/lib/pkgconfig/$g
+	echo "Created pkgconf file $g"
+    done
 
 }

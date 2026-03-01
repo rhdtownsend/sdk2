@@ -28,7 +28,7 @@ unpack () {
 
     # Move other files into place
 
-    cp ${PD}/default_lapack95/make.inc ${SD}/make.inc
+    cp ${FD}/make.inc ${SD}/make.inc
 
 }
 
@@ -74,11 +74,5 @@ install () {
 
     mkdir -pv ${DEST_ROOT}/share/doc/lapack95
     cp -av README ${DEST_ROOT}/share/doc/lapack95/
-
-    # Create the link script
-
-    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
-	${SDK2_PROFILE_ROOT}/common/default_lapack95/lapack95_link > ${DEST_ROOT}/math-slots/default/bin/lapack95_link
-    chmod a+x ${DEST_ROOT}/math-slots/default/bin/lapack95_link
 
 }

@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# Link script for default-slot xblas
-
-echo -L@SDK_ROOT@/math-slots/default/lib -lxblas

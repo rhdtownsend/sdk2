@@ -1,0 +1,37 @@
+#!/usr/bin/perl -w
+#
+# Check to see whether the current architecture is supported
+# (Linux x86_64)
+
+# Determine OS type
+
+my $os = `uname -s 2>/dev/null`;
+chomp $os;
+
+# Determine whether the arch is supported
+
+my $supported = 'N';
+
+if($os eq 'Linux') {
+
+    my $arch = `uname -m 2>/dev/null`;
+    chomp $arch;
+
+    my $verstr = `uname -r 2>/dev/null`;
+    chomp $verstr;
+
+    if($arch eq 'x86_64') {
+	$supported = 'Y';
+    }
+    
+    if($verstr =~ /Microsoft/){
+	$supported = 'N';
+    }
+
+}
+
+# Output the result
+
+print "$supported\n";
+
+exit 0;

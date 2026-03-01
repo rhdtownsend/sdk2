@@ -34,4 +34,8 @@ install () {
         cp -a ${SD}/usr/${dir} ${DEST_ROOT}/sysroot/usr/
     done
 
+    # Make links
+
+    ln -s ${SD}/System ${DEST_ROOT}/sysroot/System
+
 }

@@ -1,6 +1,0 @@
-#!/bin/sh
-#
-# Link script for crmath
-
-echo -L@SDK_ROOT@/lib -lcrmath `crlibm_link`
-

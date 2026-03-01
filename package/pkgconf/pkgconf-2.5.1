@@ -44,4 +44,15 @@ install () {
     make install
 
     ln -sf pkgconf $DEST_ROOT/bin/pkg-config
+
+    # Install the wrapper script (necessary to override the default
+    # search path)
+
+    mv -v ${DEST_ROOT}/bin/pkgconf ${DEST_ROOT}/bin/pkgconf.exec
+    ln -sfv pkgconf.wrapper ${DEST_ROOT}/bin/pkgconf
+
+    sed -e s/@SDK_ROOT@/\${${PROFILE_PREFIX}_ROOT}/g \
+	${FD}/pkgconf.wrapper > ${DEST_ROOT}/bin/pkgconf.wrapper
+    chmod a+x ${DEST_ROOT}/bin/pkgconf.wrapper
+
 }
