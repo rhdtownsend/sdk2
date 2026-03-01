@@ -47,7 +47,7 @@ install () {
 
     cd $BD
 
-    files_dir=${FD}/${SDK2_PLATFORM_NAME}-${SDK2_PLATFORM_ISA}
+    files_dir=${FD}/${PROFILE_ARCH}
 
     if [[ ! -d $files_dir ]]; then
        echo "Unable to determine which files directory to use"
