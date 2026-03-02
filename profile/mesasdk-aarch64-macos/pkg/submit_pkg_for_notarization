@@ -21,13 +21,6 @@ if [[ -z $SDK2_PROFILE ]]; then
     exit 1
 fi
 
-# Check SDK2_RELEASE is set
-
-if [[ -z $SDK2_RELEASE ]]; then
-    echo "Environment variable SDK2_RELEASE is not set"
-    exit 1
-fi
-
 # Check SDK2_NUSER is set
 
 if [[ -z $SDK2_NUSER ]]; then
@@ -46,13 +39,26 @@ fi
 
 # Define standard directories
 
+export SDK2_PROFILE_ROOT=${SDK2_ROOT}/profile
+
 export SDK2_PKG_ROOT=${SDK2_TMP}/pkg
+
+# Include profile settings
+
+export profile_dir=${SDK2_PROFILE_ROOT}/${SDK2_PROFILE}
+
+if [[ ! -d $profile_dir ]]; then
+    echo "Directory '$profile_dir' is missing"
+    exit 1
+fi
+
+. ${profile_dir}/settings
 
 ### ACTION ###
 
 # Submit for notarization
 
-pkg_file=${SDK2_PKG_ROOT}/${SDK2_PROFILE}-$SDK2_RELEASE.pkg
+pkg_file=${SDK2_PKG_ROOT}/${SDK2_PROFILE}-${PROFILE_RELEASE}.pkg
 
 xcrun notarytool submit $pkg_file \
       --apple-id "$SDK2_NUSER" \
