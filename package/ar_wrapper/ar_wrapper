@@ -2,7 +2,7 @@
 
 # Set package-specific variables
 
-PACKAGE_NAME=ar-wrapper
+PACKAGE_NAME=ar_wrapper
 
 SRC_DIR=$PACKAGE_NAME
 BUILD_DIR=$SRC_DIR
