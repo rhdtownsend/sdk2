@@ -30,8 +30,6 @@ if [[ $COMPILING == "y" ]]; then
 
     if [ -n "@SDK_MATH_SLOT@" ]; then
 	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include"
-    else
-	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/default/include"
     fi
 
     # Set up system paths

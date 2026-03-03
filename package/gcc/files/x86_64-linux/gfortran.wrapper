@@ -30,8 +30,6 @@ if [[ $COMPILING == "y" ]]; then
 
     if [ -n "@SDK_MATH_SLOT@" ]; then
 	FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib"
-    else
-	FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/math-slots/default/lib"
     fi
 
     # Add SDK directories to the fortran module search path
