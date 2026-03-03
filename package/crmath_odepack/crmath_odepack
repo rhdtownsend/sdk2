@@ -43,7 +43,7 @@ unpack () {
 
     for file in `find ./ -name '*.f'`; do
 
-	${AWK} -f ${FD}/fix_crmath_lapack95.awk $file > $file.tmp
+	${AWK} -f ${FD}/fix_crmath_odepack.awk $file > $file.tmp
 	mv $file.tmp $file
 
     done
