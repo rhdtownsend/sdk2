@@ -7,4 +7,5 @@ Description: Fortran95 interface to LAPACK
 URL: https://www.netlib.org/lapack95/
 Version:
 Requires.private: lapack tmg
+Cflasgs: -I${includedir}
 Libs: -L${libdir} -llapack95
