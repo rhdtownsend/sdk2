@@ -22,24 +22,27 @@ fi
 
 FLAGS=$SDK2_GCC_FLAGS
 
+if [ -n "@SDK_MATH_SLOT@" ]; then
+    MATH_SLOT_LIB_DIR=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib
+    MATH_SLOT_INC_DIR=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include
+fi
+
 if [[ $COMPILING == "y" ]]; then
 
     # Add SDK directories to the libary run path
 
-    FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/lib ${FLAGS} -Wl,-rpath,@SDK_ROOT@/lib64"
+    FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/lib -Wl,-rpath,@SDK_ROOT@/lib64"
 
-    if [ -n "@SDK_MATH_SLOT@" ]; then
-	FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib"
+    if [[ -d "$MATH_SLOT_LIB_DIR" ]]; then
+	FLAGS="${FLAGS} -Wl,-rpath,${MATH_SLOT_LIB_DIR}"
     fi
 
     # Add SDK directories to the fortran module search path
 
     FLAGS="${FLAGS} -I@SDK_ROOT@/include"
 
-    if [ -n "@SDK_MATH_SLOT@" ]; then
-	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include"
-    else
-	FLAGS="${FLAGS} -I@SDK_ROOT@/math-slots/default/include"
+    if [[ -d "$MATH_SLOT_INC_DIR" ]]; then
+	FLAGS="${FLAGS} -I${MATH_SLOT_INC_DIR}"
     fi
 
     # Deal with multiarch
