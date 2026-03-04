@@ -6,4 +6,4 @@ Name: blas
 Description: Basic Linar Algebra Subprograms
 URL: https://www.netlib.org/blas/
 Version: @VERSION@
-Libs: -L${libdir} -lblas
+Libs: -Wl,-rpath,${libdir} -L${libdir} -lblas

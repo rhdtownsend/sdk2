@@ -8,4 +8,4 @@ URL: https://www.netlib.org/lapack95/
 Version:
 Requires.private: lapack tmg
 Cflags: -I${includedir}
-Libs: -L${libdir} -llapack95
+Libs: -Wl,-rpath,${libdir} -L${libdir} -llapack95

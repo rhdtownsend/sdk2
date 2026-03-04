@@ -7,4 +7,4 @@ Description: Basic Linar Algebra Subprograms (C interface)
 URL: https://www.netlib.org/blas/
 Version: @VERSION@
 Requires.private: blas = @VERSION@
-Libs: -L${libdir} -lcblas
+Libs: -Wl,-rpath,${libdir} -L${libdir} -lcblas
