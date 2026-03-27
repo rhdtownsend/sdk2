@@ -4,7 +4,7 @@
 
 export PROFILE_NAME=mesasdk
 export PROFILE_ARCH=aarch64-macos
-export PROFILE_RELEASE=26.3.2
+export PROFILE_RELEASE=26.3.3
 
 # Set the profile prefix (this is used generate the names of
 # environment variables associated with the profile)
