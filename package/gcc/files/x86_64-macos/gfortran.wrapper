@@ -25,7 +25,7 @@ FLAGS=$SDK2_GCC_FLAGS
 if [[ $COMPILING == "y" ]]; then
 
     if [ -n "@SDK_MATH_SLOT@" ]; then
-	MATH_SLOT_INC_DIR=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/lib
+	MATH_SLOT_INC_DIR=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include
     fi
 
     # Add SDK directories to the fortran module search path
