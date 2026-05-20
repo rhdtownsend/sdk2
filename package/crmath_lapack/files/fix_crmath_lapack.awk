@@ -8,7 +8,7 @@
     next
 }
 
-/^ {6}SUBROUTINE/ {
+/^ {6}.*SUBROUTINE/ {
     state = "subroutine"
     print
     next
