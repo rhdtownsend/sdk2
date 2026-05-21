@@ -7,7 +7,7 @@ SHELL = /bin/sh
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #
 CC = gcc
-CFLAGS = -O2 -ffp-contract=off -fPIC
+CFLAGS = -O1 -ffp-contract=off -fPIC
 
 #  Modify the FC and FFLAGS definitions to the desired compiler
 #  and desired compiler options for your machine.  NOOPT refers to
@@ -18,7 +18,7 @@ CFLAGS = -O2 -ffp-contract=off -fPIC
 #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
 #
 FC = gfortran
-FFLAGS = -O2 -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
+FFLAGS = -O1 -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
 FFLAGS_DRV = $(FFLAGS)
 FFLAGS_NOOPT = -O0 -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
 
