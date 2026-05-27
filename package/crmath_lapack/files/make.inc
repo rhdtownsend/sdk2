@@ -4,10 +4,14 @@
 
 SHELL = /bin/sh
 
+ifeq ($(shell uname -s),Darwin)
+MARCH = -march=armv8.2-a
+endif
+
 #  CC is the C compiler, normally invoked with options CFLAGS.
 #
 CC = gcc
-CFLAGS = -O1 -ffp-contract=off -fPIC
+CFLAGS = -O2 $(MARCH) -ffp-contract=off -fPIC
 
 #  Modify the FC and FFLAGS definitions to the desired compiler
 #  and desired compiler options for your machine.  NOOPT refers to
@@ -18,9 +22,9 @@ CFLAGS = -O1 -ffp-contract=off -fPIC
 #  should not compile LAPACK with flags such as -ffpe-trap=overflow.
 #
 FC = gfortran
-FFLAGS = -O1 -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
+FFLAGS = -O2 $(MARCH) -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
 FFLAGS_DRV = $(FFLAGS)
-FFLAGS_NOOPT = -O0 -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
+FFLAGS_NOOPT = -O0 $(MARCH) -ffp-contract=off -frecursive -fPIC `pkgconf --cflags crmath`
 
 #  Define LDFLAGS to the desired linker options for your machine.
 #
