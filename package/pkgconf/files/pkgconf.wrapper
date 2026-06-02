@@ -2,7 +2,5 @@
 #
 # Wrapper for pkgconf
 
-export PKG_CONFIG_LIBDIR=@SDK_ROOT@/lib/pkgconfig
-
-eval pkgconf.exec $(printf '%q ' "$@")
+eval pkgconf.exec $(printf '%q ' "$@") --with-path=@SDK_ROOT@/lib/pkgconfig
 exit $?
