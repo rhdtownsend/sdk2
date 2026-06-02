@@ -2,6 +2,17 @@
 
 # Add use statements after each function/subroutine statement
 
+/^ {6}END FUNCTION/ {
+    print
+    next
+}
+
+/^ {6}END SUBROUTINE/ {
+    print
+    next
+}
+
+
 /^ {6}.*FUNCTION/ {
     state = "function"
     print

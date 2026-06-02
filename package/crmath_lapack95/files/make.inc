@@ -1,6 +1,9 @@
+ifeq ($(shell uname -s),Darwin)
+MARCH       = -march=armv8.2-a
+endif
 FC	    = gfortran -ffree-form
 FC1         = gfortran -ffixed-form
-OPTS0       = -O2 -ffp-contract=off -fPIC
+OPTS0       = -O2 $(MARCH) -ffp-contract=off -fPIC
 MODLIB      = -I./../lapack95_modules -I${DEST_ROOT}/include/
 OPTS1       = -c $(OPTS0)
 OPTS3       = $(OPTS1) $(MODLIB)
