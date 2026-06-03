@@ -1,4 +1,4 @@
-ifeq ($(shell uname -s),Darwin)
+ifeq ($(shell uname -m),arm64)
 MARCH       = -march=armv8.2-a
 endif
 FC	    = gfortran -ffree-form
