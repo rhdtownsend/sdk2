@@ -15,8 +15,6 @@ done
 
 # Sign Mach-O binaries
 
-security unlock-keychain $SDK2_CDS_CERT_PATH
-
 for file in `find ${DEST_ROOT}/bin ${DEST_ROOT}/lib ${DEST_ROOT}/libexec ${DEST_ROOT}/math-slots`; do
 
     entitle_file=${PD}/entitlements/$(basename $file).xml
