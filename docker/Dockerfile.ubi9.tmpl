@@ -1,0 +1,109 @@
+# syntax=docker/dockerfile:1
+# check=skip=SecretsUsedInArgOrEnv
+
+# Base system
+
+FROM redhat/ubi9
+
+# Metadata
+
+LABEL org.opencontainers.image.authors="townsend@astro.wisc.edu"
+
+# Register, attach subscription, and enable required repositories
+RUN --mount=type=secret,id=rh_username,env=RH_USERNAME \
+    --mount=type=secret,id=rh_password,env=RH_PASSWORD \
+    subscription-manager register --username "$RH_USERNAME" --password "$RH_PASSWORD" --auto-attach \
+    && dnf repolist \
+    && dnf config-manager --set-enabled codeready-builder-for-rhel-9-x86_64-rpms
+
+# If necessary, add a user
+
+RUN grep -q :@GROUP_ID@: /etc/group || groupadd --gid @GROUP_ID@ user
+RUN grep -q :@USER_ID@: /etc/passwd || useradd --uid @USER_ID@ --gid @GROUP_ID@ -m user
+
+# Install basic developer tools
+
+RUN dnf -y install \
+    make patch m4 bzip2 tcsh texinfo \
+    binutils glibc-devel glibc-static \
+    perl-core libX11-devel file \
+    zlib-devel nano diffutils
+
+# Install newer automake & autoconfig (needed to compile tar)
+
+RUN curl http://ftp.gnu.org/gnu/autoconf/autoconf-2.72.tar.gz -O
+RUN tar xf autoconf-2.72.tar.gz
+RUN cd autoconf-2.72 && \
+    ./configure --prefix=/usr/local && \
+    make -j && make install
+RUN rm -r autoconf-2.72.tar.gz autoconf-2.72
+
+RUN curl http://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz -O
+RUN tar xf automake-1.16.5.tar.gz
+RUN cd automake-1.16.5 && \
+    ./configure --prefix=/usr/local && \
+    make -j && make install
+RUN rm -r automake-1.16.5.tar.gz automake-1.16.5
+
+# Install bootstrap tools
+
+RUN mkdir /opt/bootstrap
+WORKDIR /opt/bootstrap
+
+RUN curl http://user.astro.wisc.edu/~townsend/resource/download/mesasdk/mesasdk-x86_64-linux-23.7.3.tar.gz -O
+RUN tar xf mesasdk-x86_64-linux-23.7.3.tar.gz
+ENV MESASDK_ROOT=/opt/bootstrap/mesasdk
+RUN . ${MESASDK_ROOT}/bin/mesasdk_init.sh
+RUN rm mesasdk-x86_64-linux-23.7.3.tar.gz
+
+# # Use these tools to build openssl, cmake and python
+
+# ENV PATH=${MESASDK_ROOT}/bin:${PATH}
+
+# RUN curl -L https://github.com/openssl/openssl/releases/download/openssl-3.2.3/openssl-3.2.3.tar.gz -O
+# RUN tar xf openssl-3.2.3.tar.gz
+# RUN cd openssl-3.2.3 && \
+#     ./Configure && \
+#     make -j && \
+#     make install
+# RUN printf "/usr/local/lib\n/usr/local/lib64\n" > /etc/ld.so.conf.d/usr-local.conf
+# RUN ldconfig
+
+# RUN curl -L https://github.com/Kitware/CMake/releases/download/v3.30.5/cmake-3.30.5.tar.gz -O
+# RUN tar xf cmake-3.30.5.tar.gz
+# RUN cd cmake-3.30.5 && \
+#     ./configure && \
+#     make -j && \
+#     make install
+
+# RUN curl https://www.python.org/ftp/python/3.7.17/Python-3.7.17.tgz -O
+# RUN tar xf Python-3.7.17.tgz
+# RUN cd Python-3.7.17 && \
+#     CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib64" ./configure && \
+#     make -j && \
+#     make install
+
+# RUN curl -L https://ftpmirror.gnu.org/libtool/libtool-2.5.4.tar.gz -O
+# RUN tar -xf libtool-2.5.4.tar.gz
+# RUN cd libtool-2.5.4 && \
+#     ./configure --prefix=/usr/local && \
+#     make -j && make install
+# RUN rm -r libtool-2.5.4.tar.gz libtool-2.5.4
+
+# # Install python packages
+
+# RUN python3 -m pip install meson
+# RUN python3 -m pip install ninja
+
+# Install new(er) texinfo (required by gcc-15)
+
+# RUN curl -L https://ftp.gnu.org/gnu/texinfo/texinfo-7.2.tar.gz -O
+# RUN tar -xf texinfo-7.2.tar.gz
+# RUN cd texinfo-7.2 && \
+#     ./configure --prefix=/usr/local && \
+#     make -j && make install
+# RUN rm -r texinfo-7.2.tar.gz texinfo-7.2
+
+# Set the root password
+
+RUN echo 'root:Docker!' | chpasswd
