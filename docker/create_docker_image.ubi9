@@ -24,9 +24,6 @@ export SDK2_DOCKER_ROOT=${SDK2_ROOT}/docker
 
 # Create the dockerfile
 
-export RH_USERNAME=rhdtownsend
-export RH_PASSWORD="zyg.urz1wxf7yfp.HWZ"
-
 sed -e "s/@USER_ID@/$(id -u)/g" \
     -e "s/@GROUP_ID@/$(id -g)/g" ${SDK2_DOCKER_ROOT}/Dockerfile.ubi9.tmpl | \
     docker buildx build \

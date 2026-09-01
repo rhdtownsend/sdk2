@@ -52,11 +52,6 @@ if [ ! -f "${MESASDK_ROOT}/etc/check_preq.done" ]; then
     touch "${MESASDK_ROOT}/etc/check_preq.done"
 fi
 
-# Make sure valgrid can find itself
-
-export VALGRIND_LIB="${MESASDK_ROOT}/lib/valgrind"
-
 # Set other environment variables
 
 export MESASDK_VERSION=`${MESASDK_ROOT}/bin/mesasdk_version`
-export PKG_CONFIG_PATH="${MESASDK_ROOT}/lib/pkgconfig:${PKG_CONFIG_PATH}"

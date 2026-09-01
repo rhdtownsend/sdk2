@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# Wrapper for gfortran (aarch64-linux)
+
+# Examine arguments to decide whether we're actually compiling
+
+COMPILING="n"
+
+while getopts ":cSEo:" opt; do
+    case $opt in
+	c|S|E|o)
+	    COMPILING="y"
+	    ;;
+    esac
+done
+
+if [ "$OPTIND" -le "$#" ]; then
+   COMPILING="y"
+fi
+
+# Set up compilation flags
+
+FLAGS=$SDK2_GCC_FLAGS
+
+if [[ $COMPILING == "y" ]]; then
+
+    if [ -n "@SDK_MATH_SLOT@" ]; then
+	MATH_SLOT_INC_DIR=@SDK_ROOT@/math-slots/@SDK_MATH_SLOT@/include
+    fi
+
+    # Add SDK directories to the libary run path
+
+    FLAGS="${FLAGS} -Wl,-rpath,@SDK_ROOT@/lib -Wl,-rpath,@SDK_ROOT@/lib64"
+
+    # Add SDK directories to the fortran module search path
+
+    FLAGS="${FLAGS} -I@SDK_ROOT@/include"
+
+    if [[ -d "$MATH_SLOT_INC_DIR" ]]; then
+	FLAGS="${FLAGS} -I${MATH_SLOT_INC_DIR}"
+    fi
+
+fi
+
+# Launch gfortran
+
+eval $0.exec ${FLAGS} $(printf '%q ' "$@")
+exit $?

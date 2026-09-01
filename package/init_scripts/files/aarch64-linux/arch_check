@@ -24,6 +24,10 @@ if($os eq 'Linux') {
 	$supported = 'Y';
     }
     
+    if($verstr =~ /Microsoft/){
+	$supported = 'N';
+    }
+
 }
 
 # Output the result
